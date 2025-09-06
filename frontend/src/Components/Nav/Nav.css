@@ -1,0 +1,41 @@
+.navbar {
+  background: #000;         /* Black navbar */
+  padding: 15px 30px;       /* Top/Bottom and left/right padding */
+  position: sticky;
+  top: 0;
+  width: 100%;              /* Full width */
+  z-index: 1000;
+  display: flex;
+  justify-content: center;  /* Center the navbar content */
+  box-sizing: border-box;   /* Include padding in width */
+}
+
+.navbar ul {
+  list-style: none;
+  display: flex;
+  justify-content: space-around; /* Evenly distribute links */
+  width: 100%;                  /* Make ul take full navbar width */
+  max-width: 1200px;            /* Optional max width for readability */
+  margin: 0;
+  padding: 0;
+}
+
+.navbar ul li a {
+  text-decoration: none;
+  color: #fff;                  /* White text */
+  font-weight: bold;
+  font-size: 1.1rem;
+  padding: 5px 10px;            /* Inner spacing to fit the bar */
+  transition: color 0.3s, border-bottom 0.3s;
+  display: block;
+  text-align: center;           /* Center text inside its block */
+}
+
+.navbar ul li a:hover {
+  color: #e50914;               /* Red on hover */
+}
+
+.navbar ul li a.active {
+  color: #e50914;               /* Red when active */
+  border-bottom: 2px solid #e50914; /* Underline */
+}

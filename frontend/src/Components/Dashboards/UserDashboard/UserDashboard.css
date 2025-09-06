@@ -1,0 +1,105 @@
+/* src/Components/Dashboards/UserDashboard/UserDashboard.css */
+
+/* Make full page background black */
+body, html {
+  margin: 0;
+  padding: 0;
+  background-color: #000; /* full background black */
+  font-family: Arial, sans-serif;
+}
+
+/* Dashboard wrapper */
+.user-dashboard {
+  display: flex;
+  min-height: 100vh;
+  padding-top: 60px; /* top spacing for top bar if any */
+  background-color: #000; /* fallback for dashboard background */
+}
+
+/* Top black bar */
+.top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background-color: #000;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.top-bar h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.top-bar button {
+  background-color: #e50914;
+  border: none;
+  color: #fff;
+  padding: 8px 15px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 220px;
+  background-color: #111;
+  color: #fff;
+  padding: 20px;
+  position: fixed;
+  top: 60px; /* below top bar */
+  left: 0;
+  height: calc(100vh - 60px); /* full height minus top bar */
+  overflow-y: auto;
+  border-right: 1px solid #222;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar ul li {
+  padding: 12px 15px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.3s;
+  text-align: left;
+}
+
+.sidebar ul li.active,
+.sidebar ul li:hover {
+  background-color: #e50914;
+  color: #fff;
+}
+
+/* Main content */
+.dashboard-content {
+  margin-left: 240px; /* space for sidebar */
+  padding: 60px 30px 30px; /* top padding to align below top bar */
+  width: calc(100% - 240px);
+  background-color: #fff; /* content area white */
+  min-height: calc(100vh - 60px);
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+.dashboard-content h2 {
+  color: #000;
+  margin-bottom: 15px;
+}
+
+.dashboard-content p {
+  font-size: 1rem;
+  color: #333;
+}

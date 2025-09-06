@@ -1,0 +1,12 @@
+.store {
+  background: #fff; /* White section */
+  color: #111;
+  text-align: center;
+  padding: 60px;
+}
+
+.store h1 {
+  font-size: 2.5rem;
+  color: #e50914; /* Red heading */
+  margin-bottom: 20px;
+}
