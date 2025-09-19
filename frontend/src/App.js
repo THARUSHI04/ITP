@@ -10,6 +10,8 @@ import Features from "./Components/Features/Features";
 import Store from "./Components/Store/Store";
 import Login from "./Components/Auth/Login";
 import UserDashboard from "./Components/Dashboards/UserDashboard/UserDashboard";
+import SchedulePage from "./Components/SchedulePage/SchedulePage";
+import TimeSchedule from "./Components/TimeSchedule/TimeSchedule";
 
 function Layout() {
   const location = useLocation();
@@ -20,12 +22,15 @@ function Layout() {
     <>
       {!hideNav && <Nav />}
       <Routes>
-        <Route path="/" element={<Home />} />
+        
+        <Route path="" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/features" element={<Features />} />
         <Route path="/store" element={<Store />} />
         <Route path="/login" element={<Login />} />
         <Route path="/user-dashboard" element={<UserDashboard />} />
+        <Route path="/TimeSchedule" element={<SchedulePage />} />
+        <Route path="/TimeSchedule" element={<TimeSchedule />} />
       </Routes>
     </>
   );

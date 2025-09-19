@@ -1,0 +1,105 @@
+/* Base container */
+.schedule-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px;
+  background: #ffffff; /* White */
+}
+
+/* Timetable box */
+.schedule-box {
+  width: 100%;
+  max-width: 1000px;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0px 6px 25px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  border-top: 6px solid #e60000; /* Red accent */
+}
+
+/* Title */
+.schedule-title {
+  text-align: center;
+  font-size: 26px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #e60000; /* Red */
+}
+
+/* Table styling */
+.schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  background: #fff;
+}
+
+/* Header row */
+.schedule-table thead th {
+  background: #e60000; /* Red */
+  color: #fff; /* White text */
+  padding: 12px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Time column */
+.time-col {
+  font-weight: bold;
+  color: #000;
+  background: rgba(0, 0, 0, 0.05); /* Black 10% */
+  text-align: center;
+  padding: 12px;
+}
+
+/* Table cells */
+.slot-cell {
+  border: 1px solid rgba(0, 0, 0, 0.1); /* Black 10% */
+  text-align: center;
+  padding: 12px;
+  transition: background 0.3s ease;
+  cursor: pointer;
+}
+
+/* Hover effect */
+.slot-cell:hover {
+  background: rgba(230, 0, 0, 0.1); /* Light red hover */
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .schedule-table {
+    font-size: 12px;
+  }
+
+  .schedule-title {
+    font-size: 20px;
+  }
+}
+
+/* Bottom buttons container 
+.bottom-btns {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 25px;
+}
+
+.action-btn {
+  background: #e60000;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s ease;
+}
+
+.action-btn:hover {
+  background: #b30000;
+}  */
+
+
