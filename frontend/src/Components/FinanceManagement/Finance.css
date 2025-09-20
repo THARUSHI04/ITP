@@ -1,0 +1,82 @@
+.finance-container {
+  background-color: #000; /* black background */
+  color: #fff;
+  min-height: 100vh;
+  padding: 40px 20px;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #e50914; /* red */
+  margin-bottom: 40px;
+}
+
+.plans {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.plan-card {
+  background: #fff;
+  color: #000;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(255, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.plan-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 20px rgba(255, 0, 0, 0.5);
+}
+
+.plan-card.highlight {
+  border: 3px solid #e50914; /* red border */
+  transform: scale(1.05);
+}
+
+.price {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #e50914;
+  margin: 10px 0;
+}
+
+.per {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 15px;
+}
+
+.plan-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  text-align: left;
+}
+
+.plan-card ul li {
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+}
+
+.btn {
+  background: #e50914;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn:hover {
+  background: #b0060f;
+}

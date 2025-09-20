@@ -20,6 +20,7 @@ import GymProfile from "./Components/UserManagement/Profiles/GymProfile/GymProfi
 import AdminProfile from "./Components/UserManagement/Profiles/AdminProfile/AdminProfile";
 import SchedulePage from "./Components/ScheduleManagement/SchedulePage/SchedulePage";
 import TimeSchedule from "./Components/ScheduleManagement/TimeSchedule/TimeSchedule";
+import Finance from './Components/FinanceManagement/Finance';
 
 function Layout() {
   const location = useLocation();
@@ -46,6 +47,7 @@ function Layout() {
         <Route path="/profile4" element={<AdminProfile />} /> 
         <Route path="/TimeSchedule" element={<SchedulePage />} />
         <Route path="/TimeSchedule" element={<TimeSchedule />} />
+         <Route path="/" element={<Finance />} />
 
       </Routes>
 
