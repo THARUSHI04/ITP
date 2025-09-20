@@ -24,14 +24,12 @@ require('dotenv').config(); // Load env variables
 const express = require("express");
 const mongoose = require("mongoose");
 const router = require("./Routes/UserRoutes");
-const scheduleRouter  = require("./Routes/ScheduleRoute");
 
 const app = express();
 
 // Middleware
 app.use(express.json());
 app.use("/users", router);
-app.use("/schedules", scheduleRouter);
 
 // Connect to MongoDB using environment variable
 mongoose.connect(process.env.MONGO_URI)
