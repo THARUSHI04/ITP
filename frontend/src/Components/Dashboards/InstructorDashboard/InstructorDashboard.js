@@ -1,29 +1,68 @@
-// src/Components/Dashboards/UserDashboard/UserDashboard.js
 import React, { useState } from "react";
 import "./InstructorDashboard.css";
-import InstructorProfile from "../../UserManagement/Profiles/InstructorProfile/InstructorProfile";
-// import MyClasses from "";
-// import Schedule from "";
-// import BookedClients from "";
-// import Earnings from "";
 
+// Dashboard sections (simple placeholders)
+function InstructorProfile() {
+  return (
+    <div>
+      <h2>Instructor Profile</h2>
+      <p>Update your instructor information here.</p>
+    </div>
+  );
+}
+
+function MyClasses() {
+  return (
+    <div>
+      <h2>My Classes</h2>
+      <p>Manage your listed training classes here.</p>
+    </div>
+  );
+}
+
+function Schedule() {
+  return (
+    <div>
+      <h2>Schedule</h2>
+      <p>Manage your available training schedules.</p>
+    </div>
+  );
+}
+
+function BookedClients() {
+  return (
+    <div>
+      <h2>Booked Clients</h2>
+      <p>View clients who have booked sessions with you.</p>
+    </div>
+  );
+}
+
+function Earnings() {
+  return (
+    <div>
+      <h2>Earnings</h2>
+      <p>Track your income from training sessions.</p>
+    </div>
+  );
+}
 
 // Main Dashboard
 function InstructorDashboard() {
-  const [activeTab, setActiveTab] = useState("profile2");
+  const [activeTab, setActiveTab] = useState("profile");
 
   const renderContent = () => {
     switch (activeTab) {
-      case "profile2":
+      case "profile":
         return <InstructorProfile />;
-      // case "subscribed":
-      //   return <SubscribedPlans />;
-      // case "sessions":
-      //   return <TrainingSessions />;  
-      // case "bookings":
-      //   return <Bookings />;
-      // case "purchases":
-      //   return <MyPurchases />;
+      case "classes":
+        return <MyClasses />;
+      case "schedule":
+        return <Schedule />;
+      case "clients":
+        return <BookedClients />;
+      case "earnings":
+        return <Earnings />;
       default:
         return <InstructorProfile />;
     }
@@ -34,32 +73,32 @@ function InstructorDashboard() {
       <aside className="sidebar">
         <ul>
           <li
-            className={activeTab === "profile2" ? "active" : ""}
-            onClick={() => setActiveTab("profile2")}
+            className={activeTab === "profile" ? "active" : ""}
+            onClick={() => setActiveTab("profile")}
           >
             Profile
           </li>
           <li
-            // className={activeTab === "subscribed" ? "active" : ""}
-            // onClick={() => setActiveTab("subscribed")}
+            className={activeTab === "classes" ? "active" : ""}
+            onClick={() => setActiveTab("classes")}
           >
             My Classes
           </li>
           <li
-            // className={activeTab === "sessions" ? "active" : ""}
-            // onClick={() => setActiveTab("sessions")}
+            className={activeTab === "schedule" ? "active" : ""}
+            onClick={() => setActiveTab("schedule")}
           >
             Schedule
-          </li>          
+          </li>
           <li
-            // className={activeTab === "bookings" ? "active" : ""}
-            // onClick={() => setActiveTab("bookings")}
+            className={activeTab === "clients" ? "active" : ""}
+            onClick={() => setActiveTab("clients")}
           >
             Booked Clients
           </li>
           <li
-            // className={activeTab === "purchases" ? "active" : ""}
-            // onClick={() => setActiveTab("purchases")}
+            className={activeTab === "earnings" ? "active" : ""}
+            onClick={() => setActiveTab("earnings")}
           >
             Earnings
           </li>

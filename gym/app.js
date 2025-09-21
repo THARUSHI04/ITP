@@ -1,42 +1,33 @@
-// // RnD1YEGVaB1l5VcJ
-
-// const express = require("express");
-// const mongoose = require("mongoose");
-// const router = require("./Routes/UserRoutes");
-
-// const app = express();
-
-// //Middleware
-// app.use(express.json());
-// app.use("/users",router);
-
-
-// mongoose.connect("mongodb+srv://admin:RnD1YEGVaB1l5VcJ@cluster0.rzmvegs.mongodb.net/")
-// .then(()=>console.log("Connected to MongoDB"))
-// .then(()=> {
-//     app.listen(5000);
-// })
-// .catch((err)=> console.log((err)));
-
-
 require('dotenv').config(); // Load env variables
 
 const express = require("express");
 const mongoose = require("mongoose");
-const router = require("./Routes/UserRoutes");
-const FinanceRouter = require("./Routes/FinanceRouter");
+const cors = require("cors");
+
+const UserRoutes = require("./routes/UserRoutes"); // Use consistent casing
+const FinanceRouter = require("./routes/FinanceRouter"); // Assuming this exists
 
 const app = express();
 
 // Middleware
 app.use(express.json());
-app.use("/users", router);
-app.use("/Finance", FinanceRouter);
+app.use(cors());
 
-// Connect to MongoDB using environment variable
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log("Connected to MongoDB");
-    app.listen(process.env.PORT, () => console.log(`Server running on port ${process.env.PORT}`));
-  })
-  .catch((err) => console.log("DB Error:", err));
+// Routes
+app.use("/users", UserRoutes);
+app.use("/finance", FinanceRouter); // Lowercase for consistency
+
+// MongoDB Connection
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => {
+  console.log("✅ Connected to MongoDB");
+  app.listen(process.env.PORT || 5000, () => {
+    console.log(`🚀 Server running on port ${process.env.PORT || 5000}`);
+  });
+})
+.catch((err) => {
+  console.error("❌ DB Connection Error:", err);
+});

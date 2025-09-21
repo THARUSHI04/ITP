@@ -7,10 +7,12 @@ function Profile() {
   return <div><h2>Profile</h2><p>Update your personal information here.</p></div>;
 }
 
-function SubscribedClasses() {
+function SubscribedPlans() {
   return <div><h2>Subscribed Classes</h2><p>View your active subscriptions.</p></div>;
 }
-
+function TrainingSessions() {
+  return <div><h2>My TrainingSessions</h2><p>Track your purchased products.</p></div>;
+}
 function Bookings() {
   return <div><h2>Bookings</h2><p>Check your booked sessions.</p></div>;
 }
@@ -27,8 +29,10 @@ function UserDashboard() {
     switch (activeTab) {
       case "profile":
         return <Profile />;
+      case "sessions":
+        return <TrainingSessions />;
       case "subscribed":
-        return <SubscribedClasses />;
+        return <SubscribedPlans />;
       case "bookings":
         return <Bookings />;
       case "purchases":
@@ -47,6 +51,12 @@ function UserDashboard() {
             onClick={() => setActiveTab("profile")}
           >
             Profile
+          </li>
+          <li
+            className={activeTab === "sessions" ? "active" : ""}
+            onClick={() => setActiveTab("sessions")}
+          >
+            TrainingSessions 
           </li>
           <li
             className={activeTab === "subscribed" ? "active" : ""}

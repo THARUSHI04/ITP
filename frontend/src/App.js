@@ -3,13 +3,13 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import "./App.css";
 
 // Components
-
 import Nav from "./Components/Nav/Nav";
 import Home from "./Components/Home/Home";
 import About from "./Components/About/About";
 import Features from "./Components/Features/Features";
 import Store from "./Components/Store/Store";
 import Login from "./Components/Auth/Login";
+import Register from "./Components/Auth/Register";
 import UserDashboard from "./Components/Dashboards/UserDashboard/UserDashboard";
 import InstructorDashboard from "./Components/Dashboards/InstructorDashboard/InstructorDashboard";
 import GymDashboard from "./Components/Dashboards/GymDashboard/GymDashboard";
@@ -20,38 +20,55 @@ import GymProfile from "./Components/UserManagement/Profiles/GymProfile/GymProfi
 import AdminProfile from "./Components/UserManagement/Profiles/AdminProfile/AdminProfile";
 import SchedulePage from "./Components/ScheduleManagement/SchedulePage/SchedulePage";
 import TimeSchedule from "./Components/ScheduleManagement/TimeSchedule/TimeSchedule";
-import Finance from './Components/FinanceManagement/Finance';
+import Finance from "./Components/FinanceManagement/Finance";
 
 function Layout() {
   const location = useLocation();
-  // Hide nav on login and user dashboard
-  const hideNav = location.pathname === "/login" || location.pathname === "/user-dashboard";
+
+  // Hide nav on login, register, and all dashboard pages
+  const hideNavRoutes = [
+    "/login",
+    "/register",
+    "/user-dashboard",
+    "/instructor-dashboard",
+    "/gym-dashboard",
+    "/admin-dashboard",
+  ];
+
+  const hideNav = hideNavRoutes.includes(location.pathname);
 
   return (
     <>
       {!hideNav && <Nav />}
+
       <Routes>
-        
+        {/* Public Routes */}
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/features" element={<Features />} />
         <Route path="/store" element={<Store />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
+        {/* Dashboards */}
         <Route path="/user-dashboard" element={<UserDashboard />} />
         <Route path="/instructor-dashboard" element={<InstructorDashboard />} />
         <Route path="/gym-dashboard" element={<GymDashboard />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
-        <Route path="/profile" element={<UserProfile />} /> 
-        <Route path="/profile2" element={<InstructorProfile />} /> 
-        <Route path="/profile3" element={<GymProfile />} /> 
-        <Route path="/profile4" element={<AdminProfile />} /> 
-        <Route path="/TimeSchedule" element={<SchedulePage />} />
-        <Route path="/TimeSchedule" element={<TimeSchedule />} />
-         <Route path="/" element={<Finance />} />
 
+        {/* Profiles */}
+        <Route path="/profile" element={<UserProfile />} />
+        <Route path="/profile2" element={<InstructorProfile />} />
+        <Route path="/profile3" element={<GymProfile />} />
+        <Route path="/profile4" element={<AdminProfile />} />
+
+        {/* Schedule Management */}
+        <Route path="/schedule" element={<SchedulePage />} />
+        <Route path="/timeschedule" element={<TimeSchedule />} />
+
+        {/* Finance Management */}
+        <Route path="/finance" element={<Finance />} />
       </Routes>
-
-
     </>
   );
 }

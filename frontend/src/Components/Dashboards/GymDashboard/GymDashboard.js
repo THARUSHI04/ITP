@@ -1,23 +1,28 @@
-// src/Components/Dashboards/UserDashboard/UserDashboard.js
+// src/Components/Dashboards/GymDashboard/GymDashboard.js
 import React, { useState } from "react";
 import "./GymDashboard.css";
 import GymProfile from "../../UserManagement/Profiles/GymProfile/GymProfile";
-// import MyClasses from "";
-// import Schedule from "";
-// import BookedClients from "";
-// import Earnings from "";
 
+// Placeholder Components
+function Appointments() {
+  return (
+    <div>
+      <h2>Appointments</h2>
+      <p>View and manage client bookings here.</p>
+    </div>
+  );
+}
 
 // Main Dashboard
 function GymDashboard() {
-  const [activeTab, setActiveTab] = useState("profile3");
+  const [activeTab, setActiveTab] = useState("profile");
 
   const renderContent = () => {
     switch (activeTab) {
-      case "profile3":
+      case "profile":
         return <GymProfile />;
-      // case "subscribed":
-      //   return <SubscribedPlans />;
+      case "appointments":
+        return <Appointments />;
       default:
         return <GymProfile />;
     }
@@ -28,14 +33,14 @@ function GymDashboard() {
       <aside className="sidebar">
         <ul>
           <li
-            className={activeTab === "profile3" ? "active" : ""}
-            onClick={() => setActiveTab("profile3")}
+            className={activeTab === "profile" ? "active" : ""}
+            onClick={() => setActiveTab("profile")}
           >
             Profile
           </li>
           <li
-            // className={activeTab === "subscribed" ? "active" : ""}
-            // onClick={() => setActiveTab("subscribed")}
+            className={activeTab === "appointments" ? "active" : ""}
+            onClick={() => setActiveTab("appointments")}
           >
             Appointments
           </li>

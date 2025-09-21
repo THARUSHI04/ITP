@@ -1,69 +1,61 @@
 const mongoose = require("mongoose");
-// const AutoIncrement = require("mongoose-sequence")(mongoose);
 const Schema = mongoose.Schema;
 
-const userSchema = new Schema({
-
-    userName :{
-        type: String,//datatype
-        required:true,//validate
+const userSchema = new Schema(
+  {
+    userName: {
+      type: String,
+      required: true,
+      trim: true,
     },
-
-    email :{
-        type: String,//datatype
-        required:true,//validate
+    email: {
+      type: String,
+      required: true,
+      trim: true,
+      lowercase: true,
+      match: [/.+\@.+\..+/, "Please fill a valid email address"],
     },
-
-    password :{
-        type: String,//datatype
-        required:true,//validate
+    password: {
+      type: String,
+      required: true,
     },
-
-    contactNo :{
-        type: String,//datatype
-        required:true,//validate
+    contactNo: {
+      type: String,
+      required: true,
+      trim: true,
     },
-
-    dob :{
-        type: Date,//datatype
-        required:true,//validate
+    dob: {
+      type: Date,
+      required: true,
     },
-
-    gender :{
-        type: String,//datatype
-        required:true,//validate
+    gender: {
+      type: String,
+      required: true,
+      enum: ["Male", "Female", "Other"],
     },
-
-
-    role :{
-        type: String,//datatype
-        required:true,//validate
-    },
-
-    joinedDate :{
-        type: Date,//datatype
-        required:true,//validate
+    role: {
+      type: String,
+      required: true,
+      enum: ["user", "trainer", "gym", "admin"],
+      lowercase: true,
     },
 
     isApproved: {
-    type: Boolean,
-    default: function () {
-        // Auto-approve unless it's a gym
+      type: Boolean,
+      default: function () {
+        // Auto-approve unless role is 'gym'
         return this.role !== "gym";
-    }
+      },
     },
+    // profileImage: {
+    //   type: String,
+    //   required: true,
+    //   trim: true,
+    // },
+  },
+  {
+    timestamps: true, // Adds createdAt and updatedAt
+  }
+);
 
-    profileImage :{
-        type: String,//datatype
-        required:true,//validate
-    }
-
-});
-
-// Add auto-increment plugin for userId
-// userSchema.plugin(AutoIncrement, { inc_field: "id" });
-
-module.exports = mongoose.model(
-    "UserModel",//model file name
-    userSchema //function name
-)
+module.exports = mongoose.model("UserModel", userSchema);
