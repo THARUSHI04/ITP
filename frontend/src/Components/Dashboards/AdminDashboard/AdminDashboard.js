@@ -124,10 +124,16 @@ function AdminDashboard() {
             Manage Bookings
           </li>
           <li
-            className={activeTab === "payments" ? "active" : ""}
-            onClick={() => setActiveTab("payments")}
+            className={activeTab === "schedules" ? "active" : ""}
+            onClick={() => setActiveTab("schedules")}
           >
-            Payments
+            Manage Schedules
+          </li>
+          <li
+            className={activeTab === "store" ? "active" : ""}
+            onClick={() => setActiveTab("store")}
+          >
+            Manage Store
           </li>
         </ul>
       </aside>
