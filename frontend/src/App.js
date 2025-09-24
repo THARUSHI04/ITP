@@ -1,3 +1,4 @@
+// src/App.js
 import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import "./App.css";
@@ -5,21 +6,36 @@ import "./App.css";
 // Components
 import Nav from "./Components/Nav/Nav";
 import Home from "./Components/Home/Home";
-import About from "./Components/About/About";
+import About from "./Components/Features/Features";
 import Features from "./Components/Features/Features";
 import Store from "./Components/Store/Store";
 import Login from "./Components/Auth/Login";
 import Register from "./Components/Auth/Register";
+
+// Dashboards
 import UserDashboard from "./Components/Dashboards/UserDashboard/UserDashboard";
 import InstructorDashboard from "./Components/Dashboards/InstructorDashboard/InstructorDashboard";
 import GymDashboard from "./Components/Dashboards/GymDashboard/GymDashboard";
 import AdminDashboard from "./Components/Dashboards/AdminDashboard/AdminDashboard";
+
+// Profiles
 import UserProfile from "./Components/UserManagement/Profiles/UserProfile/UserProfile";
 import InstructorProfile from "./Components/UserManagement/Profiles/InstructorProfile/InstructorProfile";
 import GymProfile from "./Components/UserManagement/Profiles/GymProfile/GymProfile";
 import AdminProfile from "./Components/UserManagement/Profiles/AdminProfile/AdminProfile";
+
+// Schedule Management
 import SchedulePage from "./Components/ScheduleManagement/SchedulePage/SchedulePage";
+import Schedule from "./Components/ScheduleManagement/ScheduleFitness/Schedule";
+import FitnessSchedule from "./Components/ScheduleManagement/ScheduleFitness/FitnessSchedule";
 import TimeSchedule from "./Components/ScheduleManagement/TimeSchedule/TimeSchedule";
+import UploadScheduleForm from "./Components/ScheduleManagement/UploadScheduleForm/UploadScheduleForm";
+import ScheduleRequestForm from "./Components/ScheduleManagement/ScheduleRequest/ScheduleRequestForm";
+import InstructorSchedulePage from "./Components/ScheduleManagement/SchedulePage/InstructorSchedulePage";
+
+
+
+// Finance
 import Finance from "./Components/FinanceManagement/Finance";
 import SubscriptionForm from "./Components/FinanceManagement/SubscriptionForm";
 import UpdateFinance from "./Components/FinanceManagement/UpdateFinance";
@@ -37,7 +53,6 @@ function Layout() {
     "/gym-dashboard",
     "/admin-dashboard",
   ];
-
   const hideNav = hideNavRoutes.includes(location.pathname);
 
   return (
@@ -68,6 +83,16 @@ function Layout() {
         {/* Schedule Management */}
         <Route path="/schedule" element={<SchedulePage />} />
         <Route path="/timeschedule" element={<TimeSchedule />} />
+        <Route path="/FitnessSchedule" element={<FitnessSchedule />} />
+        <Route path="/Schedule" element={<Schedule />} />
+        <Route path="/upload-schedule" element={<UploadScheduleForm />} />
+        <Route path="/request-schedule" element={<ScheduleRequestForm />} />
+        <Route path="/instructor-schedules" element={<InstructorSchedulePage />} />
+        
+
+        
+
+
 
         {/* Finance Management */}
         <Route path="/finance" element={<Finance />} />

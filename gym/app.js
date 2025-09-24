@@ -4,8 +4,12 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
-const UserRoutes = require("./routes/UserRoutes"); // Use consistent casing
-const FinanceRouter = require("./routes/FinanceRouter"); // Assuming this exists
+const UserRoutes = require("./Routes/UserRoutes"); // Use consistent casing
+const FinanceRouter = require("./Routes/FinanceRouter"); // Assuming this exists
+const ScheduleRoute = require("./Routes/ScheduleRoute");
+const UserScheduleCreationRoute = require("./Routes/UserScheduleCreationRoute");
+
+
 
 const app = express();
 
@@ -13,9 +17,12 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+
 // Routes
 app.use("/users", UserRoutes);
-app.use("/finance", FinanceRouter); // Lowercase for consistency
+app.use("/finance", FinanceRouter);
+app.use("/schedules", ScheduleRoute); // Lowercase for consistency
+app.use("/user-schedule-creations", UserScheduleCreationRoute);
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URI, {

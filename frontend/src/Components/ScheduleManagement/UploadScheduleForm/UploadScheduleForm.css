@@ -1,0 +1,87 @@
+/* UploadScheduleForm.css */
+
+.upload-form-container {
+  max-width: 600px;
+  margin: 30px auto;
+  padding: 25px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  font-family: Arial, sans-serif;
+}
+
+.upload-form-container h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.upload-schedule-form label {
+  display: block;
+  margin: 12px 0 5px;
+  font-weight: bold;
+  color: #555;
+}
+
+.upload-schedule-form input[type="text"],
+.upload-schedule-form textarea {
+  width: 100%;
+  padding: 8px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+.upload-schedule-form textarea {
+  min-height: 80px;
+}
+
+.form-buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* Submit / Update button */
+.form-buttons button[type="submit"] {
+  background-color: #2196f3; /* same as Upload Schedule button */
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.form-buttons button[type="submit"]:hover {
+  background-color: #1976d2;
+}
+
+/* Cancel button */
+.form-buttons button[type="button"] {
+  background-color: #f44336; /* same as Delete button */
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.form-buttons button[type="button"]:hover {
+  background-color: #d73833;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .form-buttons {
+    flex-direction: column;
+  }
+  .form-buttons button {
+    width: 100%;
+  }
+}

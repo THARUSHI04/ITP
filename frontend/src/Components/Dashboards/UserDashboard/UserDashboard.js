@@ -1,7 +1,9 @@
 // src/Components/Dashboards/UserDashboard/UserDashboard.js
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";   // ✅ Import useNavigate
+
 import "./UserDashboard.css";
+import ScheduleRequestForm from "../../ScheduleManagement/ScheduleRequest/ScheduleRequestForm";
 
 // Dashboard sections (simple placeholders)
 function Profile() {
@@ -9,6 +11,15 @@ function Profile() {
     <div>
       <h2>Profile</h2>
       <p>Update your personal information here.</p>
+    </div>
+  );
+}
+
+function SubscribedPlans() {
+  return (
+    <div>
+      <h2>Subscribed Classes</h2>
+      <p>View your active subscriptions.</p>
     </div>
   );
 }
@@ -55,6 +66,8 @@ function UserDashboard() {
         return <Bookings />;
       case "purchases":
         return <MyPurchases />;
+      case "schedules":
+        return <ScheduleRequestForm />;
       default:
         return <Profile />;
     }
@@ -94,8 +107,19 @@ function UserDashboard() {
           >
             My Purchases
           </li>
+          <li
+            className={activeTab === "schedules" ? "active" : ""}
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              setActiveTab("schedules");
+              navigate("/request-schedule"); // go to ScheduleRequestForm
+            }}
+          >
+            Schedule
+          </li>
         </ul>
       </aside>
+
       <main className="dashboard-content">{renderContent()}</main>
     </div>
   );
