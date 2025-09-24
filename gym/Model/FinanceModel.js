@@ -2,12 +2,10 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const FinanceSchema = new Schema({
-
- planName: {
+  planName: {
     type: String,
     required: [true, "Plan name is required"],
     trim: true,
-
     minlength: [3, "Plan name must be at least 3 characters long"]
   },
   durationMonths: {
@@ -23,6 +21,10 @@ const FinanceSchema = new Schema({
   description: {
     type: String,
     maxlength: [200, "Description can’t be more than 200 characters"]
+  },
+  highlight: {
+    type: Boolean,
+    default: false
   }
 }, { timestamps: true });
 

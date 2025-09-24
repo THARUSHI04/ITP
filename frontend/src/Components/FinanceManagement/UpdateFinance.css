@@ -1,0 +1,82 @@
+/* Container */
+.update-finance-container {
+  background-color: #000; /* black */
+  color: #fff; /* white text */
+  min-height: 100vh;
+  padding: 40px;
+  font-family: "Arial", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* Card Style */
+.update-finance-card {
+  background-color: #111; /* dark black */
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.5); /* red glow */
+  width: 400px;
+}
+
+/* Title */
+.update-finance-card h1 {
+  color: #ff0000; /* red */
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 22px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Messages */
+.update-finance-message {
+  text-align: center;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.update-finance-message.success {
+  color: #00ff99; /* green success */
+}
+
+.update-finance-message.error {
+  color: #ff4444; /* red error */
+}
+
+/* Form Inputs */
+.update-finance-card input,
+.update-finance-card textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ff0000;
+  border-radius: 6px;
+  background-color: #222;
+  color: #fff;
+  font-size: 14px;
+}
+
+.update-finance-card input::placeholder,
+.update-finance-card textarea::placeholder {
+  color: #aaa;
+}
+
+/* Button */
+.update-finance-card button {
+  width: 100%;
+  padding: 12px;
+  background-color: #ff0000;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.update-finance-card button:hover {
+  background-color: #cc0000;
+  box-shadow: 0 0 10px #ff0000;
+}

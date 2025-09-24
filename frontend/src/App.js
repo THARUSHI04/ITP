@@ -21,6 +21,9 @@ import AdminProfile from "./Components/UserManagement/Profiles/AdminProfile/Admi
 import SchedulePage from "./Components/ScheduleManagement/SchedulePage/SchedulePage";
 import TimeSchedule from "./Components/ScheduleManagement/TimeSchedule/TimeSchedule";
 import Finance from "./Components/FinanceManagement/Finance";
+import SubscriptionForm from "./Components/FinanceManagement/SubscriptionForm";
+import UpdateFinance from "./Components/FinanceManagement/UpdateFinance";
+import UserSubscriptionPlan from "./Components/FinanceManagement/UserSubscriptionPlan";
 
 function Layout() {
   const location = useLocation();
@@ -68,6 +71,11 @@ function Layout() {
 
         {/* Finance Management */}
         <Route path="/finance" element={<Finance />} />
+        <Route path="/subscription-form" element={<SubscriptionForm />} /> {/* ✅ fixed route */}
+        <Route path="/subscribe" element={<SubscriptionForm />} /> {/* ✅ alternative route */}
+        <Route path="/finance/update/:id" element={<UpdateFinance />} />
+        <Route path="/subscriptions" element={<UserSubscriptionPlan />} />
+
       </Routes>
     </>
   );

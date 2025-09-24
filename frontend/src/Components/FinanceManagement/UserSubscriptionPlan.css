@@ -14,7 +14,8 @@
   margin-bottom: 40px;
 }
 
-.plans {  display: grid;
+.plans {
+  display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 30px;
   max-width: 1200px;
@@ -78,18 +79,4 @@
 
 .btn:hover {
   background: #b0060f;
-}
-
-.btn-update {
-  background: #28a745; /* green */
-  color: #fff;
-  border: none;
-  padding: 10;
-}
-
-.btn-delete {
-  background: #e50914; 
-  color: #fff;
-  border: none;
-  padding: 10;
 }

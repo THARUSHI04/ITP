@@ -1,165 +1,95 @@
-/*const Finance = require("./Models/FinanceModel");
-
-const getAllUsers = async (req, res, next) => {
-    let Users;
-
-    try {
-        Users = await Finance.find();
-    } catch (err) {
-        console.log(err);
-        return res.status(500).json({ message: "Server error" });
-    }
-
-    if (!Users || Users.length === 0) {
-        return res.status(404).json({ message: "User not found" });
-    }
-
-    return res.status(200).json({ users: Users });
-};
-
-exports.getAllUsers = getAllUsers;
-
-// Data Display
-const Finance = require("../Models/FinanceModel");
-
-const getAllUsers = async (req, res, next) => {
-    try {
-        const users = await Finance.find();
-        // Always return 200, even if empty
-        res.status(200).json({ users }); 
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: "Server error" });
-    }
-};
-    //data insert
-      const addSubscriptionPlans = async(req,res,next)  =>{
-        let users;
-        try{
-            users = new Finance({planName});
-            await users.save();
-        }catch(err){
-            console.log(err);
-        }
-        //not insert data
-        if(!users){
-            return res.status(404).send({message:"unable to add plans"});
-
-        }
-        return res.status(200).json({users});
-
-      };
-    
-
-exports.getAllUsers = getAllUsers;
-exports.addSubscriptionPlans= addSubscriptionPlans;*/
-
 const Finance = require("../Model/FinanceModel");
 
-// Get all users
-const getAllUsers = async (req, res, next) => {
+// ✅ Get all plans
+const getAllPlans = async (req, res, next) => {
   try {
-    const users = await Finance.find();
-    // Always return 200, even if empty
-    res.status(200).json({ users });
+    const plans = await Finance.find();
+    res.status(200).json(plans); // ✅ return array directly
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
   }
 };
 
-// Add subscription plan
-const addSubscriptionPlans = async (req, res, next) => {
+// ✅ Add a subscription plan
+const addPlan = async (req, res, next) => {
   try {
-    // Destructure values from request body
-    const { planName, price,  durationMonths } = req.body;
+    const { planName, price, durationMonths, description } = req.body;
 
-    const plan = new Finance({
-      planName,
-      price,
-      durationMonths,
-    });
+    if (!planName || !price || !durationMonths) {
+      return res.status(400).json({ message: "Please provide all required fields" });
+    }
 
+    const plan = new Finance({ planName, price, durationMonths, description });
     await plan.save();
 
-    return res.status(201).json({
-      message: "Plan added successfully",
-      plan,
-    });
+    return res.status(201).json({ message: "Plan added successfully", plan });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: "Unable to add plan" });
   }
 };
 
-//Get by ID
-
-const getById = async (req, res, next) => {
+// ✅ Get plan by ID
+const getPlanById = async (req, res, next) => {
   const id = req.params.id;
 
   try {
-    const user = await Finance.findById(id);
+    const plan = await Finance.findById(id);
 
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
+    if (!plan) {
+      return res.status(404).json({ message: "Plan not found" });
     }
 
-    return res.status(200).json({ user });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ message: "Server error" });
-  }
-}
-const updateUser = async (req, res, next) => {
-  const id = req.params.id;
-  const { planName, price, durationMonths } = req.body;
-
-  try {
-    // Correct Mongoose method
-    const finance = await Finance.findByIdAndUpdate(
-      id,
-      { planName, price, durationMonths },
-      { new: true } // return the updated document
-    );
-
-    if (!finance) {
-      return res.status(404).json({ message: "Unable to update payment details" });
-    }
-
-    return res.status(200).json({ finance });
+    return res.status(200).json(plan); // ✅ return single object
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: "Server error" });
   }
 };
 
-//Delete User Data
+// ✅ Update plan
+// ✅ Update plan
+const updatePlan = async (req, res, next) => {
+  const id = req.params.id;
+  const { planName, price, durationMonths, description } = req.body;
 
-const deleteUser = async (req,res,next)  =>{
+  try {
+    const plan = await Finance.findByIdAndUpdate(
+      id,
+      { planName, price, durationMonths, description },
+      { new: true } // return updated doc
+    );
 
-     const id = req.params.id;
-     let finance;
-    try{
-     finance = await  Finance.findByIdAndDelete(id)
-    }catch(err){
-       if (!finance) {
-      return res.status(404).json({ message: "Unable to Delete payment details" });
+    if (!plan) {
+      return res.status(404).json({ message: "Unable to update plan" });
     }
 
-    return res.status(200).json({ finance });
-
-    }
-  
-
-}
-
-
-exports.getAllUsers = getAllUsers;
-exports.addSubscriptionPlans = addSubscriptionPlans;
-exports.getById = getById;
-exports.updateUser = updateUser;
-exports.deleteUser = deleteUser;
+    return res.status(200).json({ message: "Plan updated successfully", plan });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
 
 
+// ✅ Delete plan
+// FinanceController.js
+const deletePlan = async (req, res, next) => {
+  const id = req.params.id;
+  try {
+    const plan = await Finance.findByIdAndDelete(id);
+    if (!plan) return res.status(404).json({ message: "Plan not found" });
+    return res.status(200).json({ message: "Plan deleted successfully", plan });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
 
-
+// ✅ Export functions
+exports.getAllPlans = getAllPlans;
+exports.addPlan = addPlan;
+exports.getPlanById = getPlanById;
+exports.updatePlan = updatePlan;
+exports.deletePlan = deletePlan;

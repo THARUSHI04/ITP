@@ -31,6 +31,10 @@ function Nav() {
             Login / Register
           </NavLink>
         </li>
+         <li>
+          
+          <NavLink to ="/SubscriptionForm" className ="sform"></NavLink>
+        </li>
       </ul>
     </nav>
   );
