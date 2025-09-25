@@ -27,8 +27,8 @@ function Nav() {
           </NavLink>
         </li>
         <li>
-          <NavLink to="/register" className={({ isActive }) => (isActive ? "active" : "")}>
-            Login / Register
+          <NavLink to="/login" className={({ isActive }) => (isActive ? "active" : "")}>
+            Login 
           </NavLink>
         </li>
          <li>
