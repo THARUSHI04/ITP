@@ -18,11 +18,11 @@ import InstructorDashboard from "./Components/Dashboards/InstructorDashboard/Ins
 import GymDashboard from "./Components/Dashboards/GymDashboard/GymDashboard";
 import AdminDashboard from "./Components/Dashboards/AdminDashboard/AdminDashboard";
 
-// Profiles
-import UserProfile from "./Components/UserManagement/Profiles/UserProfile/UserProfile";
-import InstructorProfile from "./Components/UserManagement/Profiles/InstructorProfile/InstructorProfile";
-import GymProfile from "./Components/UserManagement/Profiles/GymProfile/GymProfile";
-import AdminProfile from "./Components/UserManagement/Profiles/AdminProfile/AdminProfile";
+// // Profiles
+// import UserProfile from "./Components/UserManagement/Profiles/UserProfile/UserProfile";
+// import InstructorProfile from "./Components/UserManagement/Profiles/InstructorProfile/InstructorProfile";
+// import GymProfile from "./Components/UserManagement/Profiles/GymProfile/GymProfile";
+// import AdminProfile from "./Components/UserManagement/Profiles/AdminProfile/AdminProfile";
 
 // Schedule Management
 import SchedulePage from "./Components/ScheduleManagement/SchedulePage/SchedulePage";
@@ -74,11 +74,11 @@ function Layout() {
         <Route path="/gym-dashboard" element={<GymDashboard />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
 
-        {/* Profiles */}
+        {/* Profiles
         <Route path="/profile" element={<UserProfile />} />
         <Route path="/profile2" element={<InstructorProfile />} />
         <Route path="/profile3" element={<GymProfile />} />
-        <Route path="/profile4" element={<AdminProfile />} />
+        <Route path="/profile4" element={<AdminProfile />} /> */}
 
         {/* Schedule Management */}
         <Route path="/schedule" element={<SchedulePage />} />

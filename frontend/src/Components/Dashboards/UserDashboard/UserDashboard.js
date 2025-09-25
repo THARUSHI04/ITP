@@ -1,34 +1,18 @@
 // src/Components/Dashboards/UserDashboard/UserDashboard.js
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";   // ✅ Import useNavigate
-
 import "./UserDashboard.css";
+
+// Import components
+import UserProfile from "../../UserManagement/Profiles/UserProfile/UserProfile";
 import ScheduleRequestForm from "../../ScheduleManagement/ScheduleRequest/ScheduleRequestForm";
+import SubscriptionForm from "../../FinanceManagement/SubscriptionForm";
 
-// Dashboard sections (simple placeholders)
-function Profile() {
-  return (
-    <div>
-      <h2>Profile</h2>
-      <p>Update your personal information here.</p>
-    </div>
-  );
-}
-
-function SubscribedPlans() {
-  return (
-    <div>
-      <h2>Subscribed Classes</h2>
-      <p>View your active subscriptions.</p>
-    </div>
-  );
-}
-
+// Dashboard sections
 function TrainingSessions() {
   return (
     <div>
       <h2>My Training Sessions</h2>
-      <p>Track your purchased products.</p>
+      <p>Track your purchased sessions.</p>
     </div>
   );
 }
@@ -54,24 +38,23 @@ function MyPurchases() {
 // Main Dashboard
 function UserDashboard() {
   const [activeTab, setActiveTab] = useState("profile");
-  const navigate = useNavigate();  // ✅ Setup navigation
 
   const renderContent = () => {
     switch (activeTab) {
       case "profile":
-        return <Profile />;
-      case "subscribedPlans":
-        return <SubscribedPlans />;
+        return <UserProfile />;
       case "sessions":
         return <TrainingSessions />;
       case "bookings":
         return <Bookings />;
       case "purchases":
         return <MyPurchases />;
+      case "subscribedClasses":
+        return <SubscriptionForm />;
       case "schedules":
         return <ScheduleRequestForm />;
       default:
-        return <Profile />;
+        return <UserProfile />;
     }
   };
 
@@ -86,22 +69,10 @@ function UserDashboard() {
             Profile
           </li>
           <li
-            className={activeTab === "subscribedPlans" ? "active" : ""}
-            onClick={() => setActiveTab("subscribedPlans")}
-          >
-            Training Sessions
-          </li>
-          <li
             className={activeTab === "sessions" ? "active" : ""}
             onClick={() => setActiveTab("sessions")}
           >
             Training Sessions
-          </li>
-          <li
-            // ✅ Instead of switching tab, navigate to subscription form
-            onClick={() => navigate("/subscription-form")}
-          >
-            Subscribed Classes
           </li>
           <li
             className={activeTab === "bookings" ? "active" : ""}
@@ -116,12 +87,14 @@ function UserDashboard() {
             My Purchases
           </li>
           <li
+            className={activeTab === "subscribedClasses" ? "active" : ""}
+            onClick={() => setActiveTab("subscribedClasses")}
+          >
+            Subscribed Classes
+          </li>
+          <li
             className={activeTab === "schedules" ? "active" : ""}
-            style={{ cursor: "pointer" }}
-            onClick={() => {
-              setActiveTab("schedules");
-              navigate("/request-schedule"); // go to ScheduleRequestForm
-            }}
+            onClick={() => setActiveTab("schedules")}
           >
             Schedule
           </li>

@@ -111,7 +111,7 @@ export default function Profile() {
 
   return (
     <div className="profile-container">
-      <h2>My Profile</h2>
+      <h2>Admin Profile</h2>
 
       <div className="profile-info">
         <div className="profile-image">
