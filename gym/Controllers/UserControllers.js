@@ -147,10 +147,10 @@ const loginUser = async (req, res, next) => {
       return res.status(401).json({ message: "Invalid password." });
     }
 
-    // Optionally, check if user is approved
-    if (user.role !== "admin" && user.isApproved === false) {
-      return res.status(403).json({ message: "Your account is not approved yet." });
-    }
+    // // Optionally, check if user is approved
+    // if (user.role !== "admin" && user.isApproved === false) {
+    //   return res.status(403).json({ message: "Your account is not approved yet." });
+    // }
 
     // Successful login
     return res.status(200).json(user);

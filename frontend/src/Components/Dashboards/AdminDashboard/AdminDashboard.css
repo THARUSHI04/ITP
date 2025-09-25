@@ -1,16 +1,65 @@
 /* src/Components/Dashboards/AdminDashboard/AdminDashboard.css */
 
+/* Full page background */
+body, html {
+  margin: 0;
+  padding: 0;
+  background-color: #000; /* full black background */
+  font-family: Arial, sans-serif;
+}
+
+/* Dashboard wrapper */
 .admin-dashboard {
   display: flex;
   min-height: 100vh;
-  background-color: #f9fafb;
+  padding-top: 60px; /* top spacing like UserDashboard */
+  background-color: #000; /* fallback for dashboard background */
 }
 
+/* Top bar (optional if you want it like UserDashboard) */
+.top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background-color: #000;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.top-bar h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.top-bar button {
+  background-color: #e50914;
+  border: none;
+  color: #fff;
+  padding: 8px 15px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+/* Sidebar */
 .sidebar {
   width: 220px;
   background-color: #1f2937;
   color: white;
-  padding: 1rem 0;
+  padding: 20px;
+  position: fixed;
+  top: 60px; /* below top bar */
+  left: 0;
+  height: calc(100vh - 60px); /* full height minus top bar */
+  overflow-y: auto;
+  border-right: 1px solid #374151;
 }
 
 .sidebar ul {
@@ -38,8 +87,23 @@
   margin: 0 10px;
 }
 
+/* Main content */
 .dashboard-content {
-  flex-grow: 1;
-  padding: 2rem;
-  background-color: white;
+  margin-left: 240px; /* space for sidebar */
+  padding: 60px 30px 30px; /* top padding aligns below top bar */
+  width: calc(100% - 240px);
+  background-color: #fff; /* content area white */
+  min-height: calc(100vh - 60px);
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+.dashboard-content h2 {
+  color: #000;
+  margin-bottom: 15px;
+}
+
+.dashboard-content p {
+  font-size: 1rem;
+  color: #333;
 }

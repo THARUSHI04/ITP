@@ -1,130 +1,66 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "./Register.css";
 
 function Register() {
   const navigate = useNavigate();
-
-  const [inputs, setInputs] = useState({
+  const [formData, setFormData] = useState({
     userName: "",
     email: "",
     password: "",
     contactNo: "",
     dob: "",
-    gender: "",
-    role: "",
+    gender: "Male",
+    role: "user",
   });
 
   const handleChange = (e) => {
-    const { name, type, value, checked } = e.target;
-    setInputs((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
-      await sendRequest();
+      await axios.post("http://localhost:5000/users", formData);
       alert("User registered successfully!");
       navigate("/login");
-    } catch (error) {
-      console.error("Registration failed:", error);
-      alert("Something went wrong. Please try again.");
+    } catch (err) {
+      console.error("Register error:", err);
+      alert(err.response?.data?.message || "Registration failed");
     }
-  };
-
-  const sendRequest = async () => {
-    const response = await axios.post("http://localhost:5000/users", {
-      ...inputs,
-    });
-    return response.data;
   };
 
   return (
     <div className="register-container">
-      <div className="register-card">
-        <h1 className="register-title">Register</h1>
-        <form onSubmit={handleSubmit} className="register-form">
-          <input
-            type="text"
-            name="userName"
-            placeholder="User Name"
-            value={inputs.userName}
-            onChange={handleChange}
-            required
-            className="input"
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={inputs.email}
-            onChange={handleChange}
-            required
-            className="input"
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={inputs.password}
-            onChange={handleChange}
-            required
-            className="input"
-          />
-          <input
-            type="text"
-            name="contactNo"
-            placeholder="Contact Number"
-            value={inputs.contactNo}
-            onChange={handleChange}
-            required
-            className="input"
-          />
-          <input
-            type="date"
-            name="dob"
-            value={inputs.dob}
-            onChange={handleChange}
-            required
-            className="input"
-          />
-          <select
-            name="gender"
-            value={inputs.gender}
-            onChange={handleChange}
-            required
-            className="input"
-          >
-            <option value="">Select Gender</option>
-            <option value="Female">Female</option>
-            <option value="Male">Male</option>
-            <option value="Other">Other</option>
-          </select>
+      <h2>Create Account</h2>
+      <form className="register-form" onSubmit={handleSubmit}>
+        <input type="text" name="userName" placeholder="Username" value={formData.userName} onChange={handleChange} required />
+        <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
+        <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
+        <input type="text" name="contactNo" placeholder="Contact No" value={formData.contactNo} onChange={handleChange} required />
+        <input type="date" name="dob" value={formData.dob} onChange={handleChange} required />
 
-          <input
-            type="text"
-            name="role"
-            placeholder="Role (e.g., trainer)"
-            value={inputs.role}
-            onChange={handleChange}
-            required
-            className="input"
-          />
+        <select name="gender" value={formData.gender} onChange={handleChange} required>
+          <option>Male</option>
+          <option>Female</option>
+          <option>Other</option>
+        </select>
 
-          <button type="submit" className="register-button">
-            Register
-          </button>
-        </form>
+        <select name="role" value={formData.role} onChange={handleChange} required>
+          <option value="user">User</option>
+          <option value="trainer">Trainer</option>
+          <option value="gym">Gym</option>
+          <option value="admin">Admin</option>
+        </select>
 
-        <div className="login-link">
-          Already have an account?{" "}
-          <button onClick={() => navigate("/login")}>Go to Login</button>
-        </div>
-      </div>
+        <button type="submit">Register</button>
+      </form>
+      <p>
+        Already have an account?{" "}
+        <span onClick={() => navigate("/login")} className="link-text">Login here</span>
+      </p>
     </div>
   );
 }

@@ -1,9 +1,8 @@
-// src/Components/Dashboards/GymDashboard/GymDashboard.js
 import React, { useState } from "react";
 import "./GymDashboard.css";
 import GymProfile from "../../UserManagement/Profiles/GymProfile/GymProfile";
 
-// Placeholder Components
+// Placeholder component
 function Appointments() {
   return (
     <div>
@@ -46,9 +45,7 @@ function GymDashboard() {
           </li>
         </ul>
       </aside>
-      <main className="dashboard-content">
-        {renderContent()}
-      </main>
+      <main className="dashboard-content">{renderContent()}</main>
     </div>
   );
 }
