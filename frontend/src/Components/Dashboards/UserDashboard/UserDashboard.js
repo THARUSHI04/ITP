@@ -60,6 +60,8 @@ function UserDashboard() {
     switch (activeTab) {
       case "profile":
         return <Profile />;
+      case "subscribedPlans":
+        return <SubscribedPlans />;
       case "sessions":
         return <TrainingSessions />;
       case "bookings":
@@ -82,6 +84,12 @@ function UserDashboard() {
             onClick={() => setActiveTab("profile")}
           >
             Profile
+          </li>
+          <li
+            className={activeTab === "subscribedPlans" ? "active" : ""}
+            onClick={() => setActiveTab("subscribedPlans")}
+          >
+            Training Sessions
           </li>
           <li
             className={activeTab === "sessions" ? "active" : ""}
