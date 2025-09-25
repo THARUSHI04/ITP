@@ -1,17 +1,29 @@
-const express= require("express");
+const express = require("express");
 const router = express.Router();
-//insert model
-const User = require("../Model/UserModel");
-//insert User Controller
+const multer = require("multer");
+const path = require("path");
+
+// Setup multer for profile image uploads
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/"); // make sure this folder exists
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname));
+  },
+});
+const upload = multer({ storage });
+
+// Controllers
 const UserController = require("../Controllers/UserControllers");
 
-// router.get("/",UserController.getAllUsers);
-router.post("/",UserController.addUsers);
-// router.get("/:id",UserController.getById);
-// router.put("/:id",UserController.updateUser);
-// router.delete("/:id",UserController.deleteUser);
+// Routes
+router.post("/", upload.single("profileImage"), UserController.addUsers);
+router.get("/", UserController.getAllUsers);
+router.get("/:id", UserController.getById);
+router.put("/:id", upload.single("profileImage"), UserController.updateUser);
+router.delete("/:id", UserController.deleteUser);
 router.post("/login", UserController.loginUser);
 
-//export
-
+// Export router
 module.exports = router;

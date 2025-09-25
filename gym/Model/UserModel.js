@@ -39,7 +39,6 @@ const userSchema = new Schema(
       enum: ["user", "trainer", "gym", "admin"],
       lowercase: true,
     },
-
     isApproved: {
       type: Boolean,
       default: function () {
@@ -47,11 +46,10 @@ const userSchema = new Schema(
         return this.role !== "gym";
       },
     },
-    // profileImage: {
-    //   type: String,
-    //   required: true,
-    //   trim: true,
-    // },
+    profileImage: {
+      data: Buffer,        // Stores image data
+      contentType: String, // Stores MIME type (e.g., "image/png")
+    },
   },
   {
     timestamps: true, // Adds createdAt and updatedAt

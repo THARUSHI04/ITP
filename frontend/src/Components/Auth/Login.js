@@ -17,29 +17,30 @@ function Login() {
     try {
       const res = await axios.post("http://localhost:5000/users/login", credentials);
 
-      // Save user info in localStorage
-      localStorage.setItem("user", JSON.stringify(res.data));
+      const loggedInUser = res.data.user || res.data;
+
+      // ✅ Save userId in localStorage for profile page persistence
+      localStorage.setItem("userId", loggedInUser._id);
 
       alert("Login successful!");
 
-      // ✅ Redirect based on role
-      const role = res.data.role?.toLowerCase();
-
+      // Redirect based on role, passing userId as state
+      const role = loggedInUser.role?.toLowerCase();
       switch (role) {
         case "user":
-          navigate("/user-dashboard");
+          navigate("/user-dashboard", { state: { userId: loggedInUser._id } });
           break;
         case "trainer":
-          navigate("/instructor-dashboard");
+          navigate("/instructor-dashboard", { state: { userId: loggedInUser._id } });
           break;
         case "gym":
-          navigate("/gym-dashboard");
+          navigate("/gym-dashboard", { state: { userId: loggedInUser._id } });
           break;
         case "admin":
-          navigate("/admin-dashboard");
+          navigate("/admin-dashboard", { state: { userId: loggedInUser._id } });
           break;
         default:
-          navigate("/"); // fallback
+          navigate("/", { state: { userId: loggedInUser._id } });
       }
     } catch (err) {
       console.error("Login error:", err);
