@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import "./AdminDashboard.css";
 import AdminProfile from "../../UserManagement/Profiles/AdminProfile/AdminProfile";
+import Finance from "../../FinanceManagement/Finance"; // Show subscription plans
+import SubscriptionForm from "../../FinanceManagement/SubscriptionForm"; // Create subscription
 
 // Placeholder Components
 function ManageUsers() {
@@ -32,12 +34,11 @@ function ManageGyms() {
 }
 
 function ManageSubscriptions() {
-  return (
-    <div>
-      <h2>Manage Subscriptions</h2>
-      <p>Control subscription plans and pricing.</p>
-    </div>
-  );
+  return <Finance />; // Show subscription plans
+}
+
+function CreateSubscriptions() {
+  return <SubscriptionForm />; // Form for creating a new subscription
 }
 
 function ManageBookings() {
@@ -74,6 +75,8 @@ function AdminDashboard() {
         return <ManageGyms />;
       case "subscriptions":
         return <ManageSubscriptions />;
+      case "createsubscriptions":
+        return <CreateSubscriptions />;
       case "bookings":
         return <ManageBookings />;
       case "payments":
@@ -118,22 +121,22 @@ function AdminDashboard() {
             Manage Subscriptions
           </li>
           <li
+            className={activeTab === "createsubscriptions" ? "active" : ""}
+            onClick={() => setActiveTab("createsubscriptions")}
+          >
+            Create Subscription
+          </li>
+          <li
             className={activeTab === "bookings" ? "active" : ""}
             onClick={() => setActiveTab("bookings")}
           >
             Manage Bookings
           </li>
           <li
-            className={activeTab === "schedules" ? "active" : ""}
-            onClick={() => setActiveTab("schedules")}
+            className={activeTab === "payments" ? "active" : ""}
+            onClick={() => setActiveTab("payments")}
           >
-            Manage Schedules
-          </li>
-          <li
-            className={activeTab === "store" ? "active" : ""}
-            onClick={() => setActiveTab("store")}
-          >
-            Manage Store
+            Payments
           </li>
         </ul>
       </aside>

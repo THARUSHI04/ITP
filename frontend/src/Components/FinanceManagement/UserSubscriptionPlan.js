@@ -1,4 +1,3 @@
-// src/Component/FinanceManagment/UserSubscriptionPlan.js
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -13,7 +12,7 @@ function UserSubscriptionPlan() {
   useEffect(() => {
     const fetchPlans = async () => {
       try {
-        const response = await axios.get("http://localhost:60299/api/UserSubscriptionPlan");
+        const response = await axios.get("http://localhost:5000/finance"); // Correct API route
         const fetchedPlans = Array.isArray(response.data)
           ? response.data
           : response.data.data || [];
@@ -53,7 +52,12 @@ function UserSubscriptionPlan() {
                   ))
                 : null}
             </ul>
-            <button className="btn" onClick={() => navigate("/subscribe")}>
+            <button
+              className="btn"
+              onClick={() =>
+                navigate("/subscribe", { state: { plan } }) // Pass plan data
+              }
+            >
               Get Started
             </button>
           </div>

@@ -1,4 +1,3 @@
-// src/Component/FinanceManagment/SubscriptionForm.js
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -32,7 +31,6 @@ function SubscriptionForm() {
     }
   }, [editingPlan]);
 
-  // Handle input change
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -40,14 +38,13 @@ function SubscriptionForm() {
     });
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       if (editingPlan?._id) {
         // Update existing plan
-        await axios.put(`http://localhost:60299/api/finance/${editingPlan._id}`, {
+        await axios.put(`http://localhost:5000/finance/${editingPlan._id}`, {
           ...formData,
           price: Number(formData.price),
           durationMonths: Number(formData.durationMonths),
@@ -56,14 +53,19 @@ function SubscriptionForm() {
         setMessage("✅ Subscription Plan Updated Successfully!");
       } else {
         // Add new plan
-        await axios.post("http://localhost:60299/api/finance", {
+        await axios.post("http://localhost:5000/finance", {
           ...formData,
           price: Number(formData.price),
           durationMonths: Number(formData.durationMonths),
         });
 
         setMessage("✅ Subscription Plan Added Successfully!");
-        setFormData({ planName: "", durationMonths: "", price: "", description: "" });
+        setFormData({
+          planName: "",
+          durationMonths: "",
+          price: "",
+          description: "",
+        });
       }
 
       // Redirect to Finance page after short delay
@@ -75,7 +77,9 @@ function SubscriptionForm() {
 
   return (
     <div className="finance-container">
-      <h1 className="title">{editingPlan ? "Update Subscription Plan" : "Create Subscription Plan"}</h1>
+      <h1 className="title">
+        {editingPlan ? "Update Subscription Plan" : "Create Subscription Plan"}
+      </h1>
 
       <form className="form-card" onSubmit={handleSubmit}>
         {/* Plan Name */}

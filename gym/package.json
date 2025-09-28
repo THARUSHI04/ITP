@@ -1,11 +1,13 @@
+
 {
   "name": "gym",
   "version": "1.0.0",
-  "description": "",
+  "description": "Backend for Gym project",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -20,6 +22,9 @@
     "mongoose": "^8.18.0",
     "mongoose-sequence": "^6.0.1",
     "multer": "^2.0.2",
+    "stripe": "^16.0.0"
+  },
+  "devDependencies": {
     "nodemon": "^3.1.10"
   }
 }

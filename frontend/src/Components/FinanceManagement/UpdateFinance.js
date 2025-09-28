@@ -1,4 +1,4 @@
-// src/Component/FinanceManagment/UpdateFinance.js
+// src/Components/FinanceManagement/UpdateFinance.js
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -20,10 +20,12 @@ function UpdateFinance() {
   useEffect(() => {
     const fetchPlan = async () => {
       try {
-        const response = await axios.get(`http://localhost:60299/api/finance/${id}`);
+        // ✅ Corrected URL
+        const response = await axios.get(`http://localhost:5000/finance/${id}`);
         setPlan(response.data);
         setLoading(false);
       } catch (err) {
+        console.error(err);
         setMessage("❌ Failed to load plan details");
         setLoading(false);
       }
@@ -38,10 +40,12 @@ function UpdateFinance() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:60299/api/finance/${id}`, plan);
+      // ✅ Corrected URL
+      await axios.put(`http://localhost:5000/finance/${id}`, plan);
       setMessage("✅ Plan updated successfully!");
       setTimeout(() => navigate("/finance"), 1500); // redirect back
     } catch (err) {
+      console.error(err);
       setMessage("❌ Failed to update plan");
     }
   };

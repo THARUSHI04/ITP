@@ -10,13 +10,10 @@ function Finance() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-
-  
-
   // Fetch subscription plans from backend
   const fetchPlans = async () => {
     try {
-      const response = await axios.get("http://localhost:60299/api/finance");
+      const response = await axios.get("http://localhost:5000/finance");
       const fetchedPlans = Array.isArray(response.data)
         ? response.data
         : response.data.data || [];
@@ -33,16 +30,13 @@ function Finance() {
     fetchPlans();
   }, []);
 
-  // ✅ Delete plan function
+  // Delete plan function
   const handleDelete = async (id) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this plan?"
-    );
+    const confirmDelete = window.confirm("Are you sure you want to delete this plan?");
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(`http://localhost:60299/api/finance/${id}`);
-      // Remove deleted plan from state to update UI
+      await axios.delete(`http://localhost:5000/finance/${id}`);
       setPlans(plans.filter((plan) => plan._id !== id));
       alert("✅ Plan deleted successfully!");
     } catch (err) {
@@ -77,11 +71,11 @@ function Finance() {
                 : null}
             </ul>
 
-            {/* ✅ Update and Delete Buttons */}
+            {/* Update and Delete Buttons */}
             <div className="button-group">
               <button
                 className="btn-update"
-                onClick={() => navigate(`/finance/update/${plan._id}`)}
+                onClick={() => navigate(`/finance/update/${plan._id}`, { state: { plan } })}
               >
                 Update
               </button>

@@ -2,6 +2,7 @@
 const router = express.Router();
 const FinanceController = require("../Controllers/FinanceController");
 
+
 // Routes
 router.get("/", FinanceController.getAllPlans);
 router.post("/", FinanceController.addPlan);

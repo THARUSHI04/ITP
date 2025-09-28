@@ -5,7 +5,7 @@ import "./UserDashboard.css";
 // Import components
 import UserProfile from "../../UserManagement/Profiles/UserProfile/UserProfile";
 import ScheduleRequestForm from "../../ScheduleManagement/ScheduleRequest/ScheduleRequestForm";
-import SubscriptionForm from "../../FinanceManagement/SubscriptionForm";
+import UserSubscriptionPlan from "../../FinanceManagement/UserSubscriptionPlan";
 
 // Dashboard sections
 function TrainingSessions() {
@@ -45,12 +45,12 @@ function UserDashboard() {
         return <UserProfile />;
       case "sessions":
         return <TrainingSessions />;
+      case "subscribedClasses":
+        return <UserSubscriptionPlan />; 
       case "bookings":
         return <Bookings />;
       case "purchases":
         return <MyPurchases />;
-      case "subscribedClasses":
-        return <SubscriptionForm />;
       case "schedules":
         return <ScheduleRequestForm />;
       default:
@@ -75,6 +75,12 @@ function UserDashboard() {
             Training Sessions
           </li>
           <li
+            className={activeTab === "subscribedClasses" ? "active" : ""}
+            onClick={() => setActiveTab("subscribedClasses")}
+          >
+            Subscription Plans
+          </li>
+          <li
             className={activeTab === "bookings" ? "active" : ""}
             onClick={() => setActiveTab("bookings")}
           >
@@ -85,12 +91,6 @@ function UserDashboard() {
             onClick={() => setActiveTab("purchases")}
           >
             My Purchases
-          </li>
-          <li
-            className={activeTab === "subscribedClasses" ? "active" : ""}
-            onClick={() => setActiveTab("subscribedClasses")}
-          >
-            Subscribed Classes
           </li>
           <li
             className={activeTab === "schedules" ? "active" : ""}

@@ -1,4 +1,5 @@
-require('dotenv').config(); // Load env variables
+require('dotenv').config();
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);// Load env variables
 
 const express = require("express");
 const mongoose = require("mongoose");

@@ -8,10 +8,16 @@
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.12.2",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "mongoose": "^8.18.2",
+    "mongoose-sequence": "^6.0.1",
+    "multer": "^2.0.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-router-dom": "^7.8.2",
     "react-scripts": "5.0.1",
+    "stripe": "^18.5.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -37,11 +43,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
   }
-  
 }
-
- 
-
-
-
