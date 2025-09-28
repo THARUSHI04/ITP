@@ -5,6 +5,7 @@ import "./UserDashboard.css";
 // Import components
 import UserProfile from "../../UserManagement/Profiles/UserProfile/UserProfile";
 import ScheduleRequestForm from "../../ScheduleManagement/ScheduleRequest/ScheduleRequestForm";
+import UserSchedule from "../../ScheduleManagement/UserSchedule/UserSchedule";
 import UserSubscriptionPlan from "../../FinanceManagement/UserSubscriptionPlan";
 
 // Dashboard sections
@@ -52,7 +53,7 @@ function UserDashboard() {
       case "purchases":
         return <MyPurchases />;
       case "schedules":
-        return <ScheduleRequestForm />;
+        return <UserSchedule />;
       default:
         return <UserProfile />;
     }

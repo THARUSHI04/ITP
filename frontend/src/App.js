@@ -33,6 +33,8 @@ import TimeSchedule from "./Components/ScheduleManagement/TimeSchedule/TimeSched
 import UploadScheduleForm from "./Components/ScheduleManagement/UploadScheduleForm/UploadScheduleForm";
 import ScheduleRequestForm from "./Components/ScheduleManagement/ScheduleRequest/ScheduleRequestForm";
 import InstructorSchedulePage from "./Components/ScheduleManagement/SchedulePage/InstructorSchedulePage";
+import ChangeRequestForm from "./Components/ScheduleManagement/ChangeRequest/ChangeRequestForm";
+import UserSchedule from "./Components/ScheduleManagement/UserSchedule/UserSchedule";
 
 
 
@@ -89,6 +91,8 @@ function Layout() {
         <Route path="/upload-schedule" element={<UploadScheduleForm />} />
         <Route path="/request-schedule" element={<ScheduleRequestForm />} />
         <Route path="/instructor-schedules" element={<InstructorSchedulePage />} />
+        <Route path="/change-request" element={<ChangeRequestForm />} />
+        <Route path="/user-schedules" element={<UserSchedule />} />
         
 
         
