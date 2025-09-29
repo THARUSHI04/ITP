@@ -4,6 +4,8 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);// Load env vari
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const router = require("./Routes/StoreRoutes");
+const favourite = require("./Routes/Storefavourite");
 
 const UserRoutes = require("./Routes/UserRoutes"); // Use consistent casing
 const FinanceRouter = require("./Routes/FinanceRouter"); // Assuming this exists
@@ -17,6 +19,8 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(cors());
+app.use("/store", router);
+app.use("/StoreFavourite", router);
 
 
 // Routes

@@ -3,13 +3,17 @@
 import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import "./App.css";
+//import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+//import ShowItems from "./Components/Store/ShowItems";
+import { CartProvider } from "./Components/Store/CartContext";
+//import Layout from "./components/Layout"; // make sure this path is correct
+
 
 // Components
 import Nav from "./Components/Nav/Nav";
 import Home from "./Components/Home/Home";
 import About from "./Components/Features/Features";
 import Features from "./Components/Features/Features";
-import Store from "./Components/Store/Store";
 import Login from "./Components/Auth/Login";
 import Register from "./Components/Auth/Register";
 
@@ -43,6 +47,17 @@ import Finance from "./Components/FinanceManagement/Finance";
 import SubscriptionForm from "./Components/FinanceManagement/SubscriptionForm";
 import UpdateFinance from "./Components/FinanceManagement/UpdateFinance";
 import UserSubscriptionPlan from "./Components/FinanceManagement/UserSubscriptionPlan";
+
+
+//Store
+import Store from "./Components/Store/Store";
+import ShowItems from "./Components/Store/ShowItems";
+import ProductDetails from "./Components/Store/ProductDetails";
+import Cart from "./Components/Store/Cart";
+//import ShowItems from "./Components/Store/ShowItems";
+//import Cart from "./Components/Store/Cart";
+import AddStoreItem from "./Components/Store/AddStoreItem";
+import UpdateItem from "./Components/Store/UpdateItem";
 
 function Layout() {
   const location = useLocation();
@@ -106,13 +121,27 @@ function Layout() {
         <Route path="/finance/update/:id" element={<UpdateFinance />} />
         <Route path="/subscriptions" element={<UserSubscriptionPlan />} />
 
+
+        {/* Store*/}
+        <Route path="/store" element={<Store />} />
+        <Route path="/showItems" element={<ShowItems />} />
+        <Route path="/category/:catname" element={<ShowItems />} />
+        <Route path="/product/:id" element ={<ProductDetails />} />
+        <Route path="cart" element={<Cart />}/>
+        <Route path="/AddStoreItem" element={<AddStoreItem />} />
+        <Route path="/store/:id" element={<UpdateItem />} />
+
       </Routes>
     </>
   );
 }
 
 function App() {
-  return <Layout />;
+
+  return(
+    <CartProvider>
+    <Layout />
+    </CartProvider>);
 }
 
 export default App;

@@ -1,0 +1,88 @@
+/* UpdateItem.css */
+
+/* Container for the whole form */
+.update-store-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', sans-serif;
+}
+
+/* Heading */
+.update-store-container h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 25px;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+/* Form styling */
+.update-store-form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Label styling */
+.update-store-form label {
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #555;
+  margin-top: 15px;
+}
+
+/* Input and textarea styling */
+.update-store-form input,
+.update-store-form textarea {
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.update-store-form input:focus,
+.update-store-form textarea:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+/* Textarea specific */
+.update-store-form textarea {
+  resize: vertical;
+}
+
+/* Submit button styling */
+.update-store-form button {
+  margin-top: 25px;
+  padding: 12px 20px;
+  background-color: #007bff;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.update-store-form button:hover {
+  background-color: #0056b3;
+}
+
+/* Responsive */
+@media screen and (max-width: 640px) {
+  .update-store-container {
+    padding: 20px;
+    margin: 20px;
+  }
+
+  .update-store-form button {
+    font-size: 1rem;
+    padding: 10px;
+  }
+}
