@@ -55,7 +55,7 @@ function UserSubscriptionPlan() {
             <button
               className="btn"
               onClick={() =>
-                navigate("/subscribe", { state: { plan } }) // Pass plan data
+                navigate("/checkout", { state: { plan } }) // Pass plan data
               }
             >
               Get Started
