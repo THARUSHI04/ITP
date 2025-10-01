@@ -1,5 +1,6 @@
 /* src/Components/FinanceManagement/FinanceCheckout.css */
 
+/* ---------- Checkout Container ---------- */
 .checkout-container {
   background-color: #000; /* black background */
   color: #fff; /* white text */
@@ -11,6 +12,7 @@
   align-items: center;
 }
 
+/* ---------- Checkout Title ---------- */
 .checkout-title {
   color: #e50914; /* red accent */
   font-size: 2rem;
@@ -18,12 +20,14 @@
   text-align: center;
 }
 
+/* ---------- Price & Duration ---------- */
 .checkout-price,
 .checkout-duration {
   font-size: 1.2rem;
   margin: 5px 0;
 }
 
+/* ---------- Features List ---------- */
 .checkout-features {
   list-style: none;
   padding: 0;
@@ -47,7 +51,7 @@
   font-weight: bold;
 }
 
-/* Payment Form */
+/* ---------- Payment Form ---------- */
 .payment-form {
   background-color: #111; /* dark card background */
   border-radius: 10px;
@@ -58,6 +62,7 @@
   margin-top: 20px;
 }
 
+/* Form Labels */
 .payment-form label {
   display: block;
   font-size: 0.95rem;
@@ -65,11 +70,12 @@
   color: #bbb;
 }
 
+/* Form Group */
 .form-group {
   margin-bottom: 20px;
 }
 
-/* Stripe Card Element Styling */
+/* ---------- Stripe Card Elements ---------- */
 .card-element {
   background: #222;
   padding: 12px;
@@ -77,6 +83,7 @@
   border: 1px solid #333;
   color: #fff;
   font-size: 1rem;
+  margin-bottom: 15px; /* space between fields */
 }
 
 .card-element.StripeElement--focus {
@@ -88,7 +95,7 @@
   border-color: #ff4d4f;
 }
 
-/* Buttons */
+/* ---------- Buttons ---------- */
 .btn {
   background-color: #e50914;
   color: #fff;
@@ -106,6 +113,7 @@
   background-color: #b20710;
 }
 
+/* Back button */
 .back-btn {
   background-color: #444;
 }
@@ -114,7 +122,17 @@
   background-color: #666;
 }
 
-/* Error Message */
+/* Download Receipt Button */
+.download-btn {
+  background-color: #00b894;
+  margin-top: 15px;
+}
+
+.download-btn:hover {
+  background-color: #009970;
+}
+
+/* ---------- Error Message ---------- */
 .checkout-error {
   color: #ff4d4f;
   font-size: 0.9rem;

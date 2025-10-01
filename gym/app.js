@@ -1,4 +1,5 @@
 require('dotenv').config(); // Load env variables
+const PDFDocument = require("pdfkit");
 
 const express = require("express");
 const mongoose = require("mongoose");
@@ -50,6 +51,29 @@ app.post("/create-payment-intent", async (req, res) => {
 });
 
 // -----------------------------
+// ✅ Updated Download Receipt Route
+// -----------------------------
+app.get("/download-receipt", (req, res) => {
+  // Get plan and user info from query params
+  const { planName, price, durationMonths, email } = req.query;
+
+  const doc = new PDFDocument();
+  res.setHeader("Content-disposition", "attachment; filename=receipt.pdf");
+  res.setHeader("Content-type", "application/pdf");
+
+  doc.fontSize(20).text("🎉 Payment Receipt", { align: "center" });
+  doc.moveDown();
+  doc.fontSize(14).text(`Customer Email: ${email || "N/A"}`);
+  doc.text(`Plan Name: ${planName || "N/A"}`);
+  doc.text(`Price Paid: $${price || "0.00"}`);
+  doc.text(`Duration: ${durationMonths || "0"} month${durationMonths > 1 ? "s" : ""}`);
+  doc.text(`Date: ${new Date().toLocaleString()}`);
+
+  doc.end();
+  doc.pipe(res);
+});
+
+// -----------------------------
 // MongoDB Connection
 // -----------------------------
 mongoose.connect(process.env.MONGO_URI)
@@ -64,4 +88,3 @@ mongoose.connect(process.env.MONGO_URI)
   .catch((err) => {
     console.error("❌ DB Connection Error:", err);
   });
-

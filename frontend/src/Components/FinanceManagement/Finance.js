@@ -1,4 +1,3 @@
-// src/Component/FinanceManagment/Finance.js
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -9,6 +8,7 @@ function Finance() {
   const [plans, setPlans] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [searchTerm, setSearchTerm] = useState(""); // <-- search term
 
   // Fetch subscription plans from backend
   const fetchPlans = async () => {
@@ -48,11 +48,26 @@ function Finance() {
   if (loading) return <p>Loading subscription plans...</p>;
   if (error) return <p>{error}</p>;
 
+  // Filter plans based on search input
+  const filteredPlans = plans.filter((plan) =>
+    plan.planName.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="finance-container">
       <h1 className="title">Core Plus Subscription Plans</h1>
+
+      {/* Search bar */}
+      <input
+        type="text"
+        placeholder="Search plans..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="search-bar"
+      />
+
       <div className="plans">
-        {plans.map((plan) => (
+        {filteredPlans.map((plan) => (
           <div
             key={plan._id || plan.planName}
             className={`plan-card ${plan.highlight ? "highlight" : ""}`}
