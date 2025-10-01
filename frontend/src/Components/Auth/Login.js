@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
-function Login() {
+export default function Login() {
   const navigate = useNavigate();
   const [credentials, setCredentials] = useState({ userName: "", password: "" });
 
@@ -13,18 +13,13 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       const res = await axios.post("http://localhost:5000/users/login", credentials);
-
       const loggedInUser = res.data.user || res.data;
 
-      // ✅ Save userId in localStorage for profile page persistence
       localStorage.setItem("userId", loggedInUser._id);
-
       alert("Login successful!");
 
-      // Redirect based on role, passing userId as state
       const role = loggedInUser.role?.toLowerCase();
       switch (role) {
         case "user":
@@ -49,35 +44,50 @@ function Login() {
   };
 
   return (
-    <div className="login-container">
-      <h2>Welcome Back</h2>
-      <form className="login-form" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="userName"
-          placeholder="Username"
-          value={credentials.userName}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={credentials.password}
-          onChange={handleChange}
-          required
-        />
-        <button type="submit">Login</button>
-      </form>
-      <p>
-        Don’t have an account?{" "}
-        <span onClick={() => navigate("/register")} className="link-text">
-          Register here
-        </span>
-      </p>
+    <div className="login-page">
+      <div className="login-card">
+        <h2 className="login-title">
+          <img src="/favicon.ico" alt="" /> Sign In
+        </h2>
+        <p className="case-sensitive-text">Username and Password are case sensitive.</p>
+
+        <form className="login-form" onSubmit={handleSubmit}>
+          <label htmlFor="userName">Username</label>
+          <input
+            type="text"
+            id="userName"
+            name="userName"
+            placeholder="Enter your username"
+            value={credentials.userName}
+            onChange={handleChange}
+            required
+          />
+
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Enter your password"
+            value={credentials.password}
+            onChange={handleChange}
+            required
+          />
+
+          <button type="submit">Login</button>
+        </form>
+
+        <p className="register-link">
+          Don’t have an account?{" "}
+          <span onClick={() => navigate("/register")} className="link-text">
+            Register here
+          </span>
+        </p>
+
+        <p className="copyright-text">
+          Copyright © CorePlusPlatform
+        </p>
+      </div>
     </div>
   );
 }
-
-export default Login;

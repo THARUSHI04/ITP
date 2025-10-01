@@ -1,35 +1,100 @@
-.login-container {
-  width: 350px;
-  margin: 80px auto;
-  padding: 25px;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  background: #fff;
+/* Page Background */
+.login-page {
+  background-color: black;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Card */
+.login-card {
+  background-color: white;
+  padding: 50px 60px;
+  border-radius: 15px;
+  width: 600px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+}
+
+/* Title with logo */
+.login-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+  font-size: 32px;
+  text-transform: uppercase;
+  color: black;
+  gap: 10px;
+}
+
+.login-title img {
+  height: 80px;
+  width: auto;
+}
+
+/* Case sensitive note */
+.case-sensitive-text {
   text-align: center;
-  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+  font-size: 14px;
+  color: red;
+  margin-bottom: 15px;
 }
 
-.login-form input,
-.login-form button {
-  width: 100%;
-  margin: 12px 0;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-}
-
-.login-form button {
-  background: #28a745;
-  color: white;
-  cursor: pointer;
+/* Form */
+.login-form label {
+  display: block;
+  margin-top: 15px;
   font-weight: bold;
 }
 
-.login-form button:hover {
-  background: #218838;
+.login-form input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 5px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
 }
 
-.link-text {
-  color: #28a745;
+/* Button */
+.login-form button {
+  width: 100%;
+  padding: 14px;
+  margin-top: 25px;
+  background-color: green;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
+  font-size: 16px;
+}
+
+.login-form button:hover {
+  background-color: darkgreen;
+}
+
+/* Register link */
+.register-link {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: black;
+}
+
+.register-link .link-text {
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* Footer copyright */
+.copyright-text {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 12px;
+  color: #888888;
+  font-style: italic;
 }

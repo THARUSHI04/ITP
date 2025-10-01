@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../Css/Profile.css";
 
-export default function InstructorProfile() {
+export default function UserProfile() {
   const navigate = useNavigate();
   const userId = localStorage.getItem("userId");
 
@@ -15,12 +15,11 @@ export default function InstructorProfile() {
     contactNo: "",
     dob: "",
     gender: "",
-    expertise: "",
     profileImage: "",
   });
   const [previewImage, setPreviewImage] = useState("");
 
-  // Fetch instructor info
+  // Fetch user data
   useEffect(() => {
     if (!userId) return navigate("/login");
 
@@ -35,12 +34,11 @@ export default function InstructorProfile() {
           contactNo: u.contactNo || "",
           dob: u.dob ? u.dob.split("T")[0] : "",
           gender: u.gender || "",
-          expertise: u.expertise || "",
           profileImage: u.profileImage || "/uploads/default-profile.png",
         });
         setPreviewImage(u.profileImage || "/uploads/default-profile.png");
       } catch (err) {
-        console.error("Error fetching instructor:", err);
+        console.error("Error fetching user:", err);
         alert("Failed to load profile.");
       }
     };
@@ -48,9 +46,7 @@ export default function InstructorProfile() {
     fetchUser();
   }, [userId, navigate]);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -70,7 +66,6 @@ export default function InstructorProfile() {
       data.append("contactNo", formData.contactNo);
       data.append("dob", formData.dob);
       data.append("gender", formData.gender);
-      data.append("expertise", formData.expertise);
       if (formData.profileImage instanceof File) {
         data.append("profileImage", formData.profileImage);
       }
@@ -80,10 +75,7 @@ export default function InstructorProfile() {
       });
 
       setUser(res.data.user);
-      setFormData({
-        ...formData,
-        profileImage: res.data.user.profileImage,
-      });
+      setFormData({ ...formData, profileImage: res.data.user.profileImage });
       setPreviewImage(res.data.user.profileImage);
       setIsEditing(false);
       alert("Profile updated successfully!");
@@ -113,7 +105,7 @@ export default function InstructorProfile() {
 
   return (
     <div className="profile-container">
-      <h2>Instructor Profile</h2>
+      <h2>User Profile</h2>
 
       <div className="profile-info">
         <div className="profile-image">
@@ -121,7 +113,7 @@ export default function InstructorProfile() {
           {isEditing && <input type="file" onChange={handleImageChange} />}
         </div>
 
-        <label>Instructor Name:</label>
+        <label>User Name:</label>
         {isEditing ? (
           <input type="text" name="userName" value={formData.userName} onChange={handleChange} />
         ) : (
@@ -164,7 +156,6 @@ export default function InstructorProfile() {
         <span>{user.role}</span>
       </div>
 
-      {/* Buttons */}
       <div className="profile-actions">
         {isEditing ? (
           <button onClick={handleSave} className="save-btn">Save Changes</button>

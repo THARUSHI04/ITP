@@ -16,10 +16,17 @@ export default function GymProfile() {
     dob: "",
     gender: "",
     profileImage: "",
+    type: "",
+    joiningDate: "",
+    notes: "",
+    address: "",
+    hours: "",
+    membershipFee: "",
+    facilities: "",
+    description: "",
   });
   const [previewImage, setPreviewImage] = useState("");
 
-  // Fetch user info
   useEffect(() => {
     if (!userId) return navigate("/login");
 
@@ -34,7 +41,15 @@ export default function GymProfile() {
           contactNo: u.contactNo || "",
           dob: u.dob ? u.dob.split("T")[0] : "",
           gender: u.gender || "",
+          type: u.type || "",
+          joiningDate: u.joiningDate ? u.joiningDate.split("T")[0] : "",
+          notes: u.notes || "",
           profileImage: u.profileImage || "/uploads/default-profile.png",
+          address: u.address || "",
+          hours: u.hours || "",
+          membershipFee: u.membershipFee || "",
+          facilities: u.facilities || "",
+          description: u.description || "",
         });
         setPreviewImage(u.profileImage || "/uploads/default-profile.png");
       } catch (err) {
@@ -46,9 +61,7 @@ export default function GymProfile() {
     fetchUser();
   }, [userId, navigate]);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -63,24 +76,20 @@ export default function GymProfile() {
   const handleSave = async () => {
     try {
       const data = new FormData();
-      data.append("userName", formData.userName);
-      data.append("email", formData.email);
-      data.append("contactNo", formData.contactNo);
-      data.append("dob", formData.dob);
-      data.append("gender", formData.gender);
-      if (formData.profileImage instanceof File) {
-        data.append("profileImage", formData.profileImage);
-      }
+      Object.keys(formData).forEach((key) => {
+        if (key === "profileImage" && formData[key] instanceof File) {
+          data.append("profileImage", formData[key]);
+        } else {
+          data.append(key, formData[key]);
+        }
+      });
 
       const res = await axios.put(`http://localhost:5000/users/${userId}`, data, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
       setUser(res.data.user);
-      setFormData({
-        ...formData,
-        profileImage: res.data.user.profileImage,
-      });
+      setFormData({ ...formData, profileImage: res.data.user.profileImage });
       setPreviewImage(res.data.user.profileImage);
       setIsEditing(false);
       alert("Profile updated successfully!");
@@ -111,7 +120,6 @@ export default function GymProfile() {
   return (
     <div className="profile-container">
       <h2>Gym Profile</h2>
-
       <div className="profile-info">
         <div className="profile-image">
           <img src={previewImage} alt="Profile" />
@@ -148,21 +156,69 @@ export default function GymProfile() {
 
         <label>Type:</label>
         {isEditing ? (
-          <select name="gender" value={formData.gender} onChange={handleChange}>
+          <select name="type" value={formData.type} onChange={handleChange}>
             <option value="">Select</option>
             <option value="Fitness">Fitness</option>
             <option value="Yoga">Yoga</option>
             <option value="CrossFit">CrossFit</option>
           </select>
         ) : (
-          <span>{user.gender || "-"}</span>
+          <span>{user.type || "-"}</span>
+        )}
+
+        <label>Date of Joining:</label>
+        {isEditing ? (
+          <input type="date" name="joiningDate" value={formData.joiningDate} onChange={handleChange} />
+        ) : (
+          <span>{user.joiningDate ? user.joiningDate.split("T")[0] : "-"}</span>
+        )}
+
+        <label>Notes / Remarks:</label>
+        {isEditing ? (
+          <textarea name="notes" value={formData.notes} onChange={handleChange}></textarea>
+        ) : (
+          <span>{user.notes || "-"}</span>
+        )}
+
+        <label>Gym Address:</label>
+        {isEditing ? (
+          <input type="text" name="address" value={formData.address} onChange={handleChange} />
+        ) : (
+          <span>{user.address || "-"}</span>
+        )}
+
+        <label>Operating Hours:</label>
+        {isEditing ? (
+          <input type="text" name="hours" value={formData.hours} onChange={handleChange} />
+        ) : (
+          <span>{user.hours || "-"}</span>
+        )}
+
+        <label>Membership Fee (LKR):</label>
+        {isEditing ? (
+          <input type="number" name="membershipFee" value={formData.membershipFee} onChange={handleChange} />
+        ) : (
+          <span>{user.membershipFee || "-"}</span>
+        )}
+
+        <label>Available Facilities:</label>
+        {isEditing ? (
+          <input type="text" name="facilities" value={formData.facilities} onChange={handleChange} />
+        ) : (
+          <span>{user.facilities || "-"}</span>
+        )}
+
+        <label>About the Gym:</label>
+        {isEditing ? (
+          <textarea name="description" value={formData.description} onChange={handleChange}></textarea>
+        ) : (
+          <span>{user.description || "-"}</span>
         )}
 
         <label>Role:</label>
         <span>{user.role}</span>
       </div>
 
-      {/* Buttons */}
       <div className="profile-actions">
         {isEditing ? (
           <button onClick={handleSave} className="save-btn">Save Changes</button>

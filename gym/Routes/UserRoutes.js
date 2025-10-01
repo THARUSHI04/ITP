@@ -2,28 +2,37 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const path = require("path");
-
-// Setup multer for profile image uploads
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/"); // make sure this folder exists
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname));
-  },
-});
-const upload = multer({ storage });
-
-// Controllers
 const UserController = require("../Controllers/UserControllers");
 
-// Routes
+// ==========================
+// Multer Setup for Profile Images
+// ==========================
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, "uploads/"),
+  filename: (req, file, cb) => cb(null, Date.now() + path.extname(file.originalname)),
+});
+
+const upload = multer({ storage });
+
+// ==========================
+// USER ROUTES
+// ==========================
+
+// ✅ 1. Check username availability — MUST be before dynamic /:id route
+router.get("/check-username/:userName", UserController.checkUsername);
+
+// ✅ 2. Registration
 router.post("/", upload.single("profileImage"), UserController.addUsers);
+
+// ✅ 3. Get all users
 router.get("/", UserController.getAllUsers);
+
+// ✅ 4. Dynamic routes (must come after specific routes)
 router.get("/:id", UserController.getById);
 router.put("/:id", upload.single("profileImage"), UserController.updateUser);
 router.delete("/:id", UserController.deleteUser);
+
+// ✅ 5. Login
 router.post("/login", UserController.loginUser);
 
-// Export router
 module.exports = router;

@@ -1,10 +1,9 @@
-// src/Components/Profile/Profile.js
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../Css/Profile.css";
 
-export default function Profile() {
+export default function AdminProfile() {
   const navigate = useNavigate();
   const userId = localStorage.getItem("userId");
 
@@ -16,11 +15,12 @@ export default function Profile() {
     contactNo: "",
     dob: "",
     gender: "",
+    joiningDate: "",
+    notes: "",
     profileImage: "",
   });
   const [previewImage, setPreviewImage] = useState("");
 
-  // Fetch user info
   useEffect(() => {
     if (!userId) return navigate("/login");
 
@@ -35,11 +35,13 @@ export default function Profile() {
           contactNo: u.contactNo || "",
           dob: u.dob ? u.dob.split("T")[0] : "",
           gender: u.gender || "",
+          joiningDate: u.joiningDate ? u.joiningDate.split("T")[0] : "",
+          notes: u.notes || "",
           profileImage: u.profileImage || "/uploads/default-profile.png",
         });
         setPreviewImage(u.profileImage || "/uploads/default-profile.png");
       } catch (err) {
-        console.error("Error fetching user:", err);
+        console.error("Error fetching admin:", err);
         alert("Failed to load profile.");
       }
     };
@@ -47,9 +49,7 @@ export default function Profile() {
     fetchUser();
   }, [userId, navigate]);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -64,24 +64,20 @@ export default function Profile() {
   const handleSave = async () => {
     try {
       const data = new FormData();
-      data.append("userName", formData.userName);
-      data.append("email", formData.email);
-      data.append("contactNo", formData.contactNo);
-      data.append("dob", formData.dob);
-      data.append("gender", formData.gender);
-      if (formData.profileImage instanceof File) {
-        data.append("profileImage", formData.profileImage);
-      }
+      Object.keys(formData).forEach((key) => {
+        if (key === "profileImage" && formData[key] instanceof File) {
+          data.append("profileImage", formData[key]);
+        } else {
+          data.append(key, formData[key]);
+        }
+      });
 
       const res = await axios.put(`http://localhost:5000/users/${userId}`, data, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
       setUser(res.data.user);
-      setFormData({
-        ...formData,
-        profileImage: res.data.user.profileImage,
-      });
+      setFormData({ ...formData, profileImage: res.data.user.profileImage });
       setPreviewImage(res.data.user.profileImage);
       setIsEditing(false);
       alert("Profile updated successfully!");
@@ -153,16 +149,30 @@ export default function Profile() {
             <option value="">Select</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
+            <option value="Other">Other</option>
           </select>
         ) : (
           <span>{user.gender || "-"}</span>
+        )}
+
+        <label>Date of Joining:</label>
+        {isEditing ? (
+          <input type="date" name="joiningDate" value={formData.joiningDate} onChange={handleChange} />
+        ) : (
+          <span>{user.joiningDate ? user.joiningDate.split("T")[0] : "-"}</span>
+        )}
+
+        <label>Notes / Remarks:</label>
+        {isEditing ? (
+          <textarea name="notes" value={formData.notes} onChange={handleChange}></textarea>
+        ) : (
+          <span>{user.notes || "-"}</span>
         )}
 
         <label>Role:</label>
         <span>{user.role}</span>
       </div>
 
-      {/* Buttons at the bottom */}
       <div className="profile-actions">
         {isEditing ? (
           <button onClick={handleSave} className="save-btn">Save Changes</button>

@@ -1,35 +1,95 @@
-.register-container {
-  width: 400px;
-  margin: 50px auto;
-  padding: 25px;
-  border: 1px solid #ccc;
-  border-radius: 12px;
-  background: #f9f9f9;
-  text-align: center;
+/* Page Background */
+.register-page {
+  background-color: black;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Arial', sans-serif;
 }
 
+/* Card */
+.register-card {
+  background-color: white;
+  padding: 50px 60px;
+  border-radius: 15px;
+  width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+}
+
+/* Title with logo */
+.register-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+  font-size: 32px;
+  text-transform: uppercase;
+  color: black;
+  gap: 10px;
+}
+
+.register-title img {
+  height: 80px;
+  width: auto;
+}
+
+/* Form */
 .register-form input,
 .register-form select,
-.register-form button {
+.register-form textarea {
   width: 100%;
-  margin: 10px 0;
   padding: 12px;
-  border: 1px solid #ccc;
+  margin-top: 10px;
   border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
 }
 
+.register-form textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+/* Button */
 .register-form button {
-  background: #007bff;
+  width: 100%;
+  padding: 14px;
+  margin-top: 25px;
+  background-color: green;
   color: white;
-  cursor: pointer;
   font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
 }
 
 .register-form button:hover {
-  background: #0056b3;
+  background-color: darkgreen;
 }
 
-.link-text {
+/* Links */
+.login-link {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: black;
+}
+
+.login-link .link-text {
   color: #007bff;
   cursor: pointer;
+  text-decoration: underline;
+}
+
+/* Footer copyright */
+.copyright-text {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 12px;
+  color: #888888;
+  font-style: italic;
 }
