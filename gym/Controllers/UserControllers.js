@@ -12,13 +12,10 @@ const getAllUsers = async (req, res) => {
       return res.status(404).json({ message: "No users found." });
     }
 
-    // Convert profileImage Buffer to base64
     const usersWithImages = users.map((u) => {
       const userObj = u.toObject();
       if (userObj.profileImage?.data) {
-        userObj.profileImage = `data:${userObj.profileImage.contentType};base64,${userObj.profileImage.data.toString(
-          "base64"
-        )}`;
+        userObj.profileImage = `data:${userObj.profileImage.contentType};base64,${userObj.profileImage.data.toString("base64")}`;
       }
       return userObj;
     });
@@ -34,38 +31,82 @@ const getAllUsers = async (req, res) => {
 // ✅ Add New User
 // ==========================
 const addUsers = async (req, res) => {
-  const { userName, email, password, contactNo, dob, gender, role, isApproved } = req.body;
+  const {
+    userName,
+    email,
+    password,
+    contactNo,
+    dob,
+    gender,
+    role,
+    isApproved,
+    // Gym-specific
+    address,
+    hours,
+    membershipFee,
+    facilities,
+    description,
+    // Instructor-specific
+    expertise,
+    experience,
+    biography,
+    sessionType,
+    // Admin-specific
+    joiningDate,
+    notes,
+  } = req.body;
 
   try {
-    let profileImageData = undefined;
+    // Normalize username to lowercase and trim
+    const normalizedUserName = userName.trim().toLowerCase();
+
+    // Check if username already exists
+    const existingUser = await User.findOne({ userName: normalizedUserName });
+    if (existingUser) {
+      return res.status(400).json({ message: "Username already exists. Choose another." });
+    }
+
+    // Handle profile image
+    let profileImageData;
     if (req.file) {
       profileImageData = {
         data: fs.readFileSync(req.file.path),
         contentType: req.file.mimetype,
       };
-      fs.unlinkSync(req.file.path); // remove temp file
+      fs.unlinkSync(req.file.path);
     }
 
     const newUser = new User({
-      userName,
-      email,
+      userName: normalizedUserName,
+      email: email?.trim(),
       password,
-      contactNo,
-      dob,
+      contactNo: contactNo?.trim(),
+      dob: dob ? new Date(dob) : undefined,
       gender,
-      role,
+      role: role?.toLowerCase(),
       isApproved,
       profileImage: profileImageData,
+      // Gym fields
+      address,
+      hours: hours ? Number(hours) : undefined,
+      membershipFee: membershipFee ? Number(membershipFee) : undefined,
+      facilities,
+      description,
+      // Instructor fields
+      expertise,
+      experience: experience ? Number(experience) : undefined,
+      biography,
+      sessionType: sessionType || "Online",
+      // Admin fields
+      joiningDate: joiningDate ? new Date(joiningDate) : undefined,
+      notes,
     });
 
     const savedUser = await newUser.save();
 
-    // Convert profile image to base64
     const userToSend = savedUser.toObject();
     if (userToSend.profileImage?.data) {
-      userToSend.profileImage = `data:${userToSend.profileImage.contentType};base64,${userToSend.profileImage.data.toString(
-        "base64"
-      )}`;
+      userToSend.profileImage = `data:${userToSend.profileImage.contentType};base64,${userToSend.profileImage.data.toString("base64")}`;
     }
 
     return res.status(201).json({ user: userToSend });
@@ -87,9 +128,7 @@ const getById = async (req, res) => {
 
     const userToSend = user.toObject();
     if (userToSend.profileImage?.data) {
-      userToSend.profileImage = `data:${userToSend.profileImage.contentType};base64,${userToSend.profileImage.data.toString(
-        "base64"
-      )}`;
+      userToSend.profileImage = `data:${userToSend.profileImage.contentType};base64,${userToSend.profileImage.data.toString("base64")}`;
     }
 
     return res.status(200).json({ user: userToSend });
@@ -107,36 +146,50 @@ const updateUser = async (req, res) => {
 
   try {
     const user = await User.findById(id);
-    if (!user) return res.status(404).json({ message: "User not found" });
+    if (!user) return res.status(404).json({ message: "User not found." });
 
-    const userData = { ...req.body };
+    const updates = req.body;
 
+    // Normalize username if updated
+    if (updates.userName) {
+      updates.userName = updates.userName.trim().toLowerCase();
+      const existingUser = await User.findOne({ userName: updates.userName, _id: { $ne: id } });
+      if (existingUser) return res.status(400).json({ message: "Username already exists." });
+    }
+
+    // Handle profile image
     if (req.file) {
-      userData.profileImage = {
+      updates.profileImage = {
         data: fs.readFileSync(req.file.path),
         contentType: req.file.mimetype,
       };
-      fs.unlinkSync(req.file.path); // remove temp file
+      fs.unlinkSync(req.file.path);
     }
 
-    const updatedUser = await User.findByIdAndUpdate(id, userData, {
-      new: true,
-      runValidators: true,
+    // Update all fields
+    Object.keys(updates).forEach((key) => {
+      if (updates[key] !== undefined) {
+        if (["hours", "membershipFee", "experience"].includes(key)) {
+          user[key] = Number(updates[key]);
+        } else if (["dob", "joiningDate"].includes(key)) {
+          user[key] = new Date(updates[key]);
+        } else {
+          user[key] = updates[key];
+        }
+      }
     });
 
-    const userToSend = updatedUser.toObject();
+    await user.save();
+
+    const userToSend = user.toObject();
     if (userToSend.profileImage?.data) {
-      userToSend.profileImage = `data:${userToSend.profileImage.contentType};base64,${userToSend.profileImage.data.toString(
-        "base64"
-      )}`;
+      userToSend.profileImage = `data:${userToSend.profileImage.contentType};base64,${userToSend.profileImage.data.toString("base64")}`;
     }
 
     return res.status(200).json({ user: userToSend });
   } catch (err) {
     console.error("Error updating user:", err);
-    return res
-      .status(500)
-      .json({ message: "Server error while updating user.", error: err.message });
+    return res.status(500).json({ message: "Server error while updating user.", error: err.message });
   }
 };
 
@@ -164,18 +217,15 @@ const loginUser = async (req, res) => {
   const { userName, password } = req.body;
 
   try {
-    const user = await User.findOne({ userName });
+    const normalizedUserName = userName.trim().toLowerCase();
+    const user = await User.findOne({ userName: normalizedUserName });
     if (!user) return res.status(404).json({ message: "User not found. Please register." });
 
-    if (user.password !== password) {
-      return res.status(401).json({ message: "Invalid password." });
-    }
+    if (user.password !== password) return res.status(401).json({ message: "Invalid password." });
 
     const userToSend = user.toObject();
     if (userToSend.profileImage?.data) {
-      userToSend.profileImage = `data:${userToSend.profileImage.contentType};base64,${userToSend.profileImage.data.toString(
-        "base64"
-      )}`;
+      userToSend.profileImage = `data:${userToSend.profileImage.contentType};base64,${userToSend.profileImage.data.toString("base64")}`;
     }
 
     return res.status(200).json({ user: userToSend });
@@ -201,15 +251,27 @@ const getCurrentUser = async (req, res) => {
 
     const userToSend = user.toObject();
     if (userToSend.profileImage?.data) {
-      userToSend.profileImage = `data:${userToSend.profileImage.contentType};base64,${userToSend.profileImage.data.toString(
-        "base64"
-      )}`;
+      userToSend.profileImage = `data:${userToSend.profileImage.contentType};base64,${userToSend.profileImage.data.toString("base64")}`;
     }
 
     return res.status(200).json({ user: userToSend });
   } catch (err) {
     console.error("Error fetching current user:", err);
     return res.status(500).json({ message: "Server error while fetching current user." });
+  }
+};
+
+// ==========================
+// ✅ Check Username Availability
+// ==========================
+const checkUsername = async (req, res) => {
+  const userName = req.params.userName.trim().toLowerCase(); // normalize
+  try {
+    const existingUser = await User.findOne({ userName });
+    return res.status(200).json({ exists: !!existingUser });
+  } catch (err) {
+    console.error("Error checking username:", err);
+    return res.status(500).json({ message: "Failed to check username availability" });
   }
 };
 
@@ -224,4 +286,5 @@ module.exports = {
   deleteUser,
   loginUser,
   getCurrentUser,
+  checkUsername,
 };

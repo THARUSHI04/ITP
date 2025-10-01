@@ -1,52 +1,62 @@
 .profile-container {
-  max-width: 500px;
+  max-width: 520px;
   margin: 40px auto;
-  padding: 30px 35px;
+  padding: 35px 40px;
   background: #f7f8fc;
   color: #4b4b4b;
   border-radius: 20px;
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  transition: all 0.3s ease;
 }
 
 .profile-container h2 {
   text-align: center;
-  color: #080000; 
-  margin-bottom: 25px;
+  /* color: #100404; */
+  margin-bottom: 30px;
+   background: #f7f8fc;
+  color: #4b4b4b;
+  font-size: 26px;
 }
 
 .profile-info {
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  color: #170e0e; 
+  gap: 18px;
 }
 
 .profile-image {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  position: relative;
 }
 
 .profile-image img {
-  width: 120px;
-  height: 120px;
+  width: 130px;
+  height: 130px;
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid #6c63ff;
-  margin-bottom: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  transition: all 0.3s ease;
+}
+
+.profile-image img:hover {
+  transform: scale(1.05);
 }
 
 .profile-image input[type="file"] {
   margin-top: 5px;
-  color: #333
+  color: #333;
 }
 
 .profile-info label {
   font-weight: 600;
   color: #555;
+  margin-bottom: 4px;
 }
 
 .profile-info span,
@@ -54,39 +64,47 @@
 .profile-info select {
   display: block;
   width: 100%;
-  padding: 8px 12px;
-  margin-top: 5px;
-  border-radius: 8px;
+  padding: 10px 14px;
+  border-radius: 10px;
   border: 1px solid #ccc;
   font-size: 14px;
- color: #170e0e; 
+  color: #170e0e;
+  background-color: #fff;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-info input:focus,
+.profile-info select:focus {
+  border-color: #6c63ff;
+  box-shadow: 0 0 8px rgba(108, 99, 255, 0.3);
+  outline: none;
 }
 
 .profile-info input:disabled,
 .profile-info select:disabled {
-  background-color: #211313;
-  color: #666;
+  background-color: #f0f0f0;
+  color: #888;
 }
 
 .profile-actions {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-top: 25px;
-  color: #4b4b4b;
+  gap: 12px;
+  margin-top: 30px;
 }
 
 .profile-actions button {
-  padding: 10px 15px;
+  padding: 12px 18px;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .profile-actions button:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .profile-actions .save-btn {
@@ -100,6 +118,18 @@
 }
 
 .profile-actions button:not(.save-btn):not(.delete-btn) {
-  background-color: #ddd;
+  background-color: #e0e0e0;
   color: #333;
+}
+
+/* Responsive adjustments */
+@media (max-width: 500px) {
+  .profile-container {
+    padding: 25px 20px;
+  }
+
+  .profile-image img {
+    width: 110px;
+    height: 110px;
+  }
 }

@@ -42,14 +42,32 @@ const userSchema = new Schema(
     isApproved: {
       type: Boolean,
       default: function () {
-        // Auto-approve unless role is 'gym'
         return this.role !== "gym";
       },
     },
     profileImage: {
-      data: Buffer,        // Stores image data
-      contentType: String, // Stores MIME type (e.g., "image/png")
+      data: Buffer,
+      contentType: String,
     },
+
+    // === Gym-specific fields ===
+    address: { type: String },
+    hours: { type: String },
+    membershipFee: { type: Number },
+    facilities: { type: String },
+    description: { type: String },
+
+    // === Instructor-specific fields ===
+    expertise: { type: String },
+    experience: { type: Number },
+    biography: { type: String },
+    sessionType: { type: String, default: "Online" },
+    joiningDate: { type: Date },
+    notes: { type: String },
+
+    // === Admin-specific fields ===
+    // Reuse joiningDate and notes for Admin
+
   },
   {
     timestamps: true, // Adds createdAt and updatedAt
