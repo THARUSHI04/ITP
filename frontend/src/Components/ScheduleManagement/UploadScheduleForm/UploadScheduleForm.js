@@ -1,3 +1,4 @@
+// Updated UploadScheduleForm.js (ensure userId is set from fetched request.userId; minor fix for instructorId using localStorage as fallback)
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
@@ -9,7 +10,7 @@ const CREATIONS_URL = "http://localhost:5000/user-schedule-creations";
 function UploadScheduleForm({ onUpload }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const { scheduleId, instructorId } = location.state || {};
+  const { scheduleId, instructorId: passedInstructorId } = location.state || {};
 
   const [formData, setFormData] = useState({
     requestId: scheduleId || "",
@@ -17,7 +18,7 @@ function UploadScheduleForm({ onUpload }) {
     userName: "",
     timeSlot: "",
     schedule: "",
-    instructorId: instructorId || "",
+    instructorId: passedInstructorId || localStorage.getItem("userId") || "",  // UPDATED: use localStorage as fallback for current instructor
   });
 
   const [loading, setLoading] = useState(false);
@@ -28,14 +29,14 @@ function UploadScheduleForm({ onUpload }) {
       try {
         setLoading(true);
         const res = await axios.get(`${REQUESTS_URL}/${scheduleId}`);
-        const request = res.data.schedule;
+        const request = res.data.schedule;  // Backend returns { schedule }
         if (request) {
           setFormData((prev) => ({
             ...prev,
             requestId: request._id,
-            userId: request.userId || request._id,
+            userId: request.userId,  // UPDATED: correctly set from fetched schedule.userId (now available)
             userName: request.userName,
-            instructorId: instructorId || prev.instructorId,
+            instructorId: passedInstructorId || localStorage.getItem("userId") || prev.instructorId,  // Ensure instructorId
           }));
         }
       } catch (err) {
@@ -46,7 +47,7 @@ function UploadScheduleForm({ onUpload }) {
     };
 
     fetchRequest();
-  }, [scheduleId, instructorId]);
+  }, [scheduleId, passedInstructorId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

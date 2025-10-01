@@ -9,15 +9,6 @@ import UserSchedule from "../../ScheduleManagement/UserSchedule/UserSchedule";
 import UserSubscriptionPlan from "../../FinanceManagement/UserSubscriptionPlan";
 
 // Dashboard sections
-function TrainingSessions() {
-  return (
-    <div>
-      <h2>My Training Sessions</h2>
-      <p>Track your purchased sessions.</p>
-    </div>
-  );
-}
-
 function Bookings() {
   return (
     <div>
@@ -39,21 +30,22 @@ function MyPurchases() {
 // Main Dashboard
 function UserDashboard() {
   const [activeTab, setActiveTab] = useState("profile");
+  const userId = localStorage.getItem("userId"); // Get userId for UserSchedule
 
   const renderContent = () => {
     switch (activeTab) {
       case "profile":
         return <UserProfile />;
       case "sessions":
-        return <TrainingSessions />;
+        return <ScheduleRequestForm />; // UPDATED: Show ScheduleRequestForm in Training Sessions tab
       case "subscribedClasses":
-        return <UserSubscriptionPlan />; 
+        return <UserSubscriptionPlan />;
       case "bookings":
         return <Bookings />;
       case "purchases":
         return <MyPurchases />;
       case "schedules":
-        return <UserSchedule />;
+        return <UserSchedule userId={userId} />;
       default:
         return <UserProfile />;
     }

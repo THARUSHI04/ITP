@@ -1,8 +1,7 @@
-// backend/Controller/UserScheduleCreationController.js
-
+// Updated UserScheduleCreationControl.js (add getByUserId function)
 const UserScheduleCreation = require("../Model/UserScheduleCreationModel");
 
-// GET all schedule creations
+// GET all schedule creations (unchanged)
 const getAllCreations = async (req, res, next) => {
   let creations;
   try {
@@ -19,7 +18,26 @@ const getAllCreations = async (req, res, next) => {
   return res.status(200).json({ creations });
 };
 
-// GET by ID
+// NEW: Get latest schedule creation by userId
+const getByUserId = async (req, res, next) => {
+  const userId = req.params.userId;
+  let creation;
+
+  try {
+    creation = await UserScheduleCreation.findOne({ userId: userId }).sort({ createdAt: -1 });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Server error" });
+  }
+
+  if (!creation) {
+    return res.status(404).json({ message: "No schedule creation found for this user" });
+  }
+
+  return res.status(200).json({ creation });
+};
+
+// GET by ID (unchanged)
 const getByID = async (req, res, next) => {
   const id = req.params.id;
   let creation;
@@ -38,13 +56,13 @@ const getByID = async (req, res, next) => {
   return res.status(200).json({ creation });
 };
 
-// ADD new schedule creation
+// ADD new schedule creation (unchanged)
 const addCreation = async (req, res, next) => {
   let creation;
 
   try {
     creation = new UserScheduleCreation({
-      requestId: req.body.requestId, // ✅ keep this
+      requestId: req.body.requestId,
       userId: req.body.userId,
       instructorId: req.body.instructorId,
       userName: req.body.userName,
@@ -60,7 +78,7 @@ const addCreation = async (req, res, next) => {
   return res.status(200).json({ creation });
 };
 
-// UPDATE creation by ID
+// UPDATE creation by ID (unchanged)
 const updateCreation = async (req, res, next) => {
   const id = req.params.id;
   const { requestId, userId, instructorId, userName, schedule, timeSlot } = req.body;
@@ -84,7 +102,7 @@ const updateCreation = async (req, res, next) => {
   return res.status(200).json({ creation });
 };
 
-// DELETE creation by ID
+// DELETE creation by ID (unchanged)
 const deleteCreation = async (req, res, next) => {
   const id = req.params.id;
   let creation;
@@ -105,12 +123,12 @@ const deleteCreation = async (req, res, next) => {
 
 module.exports = {
   getAllCreations,
+  getByUserId,  // NEW: exported
   getByID,
   addCreation,
   updateCreation,
   deleteCreation
 };
-
 
 
 

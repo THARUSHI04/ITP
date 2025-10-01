@@ -1,3 +1,4 @@
+// Updated ScheduleRequestForm.js (add userId from localStorage, include in POST, fix contactNo to Number; no other changes)
 import React, { useState } from "react";
 import axios from "axios";
 import "./ScheduleRequestForm.css";
@@ -14,6 +15,15 @@ function ScheduleRequestForm() {
     preferedExercise: "",
   });
 
+  // NEW: Get current userId from localStorage (set during login)
+  const userId = localStorage.getItem("userId");
+
+  if (!userId) {
+    // Fallback: redirect to login if no userId (edge case)
+    alert("Please log in to submit a schedule request.");
+    return null;
+  }
+
   // Update input values
   const handleChange = (e) => {
     setInputs((prevState) => ({
@@ -22,13 +32,14 @@ function ScheduleRequestForm() {
     }));
   };
 
-  // Send request to backend
+  // Send request to backend (updated to include userId and fix contactNo to Number)
   const sendRequest = async () => {
     try {
       const response = await axios.post("http://localhost:5000/schedules", {
+        userId,  // NEW: include userId for linking
         userName: inputs.userName,
         age: Number(inputs.age),
-        contactNo: String(inputs.contactNo),
+        contactNo: Number(inputs.contactNo),  // FIXED: changed from String to Number to match schema
         weight: Number(inputs.weight),
         height: Number(inputs.height),
         weeklyFrequence: Number(inputs.weeklyFrequence),
@@ -42,7 +53,7 @@ function ScheduleRequestForm() {
     }
   };
 
-  // Handle form submission
+  // Handle form submission (unchanged, but now includes userId via sendRequest)
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = await sendRequest();
@@ -94,7 +105,7 @@ function ScheduleRequestForm() {
             <div>
               <label>Contact No</label>
               <input
-                type="text"
+                type="text"  // Keep as text input, but convert to Number in POST
                 name="contactNo"
                 value={inputs.contactNo}
                 onChange={handleChange}

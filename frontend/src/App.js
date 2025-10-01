@@ -30,15 +30,14 @@ import AdminDashboard from "./Components/Dashboards/AdminDashboard/AdminDashboar
 // import AdminProfile from "./Components/UserManagement/Profiles/AdminProfile/AdminProfile";
 
 // Schedule Management
-import SchedulePage from "./Components/ScheduleManagement/SchedulePage/SchedulePage";
+
 import Schedule from "./Components/ScheduleManagement/ScheduleFitness/Schedule";
 import FitnessSchedule from "./Components/ScheduleManagement/ScheduleFitness/FitnessSchedule";
-import TimeSchedule from "./Components/ScheduleManagement/TimeSchedule/TimeSchedule";
 import UploadScheduleForm from "./Components/ScheduleManagement/UploadScheduleForm/UploadScheduleForm";
 import ScheduleRequestForm from "./Components/ScheduleManagement/ScheduleRequest/ScheduleRequestForm";
 import InstructorSchedulePage from "./Components/ScheduleManagement/SchedulePage/InstructorSchedulePage";
-import ChangeRequestForm from "./Components/ScheduleManagement/ChangeRequest/ChangeRequestForm";
 import UserSchedule from "./Components/ScheduleManagement/UserSchedule/UserSchedule";
+import ScheduleChangeRequestForm from "./Components/ScheduleManagement/ScheduleRequest/ScheduleChangeRequestForm";
 
 
 
@@ -100,15 +99,13 @@ function Layout() {
         <Route path="/profile4" element={<AdminProfile />} /> */}
 
         {/* Schedule Management */}
-        <Route path="/schedule" element={<SchedulePage />} />
-        <Route path="/timeschedule" element={<TimeSchedule />} />
         <Route path="/FitnessSchedule" element={<FitnessSchedule />} />
         <Route path="/Schedule" element={<Schedule />} />
         <Route path="/upload-schedule" element={<UploadScheduleForm />} />
         <Route path="/request-schedule" element={<ScheduleRequestForm />} />
         <Route path="/instructor-schedules" element={<InstructorSchedulePage />} />
-        <Route path="/change-request" element={<ChangeRequestForm />} />
         <Route path="/user-schedules" element={<UserSchedule />} />
+        <Route path="/schedule-change-request" element={<ScheduleChangeRequestForm />} />
         
 
         

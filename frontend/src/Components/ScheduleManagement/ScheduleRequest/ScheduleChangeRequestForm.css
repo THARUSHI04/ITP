@@ -1,0 +1,112 @@
+/* src/Components/ScheduleManagement/ScheduleChangeRequest/ScheduleChangeRequestForm.css */
+.change-request-page {
+  background-color: #000; /* Black background, matches .finance-container */
+  color: #fff; /* White text for contrast */
+  min-height: 100vh; /* Full page height */
+  padding: 40px 20px; /* Matches .finance-container */
+  font-family: Arial, sans-serif; /* Matches .finance-container */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.change-request-container {
+  max-width: 700px; /* Matches .schedule-container */
+  width: 100%; /* Responsive */
+  margin: 20px auto; /* Matches .schedule-container */
+  padding: 30px; /* Matches .schedule-container */
+  background: #fff; /* White background, matches .plan-card */
+  color: #000; /* Black text */
+  border-radius: 15px; /* Matches .plan-card */
+  box-shadow: 0 5px 15px rgba(255, 0, 0, 0.2); /* Red-tinted shadow */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Matches .plan-card */
+}
+
+.change-request-container:hover {
+  transform: translateY(-8px); /* Matches .plan-card hover */
+  box-shadow: 0 8px 20px rgba(255, 0, 0, 0.5); /* Matches .plan-card hover */
+}
+
+.change-request-container h2 {
+  text-align: center;
+  margin-bottom: 30px; /* Matches .schedule-container h2 */
+  color: #e50914; /* Red, matches .title */
+  font-size: 2.2rem; /* Matches .schedule-container h2 */
+  font-weight: bold; /* Matches .title */
+  letter-spacing: 1px; /* Gym-style emphasis */
+  text-transform: uppercase; /* Bold gym aesthetic */
+}
+
+.change-request-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Matches .plan-card spacing */
+}
+
+.change-request-form label {
+  font-size: 1.1rem; /* Matches .schedule-card p */
+  color: #000; /* Black text */
+  font-weight: bold; /* Matches .schedule-card p strong */
+}
+
+.change-request-form textarea {
+  background: #f5f5f5; /* Light gray, matches .schedule-card */
+  border: 2px solid #000; /* Black border, matches .schedule-text */
+  border-radius: 10px; /* Matches .schedule-text */
+  padding: 15px; /* Slightly less than .schedule-text */
+  font-size: 1rem; /* Matches .schedule-text */
+  color: #000; /* Black text */
+  line-height: 1.6; /* Matches .schedule-text */
+  min-height: 150px; /* Enough space for details */
+  resize: vertical; /* Allow vertical resize only */
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px; /* Matches .button-group */
+  margin-top: 20px; /* Matches .button-group */
+}
+
+.submit-btn,
+.cancel-btn {
+  background: #e50914; /* Red, matches .btn */
+  color: #fff; /* White text, matches .btn */
+  border: none;
+  padding: 10px 18px; /* Matches .btn */
+  border-radius: 8px; /* Matches .btn */
+  font-size: 1rem; /* Matches .btn */
+  cursor: pointer;
+  transition: background 0.3s ease; /* Matches .btn */
+  text-transform: uppercase; /* Gym-style emphasis */
+}
+
+.submit-btn:hover,
+.cancel-btn:hover {
+  background: #b0060f; /* Matches .btn:hover */
+}
+
+.change-request-header {
+  width: 100%;
+  max-width: 1200px; /* Matches .plans max-width */
+  text-align: center;
+  margin-bottom: 20px; /* Matches .schedule-header */
+}
+
+.change-request-header h1 {
+  color: #e50914; /* Red, matches .title */
+  font-size: 3rem; /* Matches .schedule-header h1 */
+  font-weight: bold;
+  text-transform: uppercase; /* Gym aesthetic */
+}
+
+.change-request-footer {
+  width: 100%;
+  max-width: 1200px; /* Matches .plans */
+  text-align: center;
+  margin-top: 30px; /* Matches .schedule-footer */
+  padding: 20px 0; /* Matches .schedule-footer */
+  color: #fff; /* White text */
+  font-size: 0.9rem; /* Matches .schedule-footer */
+  border-top: 1px solid #e50914; /* Red border, matches .schedule-footer */
+}

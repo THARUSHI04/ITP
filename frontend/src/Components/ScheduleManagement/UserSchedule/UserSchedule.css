@@ -1,47 +1,162 @@
+/* src/Components/ScheduleManagement/UserSchedule/UserSchedule.css */
+.schedule-page {
+  background-color: #000; /* Black background, matches .finance-container */
+  color: #fff; /* White text for contrast */
+  min-height: 100vh; /* Full page height, matches .finance-container */
+  padding: 40px 20px; /* Matches .finance-container padding */
+  font-family: Arial, sans-serif; /* Matches .finance-container */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .schedule-container {
-  max-width: 500px;
-  margin: 30px auto;
-  padding: 20px;
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  font-family: Arial, sans-serif;
+  max-width: 700px; /* Slightly wider for full-page feel */
+  width: 100%; /* Responsive width */
+  margin: 20px auto; /* Reduced margin for header/footer space */
+  padding: 30px; /* Slightly more padding than .plan-card */
+  background: #fff; /* White background for contrast */
+  color: #000; /* Black text for readability */
+  border-radius: 15px; /* Matches .plan-card */
+  box-shadow: 0 5px 15px rgba(255, 0, 0, 0.2); /* Red-tinted shadow like .plan-card */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Matches .plan-card */
+}
+
+.schedule-container:hover {
+  transform: translateY(-8px); /* Matches .plan-card hover */
+  box-shadow: 0 8px 20px rgba(255, 0, 0, 0.5); /* Matches .plan-card hover */
 }
 
 .schedule-container h2 {
   text-align: center;
-  margin-bottom: 20px;
-  color: #222;
+  margin-bottom: 30px; /* Slightly less than .title for hierarchy */
+  color: #e50914; /* Red, matches .title */
+  font-size: 2.2rem; /* Slightly smaller than .title for balance */
+  font-weight: bold; /* Matches .title */
+  letter-spacing: 1px; /* Added for gym-style emphasis */
+  text-transform: uppercase; /* Bold gym aesthetic */
 }
 
 .schedule-card {
-  padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  background: #f9f9f9;
+  padding: 25px; /* Matches .plan-card padding */
+  border: 3px solid #e50914; /* Red border, matches .plan-card.highlight */
+  border-radius: 15px; /* Matches .plan-card */
+  background: #f5f5f5; /* Light gray for softer contrast */
+  color: #000; /* Black text, matches .plan-card */
+  box-shadow: 0 4px 12px rgba(255, 0, 0, 0.15); /* Slightly softer shadow */
+  margin-bottom: 20px; /* Space for buttons */
 }
 
 .schedule-card p {
-  margin: 8px 0;
-  color: #333;
+  margin: 12px 0; /* Slightly more than .plan-card li for spacing */
+  color: #000; /* Black text, matches .plan-card */
+  font-size: 1.1rem; /* Slightly larger for readability */
+  line-height: 1.6; /* Improved readability */
+}
+
+.schedule-card p strong {
+  color: #e50914; /* Red, matches .price and .btn */
+  font-weight: bold; /* Matches .price */
+  font-size: 1.15rem; /* Slightly larger for emphasis */
 }
 
 .schedule-text {
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  padding: 10px;
-  white-space: pre-wrap;
-  margin-top: 10px;
+  background: #fff; /* White for clean contrast */
+  border: 2px solid #000; /* Black border for sharp gym look */
+  border-radius: 10px; /* Slightly smaller than .plan-card */
+  padding: 20px; /* Slightly more than .plan-card li */
+  white-space: pre-wrap; /* Preserve schedule formatting */
+  margin: 20px 0; /* Matches .plan-card ul */
+  font-size: 1rem; /* Matches .plan-card li */
+  color: #000; /* Black text, matches .plan-card */
+  line-height: 1.7; /* Enhanced readability */
+  max-height: 350px; /* Slightly taller for more content */
+  overflow-y: auto; /* Scroll for long schedules */
+  font-family: 'Courier New', monospace; /* Monospace for schedule clarity */
 }
 
 .no-schedule {
   text-align: center;
-  color: #888;
-  font-style: italic;
+  color: #fff; /* White text for contrast */
+  font-size: 1.2rem; /* Slightly larger than .plan-card li */
+  font-style: italic; /* Kept for empty state */
+  padding: 25px; /* Matches .plan-card padding */
+  background: #e50914; /* Red, matches .btn and .title */
+  border-radius: 10px; /* Matches .schedule-text */
+  margin: 20px 0; /* Matches .plan-card ul */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Black shadow for depth */
 }
 
 .loading-text {
   text-align: center;
-  color: #007bff;
+  color: #e50914; /* Red, matches .title and .btn */
+  font-size: 1.3rem; /* Slightly larger for visibility */
+  font-weight: bold; /* Matches .title */
+  padding: 25px; /* Matches .plan-card padding */
+  background: #fff; /* White background for contrast */
+  border-radius: 10px; /* Matches .schedule-text */
+  box-shadow: 0 4px 12px rgba(255, 0, 0, 0.2); /* Red-tinted shadow */
+  animation: pulse 1.5s infinite ease-in-out; /* Matches .finance-container style */
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 15px; /* Space between buttons */
+  margin-top: 20px; /* Space above buttons */
+}
+
+.back-btn,
+.change-request-btn {
+  background: #e50914; /* Red, matches .btn */
+  color: #fff; /* White text, matches .btn */
+  border: none;
+  padding: 10px 18px; /* Matches .btn */
+  border-radius: 8px; /* Matches .btn */
+  font-size: 1rem; /* Matches .btn */
+  cursor: pointer;
+  transition: background 0.3s ease; /* Matches .btn */
+  text-transform: uppercase; /* Gym-style emphasis */
+}
+
+.back-btn:hover,
+.change-request-btn:hover {
+  background: #b0060f; /* Matches .btn:hover */
+}
+
+.schedule-header {
+  width: 100%;
+  max-width: 1200px; /* Matches .plans max-width */
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.schedule-header h1 {
+  color: #e50914; /* Red, matches .title */
+  font-size: 3rem; /* Larger for full-page prominence */
+  font-weight: bold;
+  text-transform: uppercase; /* Gym aesthetic */
+}
+
+.schedule-footer {
+  width: 100%;
+  max-width: 1200px; /* Matches .plans */
+  text-align: center;
+  margin-top: 30px;
+  padding: 20px 0;
+  color: #fff; /* White text */
+  font-size: 0.9rem;
+  border-top: 1px solid #e50914; /* Red border for style */
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
 }

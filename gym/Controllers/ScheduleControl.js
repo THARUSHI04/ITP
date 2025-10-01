@@ -1,97 +1,119 @@
+// Updated ScheduleControl.js (add userId handling in addScheduleRequest and updateSchdule; no changes to other functions)
 const Schedule = require("../Model/ScheduleModel");
 
 ////////////////////////////////////////////////////////////////////////////
-// GET all schedules
+// GET all schedules (unchanged)
 const getAllSchedule = async (req, res, next) => {
-    let schedules;
-    try {
-        schedules = await Schedule.find();
-    } catch (err) {
-        console.log(err);
-    }
+  let schedules;
+  try {
+    schedules = await Schedule.find();
+  } catch (err) {
+    console.log(err);
+  }
 
-    //not found
-    if (!schedules) {
-        return res.status(404).json({ message: "Schedules not found" });
-    }
+  //not found
+  if (!schedules) {
+    return res.status(404).json({ message: "Schedules not found" });
+  }
 
-    //display all users
-    return res.status(200).json({ schedules });
+  //display all users
+  return res.status(200).json({ schedules });
 };
 
 ////////////////////////////////////////////////////////////////////////////
-//data Insert
+//data Insert (updated to handle userId)
 const addScheduleRequest = async (req, res, next) => {
-    let schedules;
+  let schedules;
 
-    try {
-        if (Array.isArray(req.body)) {
-            // If the request body is an array → insert many schedules at once
-            schedules = await Schedule.insertMany(
-                req.body.map(item => ({
-                    userName: item.userName,  // <-- lowercase matches frontend
-                    age: item.age,
-                    contactNo: item.contactNo,
-                    weight: item.weight,
-                    height: item.height,
-                    weeklyFrequence: item.weeklyFrequence,
-                    specificType: item.specificType,
-                    preferedExercise: item.preferedExercise
-                }))
-            );
-        } else {
-            // Single object insert
-            schedules = new Schedule({
-                userName: req.body.userName,  // <-- lowercase matches frontend
-                age: req.body.age,
-                contactNo: req.body.contactNo,
-                weight: req.body.weight,
-                height: req.body.height,
-                weeklyFrequence: req.body.weeklyFrequence,
-                specificType: req.body.specificType,
-                preferedExercise: req.body.preferedExercise
-            });
-            await schedules.save();
-        }
-    } catch (err) {
-        console.log(err);
+  try {
+    if (Array.isArray(req.body)) {
+      // If the request body is an array → insert many schedules at once
+      schedules = await Schedule.insertMany(
+        req.body.map(item => ({
+          userId: item.userId,  // NEW: map userId from request body
+          userName: item.userName,
+          age: item.age,
+          contactNo: item.contactNo,
+          weight: item.weight,
+          height: item.height,
+          weeklyFrequence: item.weeklyFrequence,
+          specificType: item.specificType,
+          preferedExercise: item.preferedExercise
+        }))
+      );
+    } else {
+      // Single object insert
+      schedules = new Schedule({
+        userId: req.body.userId,  // NEW: set userId from request body
+        userName: req.body.userName,
+        age: req.body.age,
+        contactNo: req.body.contactNo,
+        weight: req.body.weight,
+        height: req.body.height,
+        weeklyFrequence: req.body.weeklyFrequence,
+        specificType: req.body.specificType,
+        preferedExercise: req.body.preferedExercise
+      });
+      await schedules.save();
     }
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Unable to request Schedule" });  // Added return for error
+  }
 
-    //not insert schedules
-    if (!schedules) {
-        return res.status(404).json({ message: "Unable to request Schedule" });
-    }
+  //not insert schedules
+  if (!schedules) {
+    return res.status(404).json({ message: "Unable to request Schedule" });
+  }
 
-    return res.status(200).json({ schedules });
+  return res.status(200).json({ schedules });
 };
 
 ////////////////////////////////////////////////////////////////////////////
-//get by ID 
+//get by ID (unchanged)
 const getByID = async (req, res, next) => {
-    const id = req.params.id;
+  const id = req.params.id;
 
-    let schedule;
+  let schedule;
 
-    try {
-        schedule = await Schedule.findById(id);
-    } catch (err) {
-        console.log(err);
-    }
-    //not available schedules
-    if (!schedule) {
-        return res.status(404).json({ message: "Schedule Not Exist" });
-    }
-    return res.status(200).json({ schedule });
+  try {
+    schedule = await Schedule.findById(id);
+  } catch (err) {
+    console.log(err);
+  }
+  //not available schedules
+  if (!schedule) {
+    return res.status(404).json({ message: "Schedule Not Exist" });
+  }
+  return res.status(200).json({ schedule });
 };
 
 ////////////////////////////////////////////////////////////////////////////
-//Update Schedule detils
+//Update Schedule detils (updated to ignore userId in updates, but include if sent)
 const updateSchdule = async (req, res, next) => {
-    const id = req.params.id;
+  const id = req.params.id;
 
-    const {
-        UserName,
-        userName,
+  const {
+    UserName,
+    userName,
+    age,
+    contactNo,
+    weight,
+    height,
+    weeklyFrequence,
+    specificType,
+    preferedExercise
+  } = req.body;
+
+  const finalUserName = userName ?? UserName;
+
+  let schedules;
+
+  try {
+    schedules = await Schedule.findByIdAndUpdate(
+      id,
+      {
+        userName: finalUserName,
         age,
         contactNo,
         weight,
@@ -99,54 +121,38 @@ const updateSchdule = async (req, res, next) => {
         weeklyFrequence,
         specificType,
         preferedExercise
-    } = req.body;
+        // Note: userId not updated here to preserve original user linkage
+      },
+      { new: true, runValidators: true }
+    );
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Unable to Update Schedule Details" });  // Added return for error
+  }
 
-    const finalUserName = userName ?? UserName;
-
-    let schedules;
-
-    try {
-        schedules = await Schedule.findByIdAndUpdate(
-            id,
-            {
-                userName: finalUserName,
-                age,
-                contactNo,
-                weight,
-                height,
-                weeklyFrequence,
-                specificType,
-                preferedExercise
-            },
-            { new: true, runValidators: true }
-        );
-    } catch (err) {
-        console.log(err);
-    }
-
-    if (!schedules) {
-        return res.status(404).json({ message: "Unable to Update Schedule Details" });
-    }
-    return res.status(200).json({ schedules });
+  if (!schedules) {
+    return res.status(404).json({ message: "Unable to Update Schedule Details" });
+  }
+  return res.status(200).json({ schedules });
 };
 
 ////////////////////////////////////////////////////////////////////////////
-//Delete Schedule detils
+//Delete Schedule detils (unchanged)
 const deleteSchdule = async (req, res, next) => {
-    const id = req.params.id;
+  const id = req.params.id;
 
-    let schedule;
+  let schedule;
 
-    try {
-        schedule = await Schedule.findByIdAndDelete(id)
-    } catch (err) {
-        console.log(err);
-    }
+  try {
+    schedule = await Schedule.findByIdAndDelete(id)
+  } catch (err) {
+    console.log(err);
+  }
 
-    if (!schedule) {
-        return res.status(404).json({ message: "Unable to delete Schedule Details" });
-    }
-    return res.status(200).json({ schedule });
+  if (!schedule) {
+    return res.status(404).json({ message: "Unable to delete Schedule Details" });
+  }
+  return res.status(200).json({ schedule });
 };
 
 exports.getAllSchedule = getAllSchedule;
@@ -154,6 +160,8 @@ exports.addScheduleRequest = addScheduleRequest;
 exports.getByID = getByID;
 exports.updateSchdule = updateSchdule;
 exports.deleteSchdule = deleteSchdule;
+
+
 
 
 

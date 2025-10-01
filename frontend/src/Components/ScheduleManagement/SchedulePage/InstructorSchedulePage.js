@@ -1,6 +1,7 @@
+// src/Components/ScheduleManagement/SchedulePage/InstructorSchedulePage.js
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; // For back button
+import { useNavigate } from "react-router-dom";
 import "./InstructorSchedulePage.css";
 
 const InstructorSchedulePage = () => {
@@ -8,9 +9,11 @@ const InstructorSchedulePage = () => {
   const [selectedUserId, setSelectedUserId] = useState("");
   const [filteredSchedule, setFilteredSchedule] = useState(null);
   const [editedSchedule, setEditedSchedule] = useState({ schedule: "", timeSlot: "" });
+  const [changeRequests, setChangeRequests] = useState([]); // NEW: State for change requests
 
   const navigate = useNavigate();
   const URL = "http://localhost:5000/user-schedule-creations";
+  const CHANGE_REQUEST_URL = "http://localhost:5000/schedule-change-requests"; // NEW: Endpoint for change requests
 
   useEffect(() => {
     const fetchSchedules = async () => {
@@ -22,6 +25,17 @@ const InstructorSchedulePage = () => {
       }
     };
     fetchSchedules();
+
+    // NEW: Fetch change requests
+    const fetchChangeRequests = async () => {
+      try {
+        const res = await axios.get(CHANGE_REQUEST_URL);
+        setChangeRequests(res.data.requests);
+      } catch (err) {
+        console.error("Error fetching change requests:", err);
+      }
+    };
+    fetchChangeRequests();
   }, []);
 
   useEffect(() => {
@@ -69,11 +83,22 @@ const InstructorSchedulePage = () => {
     }
   };
 
+  // NEW: Handle delete change request
+  const handleDeleteChangeRequest = async (requestId) => {
+    if (!window.confirm("Are you sure you want to delete this change request?")) return;
+    try {
+      await axios.delete(`${CHANGE_REQUEST_URL}/${requestId}`);
+      alert("Change request deleted successfully!");
+      setChangeRequests((prev) => prev.filter((req) => req._id !== requestId));
+    } catch (err) {
+      console.error("Failed to delete change request:", err);
+      alert("Failed to delete change request.");
+    }
+  };
+
   return (
     <div className="instructor-schedule-page">
-      <button className="back-btn" onClick={() => navigate("/instructor-dashboard")}>
-        &larr; Back to Dashboard
-      </button>
+      
 
       <h2>Instructor Schedule Management</h2>
 
@@ -96,7 +121,6 @@ const InstructorSchedulePage = () => {
         <div className="schedule-card">
           <h3>Schedule Details</h3>
           <p><strong>User Name:</strong> {filteredSchedule.userName}</p>
-          
           <p>
             <strong>Schedule:</strong>
             <textarea
@@ -105,7 +129,6 @@ const InstructorSchedulePage = () => {
               onChange={handleChange}
             />
           </p>
-
           <p>
             <strong>Time Slot:</strong>
             <input
@@ -115,14 +138,38 @@ const InstructorSchedulePage = () => {
               onChange={handleChange}
             />
           </p>
-
-          {/* Action buttons */}
           <div className="btn-group">
             <button onClick={handleUpdate}>Update</button>
             <button onClick={handleDelete}>Delete</button>
           </div>
         </div>
       )}
+
+      {/* NEW: Change Requests Section */}
+      <div className="change-requests-section">
+        <h3>Schedule Change Requests</h3>
+        {changeRequests.length > 0 ? (
+          <div className="change-requests-list">
+            {changeRequests.map((request) => (
+              <div key={request._id} className="change-request-card">
+                <p><strong>User ID:</strong> {request.userId}</p>
+                <p><strong>User Name:</strong> {request.userName}</p>
+                <p><strong>Schedule ID:</strong> {request.scheduleId}</p>
+                <p><strong>Change Details:</strong></p>
+                <pre className="change-request-text">{request.changeDetails}</pre>
+                <button
+                  className="delete-request-btn"
+                  onClick={() => handleDeleteChangeRequest(request._id)}
+                >
+                  Delete Request
+                </button>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="no-requests">No change requests available</p>
+        )}
+      </div>
     </div>
   );
 };

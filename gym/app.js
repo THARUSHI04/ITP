@@ -23,11 +23,13 @@ const UserRoutes = require("./Routes/UserRoutes");
 const FinanceRouter = require("./Routes/FinanceRouter");
 const ScheduleRoute = require("./Routes/ScheduleRoute");
 const UserScheduleCreationRoute = require("./Routes/UserScheduleCreationRoute");
+const scheduleChangeRequestRoute = require("./Routes/ScheduleChangeRequestRoute");
 
 app.use("/users", UserRoutes);
 app.use("/finance", FinanceRouter);
 app.use("/schedules", ScheduleRoute);
 app.use("/user-schedule-creations", UserScheduleCreationRoute);
+app.use("/schedule-change-requests", scheduleChangeRequestRoute);
 
 // -----------------------------
 // Stripe Payment Route
