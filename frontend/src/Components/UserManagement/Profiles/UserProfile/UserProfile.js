@@ -17,9 +17,8 @@ export default function UserProfile() {
     gender: "",
     profileImage: "",
   });
-  const [previewImage, setPreviewImage] = useState("/images/profile.png"); // default
+  const [previewImage, setPreviewImage] = useState("/images/profile.png");
 
-  // Fetch user data
   useEffect(() => {
     if (!userId) return navigate("/login");
 
@@ -27,7 +26,6 @@ export default function UserProfile() {
       try {
         const res = await axios.get(`http://localhost:5000/users/${userId}`);
         const u = res.data.user;
-
         setUser(u);
         setFormData({
           userName: u.userName || "",
@@ -35,9 +33,9 @@ export default function UserProfile() {
           contactNo: u.contactNo || "",
           dob: u.dob ? u.dob.split("T")[0] : "",
           gender: u.gender || "",
-          profileImage: u.profileImage || "/images/profile.png", // default
+          profileImage: u.profileImage || "",
         });
-        setPreviewImage(u.profileImage || "/images/profile.png");
+        setPreviewImage(u.profileImage ? `http://localhost:5000${u.profileImage}` : "/images/profile.png");
       } catch (err) {
         console.error("Error fetching user:", err);
         alert("Failed to load profile.");
@@ -47,8 +45,7 @@ export default function UserProfile() {
     fetchUser();
   }, [userId, navigate]);
 
-  const handleChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -63,22 +60,20 @@ export default function UserProfile() {
   const handleSave = async () => {
     try {
       const data = new FormData();
-      data.append("userName", formData.userName);
-      data.append("email", formData.email);
-      data.append("contactNo", formData.contactNo);
-      data.append("dob", formData.dob);
-      data.append("gender", formData.gender);
-      if (formData.profileImage instanceof File) {
-        data.append("profileImage", formData.profileImage);
-      }
+      Object.keys(formData).forEach((key) => {
+        if (key === "profileImage" && formData[key] instanceof File) {
+          data.append("profileImage", formData[key]);
+        } else {
+          data.append(key, formData[key]);
+        }
+      });
 
       const res = await axios.put(`http://localhost:5000/users/${userId}`, data, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
       setUser(res.data.user);
-      setFormData({ ...formData, profileImage: res.data.user.profileImage });
-      setPreviewImage(res.data.user.profileImage || "/images/profile.png");
+      setPreviewImage(res.data.user.profileImage ? `http://localhost:5000${res.data.user.profileImage}` : "/images/profile.png");
       setIsEditing(false);
       alert("Profile updated successfully!");
     } catch (err) {
@@ -117,59 +112,35 @@ export default function UserProfile() {
 
         <label>User Name:</label>
         {isEditing ? (
-          <input
-            type="text"
-            name="userName"
-            value={formData.userName}
-            onChange={handleChange}
-          />
+          <input type="text" name="userName" value={formData.userName} onChange={handleChange} />
         ) : (
           <span>{user.userName}</span>
         )}
 
         <label>Email:</label>
         {isEditing ? (
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-          />
+          <input type="email" name="email" value={formData.email} onChange={handleChange} />
         ) : (
           <span>{user.email}</span>
         )}
 
         <label>Contact No:</label>
         {isEditing ? (
-          <input
-            type="text"
-            name="contactNo"
-            value={formData.contactNo}
-            onChange={handleChange}
-          />
+          <input type="text" name="contactNo" value={formData.contactNo} onChange={handleChange} />
         ) : (
           <span>{user.contactNo || "-"}</span>
         )}
 
         <label>Date of Birth:</label>
         {isEditing ? (
-          <input
-            type="date"
-            name="dob"
-            value={formData.dob}
-            onChange={handleChange}
-          />
+          <input type="date" name="dob" value={formData.dob} onChange={handleChange} />
         ) : (
           <span>{user.dob ? user.dob.split("T")[0] : "-"}</span>
         )}
 
         <label>Gender:</label>
         {isEditing ? (
-          <select
-            name="gender"
-            value={formData.gender}
-            onChange={handleChange}
-          >
+          <select name="gender" value={formData.gender} onChange={handleChange}>
             <option value="">Select</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
@@ -184,16 +155,12 @@ export default function UserProfile() {
 
       <div className="profile-actions">
         {isEditing ? (
-          <button onClick={handleSave} className="save-btn">
-            Save Changes
-          </button>
+          <button onClick={handleSave} className="save-btn">Save Changes</button>
         ) : (
           <button onClick={handleEditToggle}>Edit Profile</button>
         )}
         <button onClick={handleLogout}>Logout</button>
-        <button onClick={handleDelete} className="delete-btn">
-          Delete Account
-        </button>
+        <button onClick={handleDelete} className="delete-btn">Delete Account</button>
       </div>
     </div>
   );

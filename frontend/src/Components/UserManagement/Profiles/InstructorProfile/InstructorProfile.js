@@ -17,7 +17,7 @@ export default function UserProfile() {
     gender: "",
     profileImage: "",
   });
-  const [previewImage, setPreviewImage] = useState("");
+  const [previewImage, setPreviewImage] = useState("/images/profile.png");
 
   // Fetch user data
   useEffect(() => {
@@ -27,6 +27,7 @@ export default function UserProfile() {
       try {
         const res = await axios.get(`http://localhost:5000/users/${userId}`);
         const u = res.data.user;
+
         setUser(u);
         setFormData({
           userName: u.userName || "",
@@ -34,9 +35,9 @@ export default function UserProfile() {
           contactNo: u.contactNo || "",
           dob: u.dob ? u.dob.split("T")[0] : "",
           gender: u.gender || "",
-          profileImage: u.profileImage || "/uploads/default-profile.png",
+          profileImage: u.profileImage || "",
         });
-        setPreviewImage(u.profileImage || "/uploads/default-profile.png");
+        setPreviewImage(u.profileImage ? `http://localhost:5000${u.profileImage}` : "/images/profile.png");
       } catch (err) {
         console.error("Error fetching user:", err);
         alert("Failed to load profile.");
@@ -61,22 +62,20 @@ export default function UserProfile() {
   const handleSave = async () => {
     try {
       const data = new FormData();
-      data.append("userName", formData.userName);
-      data.append("email", formData.email);
-      data.append("contactNo", formData.contactNo);
-      data.append("dob", formData.dob);
-      data.append("gender", formData.gender);
-      if (formData.profileImage instanceof File) {
-        data.append("profileImage", formData.profileImage);
-      }
+      Object.keys(formData).forEach((key) => {
+        if (key === "profileImage" && formData[key] instanceof File) {
+          data.append("profileImage", formData[key]);
+        } else {
+          data.append(key, formData[key]);
+        }
+      });
 
       const res = await axios.put(`http://localhost:5000/users/${userId}`, data, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
       setUser(res.data.user);
-      setFormData({ ...formData, profileImage: res.data.user.profileImage });
-      setPreviewImage(res.data.user.profileImage);
+      setPreviewImage(res.data.user.profileImage ? `http://localhost:5000${res.data.user.profileImage}` : "/images/profile.png");
       setIsEditing(false);
       alert("Profile updated successfully!");
     } catch (err) {
@@ -105,7 +104,7 @@ export default function UserProfile() {
 
   return (
     <div className="profile-container">
-      <h2>User Profile</h2>
+      <h2>Instructor Profile</h2>
 
       <div className="profile-info">
         <div className="profile-image">
@@ -147,6 +146,7 @@ export default function UserProfile() {
             <option value="">Select</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
+            <option value="Other">Other</option>
           </select>
         ) : (
           <span>{user.gender || "-"}</span>

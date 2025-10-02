@@ -27,27 +27,30 @@ export default function Register() {
     notes: "",
   });
 
+  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  // Validate form before submission
   const validateForm = async () => {
     // Common validations
     if (!formData.userName.trim()) return alert("Username is required!");
     if (!formData.email.trim()) return alert("Email is required!");
     if (!formData.password.trim()) return alert("Password is required!");
     if (!formData.contactNo.trim()) return alert("Contact number is required!");
-    if (formData.contactNo.length !== 10) return alert("Contact number must be exactly 10 digits!");
+    if (!/^\d{10}$/.test(formData.contactNo))
+      return alert("Contact number must be exactly 10 digits!");
     if (formData.role !== "gym" && !formData.dob) return alert("Date of Birth is required!");
 
-    // Check if username exists
+    // Check username uniqueness
     try {
-      const checkResponse = await axios.get(`http://localhost:5000/users/check-username/${encodeURIComponent(formData.userName)}`
-);
-      if (checkResponse.data.exists) {
+      const checkResponse = await axios.get(
+        `http://localhost:5000/users/check-username/${encodeURIComponent(formData.userName)}`
+      );
+      if (checkResponse.data.exists)
         return alert("Username already exists! Please choose another.");
-      }
     } catch (err) {
       console.error("Username check error:", err);
       return alert("Failed to check username availability");
@@ -56,25 +59,30 @@ export default function Register() {
     // Role-specific validations
     if (formData.role === "gym") {
       if (!formData.address.trim()) return alert("Gym address is required!");
-      if (!formData.hours || Number(formData.hours) <= 0) return alert("Opening hours must be a positive number!");
-      if (!formData.membershipFee || Number(formData.membershipFee) <= 0) return alert("Membership fee must be a positive number!");
+      if (!formData.hours || Number(formData.hours) <= 0)
+        return alert("Opening hours must be a positive number!");
+      if (!formData.membershipFee || Number(formData.membershipFee) <= 0)
+        return alert("Membership fee must be a positive number!");
     }
 
     if (formData.role === "trainer") {
       if (!formData.expertise.trim()) return alert("Trainer expertise is required!");
-      if (formData.experience === "" || Number(formData.experience) < 0) return alert("Experience must be 0 or positive!");
-      formData.sessionType = "Online"; // enforce online only
+      if (formData.experience === "" || Number(formData.experience) < 0)
+        return alert("Experience must be 0 or positive!");
+      formData.sessionType = "Online"; // enforce online sessions
     }
 
     if (formData.role === "admin") {
       if (!formData.joiningDate) return alert("Joining date is required!");
       const today = new Date().toISOString().split("T")[0];
-      if (formData.joiningDate > today) return alert("Joining date cannot be in the future!");
+      if (formData.joiningDate > today)
+        return alert("Joining date cannot be in the future!");
     }
 
     return true;
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     const valid = await validateForm();
@@ -90,6 +98,7 @@ export default function Register() {
     }
   };
 
+  // Render form (UI untouched)
   return (
     <div className="register-page">
       <div className="register-card">
@@ -97,7 +106,6 @@ export default function Register() {
           <img src="/favicon.ico" alt="Logo" /> Create Account
         </h2>
         <form className="register-form" onSubmit={handleSubmit}>
-
           {/* Common Fields */}
           <label htmlFor="userName">Username <span className="required">*</span></label>
           <input type="text" id="userName" name="userName" placeholder="Enter your username" value={formData.userName} onChange={handleChange} />

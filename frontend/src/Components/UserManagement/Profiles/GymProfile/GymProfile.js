@@ -13,10 +13,6 @@ export default function GymProfile() {
     userName: "",
     email: "",
     contactNo: "",
-    dob: "",
-    gender: "",
-    profileImage: "",
-    type: "",
     joiningDate: "",
     notes: "",
     address: "",
@@ -24,9 +20,11 @@ export default function GymProfile() {
     membershipFee: "",
     facilities: "",
     description: "",
+    profileImage: "",
   });
-  const [previewImage, setPreviewImage] = useState("");
+  const [previewImage, setPreviewImage] = useState("/images/profile.png");
 
+  // Fetch user data
   useEffect(() => {
     if (!userId) return navigate("/login");
 
@@ -34,24 +32,22 @@ export default function GymProfile() {
       try {
         const res = await axios.get(`http://localhost:5000/users/${userId}`);
         const u = res.data.user;
+
         setUser(u);
         setFormData({
           userName: u.userName || "",
           email: u.email || "",
           contactNo: u.contactNo || "",
-          dob: u.dob ? u.dob.split("T")[0] : "",
-          gender: u.gender || "",
-          type: u.type || "",
           joiningDate: u.joiningDate ? u.joiningDate.split("T")[0] : "",
           notes: u.notes || "",
-          profileImage: u.profileImage || "/uploads/default-profile.png",
           address: u.address || "",
           hours: u.hours || "",
           membershipFee: u.membershipFee || "",
           facilities: u.facilities || "",
           description: u.description || "",
+          profileImage: u.profileImage || "",
         });
-        setPreviewImage(u.profileImage || "/uploads/default-profile.png");
+        setPreviewImage(u.profileImage ? `http://localhost:5000${u.profileImage}` : "/images/profile.png");
       } catch (err) {
         console.error("Error fetching user:", err);
         alert("Failed to load profile.");
@@ -89,8 +85,7 @@ export default function GymProfile() {
       });
 
       setUser(res.data.user);
-      setFormData({ ...formData, profileImage: res.data.user.profileImage });
-      setPreviewImage(res.data.user.profileImage);
+      setPreviewImage(res.data.user.profileImage ? `http://localhost:5000${res.data.user.profileImage}` : "/images/profile.png");
       setIsEditing(false);
       alert("Profile updated successfully!");
     } catch (err) {
@@ -120,6 +115,7 @@ export default function GymProfile() {
   return (
     <div className="profile-container">
       <h2>Gym Profile</h2>
+
       <div className="profile-info">
         <div className="profile-image">
           <img src={previewImage} alt="Profile" />
@@ -147,25 +143,6 @@ export default function GymProfile() {
           <span>{user.contactNo || "-"}</span>
         )}
 
-        <label>Date of Registration:</label>
-        {isEditing ? (
-          <input type="date" name="dob" value={formData.dob} onChange={handleChange} />
-        ) : (
-          <span>{user.dob ? user.dob.split("T")[0] : "-"}</span>
-        )}
-
-        <label>Type:</label>
-        {isEditing ? (
-          <select name="type" value={formData.type} onChange={handleChange}>
-            <option value="">Select</option>
-            <option value="Fitness">Fitness</option>
-            <option value="Yoga">Yoga</option>
-            <option value="CrossFit">CrossFit</option>
-          </select>
-        ) : (
-          <span>{user.type || "-"}</span>
-        )}
-
         <label>Date of Joining:</label>
         {isEditing ? (
           <input type="date" name="joiningDate" value={formData.joiningDate} onChange={handleChange} />
@@ -180,7 +157,7 @@ export default function GymProfile() {
           <span>{user.notes || "-"}</span>
         )}
 
-        <label>Gym Address:</label>
+        <label>Address:</label>
         {isEditing ? (
           <input type="text" name="address" value={formData.address} onChange={handleChange} />
         ) : (
@@ -201,7 +178,7 @@ export default function GymProfile() {
           <span>{user.membershipFee || "-"}</span>
         )}
 
-        <label>Available Facilities:</label>
+        <label>Facilities:</label>
         {isEditing ? (
           <input type="text" name="facilities" value={formData.facilities} onChange={handleChange} />
         ) : (

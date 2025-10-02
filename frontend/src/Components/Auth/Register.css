@@ -1,22 +1,30 @@
 /* Page Background */
 .register-page {
-  background-color: black;
+  background-color: black; /* solid black background */
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   font-family: 'Arial', sans-serif;
+  padding: 20px;
 }
 
 /* Card */
 .register-card {
-  background-color: white;
-  padding: 50px 60px;
-  border-radius: 15px;
-  width: 600px;
+  background-color: #ffffff;
+  padding: 40px 50px;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 650px;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.register-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
 }
 
 /* Title with logo */
@@ -24,51 +32,89 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 15px;
-  font-size: 32px;
+  margin-bottom: 25px;
+  font-size: 30px;
+  font-weight: 700;
+  color: #000; /* black text for title */
+  gap: 15px;
   text-transform: uppercase;
-  color: black;
-  gap: 10px;
 }
 
 .register-title img {
-  height: 80px;
+  height: 70px;
   width: auto;
 }
 
-/* Form */
+/* Form Labels */
+.register-form label {
+  font-weight: 600;
+  color: #000; /* black labels for visibility */
+  margin-top: 10px;
+  display: block;
+  font-size: 14px;
+}
+
+/* Required field asterisk */
+label.required::after {
+  content: " *";
+  color: red;
+}
+
+/* Form Inputs */
 .register-form input,
 .register-form select,
 .register-form textarea {
   width: 100%;
-  padding: 12px;
-  margin-top: 10px;
-  border-radius: 8px;
+  padding: 12px 15px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border-radius: 10px;
   border: 1px solid #ccc;
   font-size: 14px;
+  transition: all 0.3s ease;
+  color: #000; /* input text black */
+  background-color: #fff; /* input background white */
 }
 
+.register-form input::placeholder,
+.register-form textarea::placeholder {
+  color: #888; /* placeholder text */
+}
+
+.register-form input:focus,
+.register-form select:focus,
+.register-form textarea:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Textarea */
 .register-form textarea {
   resize: vertical;
-  min-height: 60px;
+  min-height: 80px;
+  font-size: 14px;
+  padding: 12px;
 }
 
 /* Button */
 .register-form button {
   width: 100%;
   padding: 14px;
-  margin-top: 25px;
-  background-color: green;
+  margin-top: 20px;
+  background-color: #28a745;
   color: white;
-  font-weight: bold;
+  font-weight: 600;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
   font-size: 16px;
+  transition: all 0.3s ease;
 }
 
 .register-form button:hover {
-  background-color: darkgreen;
+  background-color: #218838;
+  transform: scale(1.02);
 }
 
 /* Links */
@@ -76,7 +122,7 @@
   text-align: center;
   margin-top: 20px;
   font-size: 14px;
-  color: black;
+  color: #fff; /* make links visible on black background */
 }
 
 .login-link .link-text {
@@ -85,11 +131,54 @@
   text-decoration: underline;
 }
 
+.login-link .link-text:hover {
+  color: #0056b3;
+}
+
 /* Footer copyright */
 .copyright-text {
   text-align: center;
   margin-top: 20px;
   font-size: 12px;
-  color: #888888;
+  color: #ccc; /* lighter text for visibility on black */
   font-style: italic;
+}
+
+/* Scrollbar Styling for card */
+.register-card::-webkit-scrollbar {
+  width: 6px;
+}
+
+.register-card::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.register-card::-webkit-scrollbar-thumb {
+  background: #007bff;
+  border-radius: 10px;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  .register-card {
+    padding: 30px 20px;
+    width: 100%;
+  }
+
+  .register-title {
+    font-size: 24px;
+    gap: 10px;
+  }
+
+  .register-form input,
+  .register-form select,
+  .register-form textarea {
+    font-size: 13px;
+  }
+
+  .register-form button {
+    font-size: 15px;
+    padding: 12px;
+  }
 }

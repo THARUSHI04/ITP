@@ -19,7 +19,7 @@ export default function AdminProfile() {
     notes: "",
     profileImage: "",
   });
-  const [previewImage, setPreviewImage] = useState("");
+  const [previewImage, setPreviewImage] = useState("/images/profile.png");
 
   useEffect(() => {
     if (!userId) return navigate("/login");
@@ -37,9 +37,9 @@ export default function AdminProfile() {
           gender: u.gender || "",
           joiningDate: u.joiningDate ? u.joiningDate.split("T")[0] : "",
           notes: u.notes || "",
-          profileImage: u.profileImage || "/uploads/default-profile.png",
+          profileImage: u.profileImage || "",
         });
-        setPreviewImage(u.profileImage || "/uploads/default-profile.png");
+        setPreviewImage(u.profileImage ? `http://localhost:5000${u.profileImage}` : "/images/profile.png");
       } catch (err) {
         console.error("Error fetching admin:", err);
         alert("Failed to load profile.");
@@ -77,8 +77,7 @@ export default function AdminProfile() {
       });
 
       setUser(res.data.user);
-      setFormData({ ...formData, profileImage: res.data.user.profileImage });
-      setPreviewImage(res.data.user.profileImage);
+      setPreviewImage(res.data.user.profileImage ? `http://localhost:5000${res.data.user.profileImage}` : "/images/profile.png");
       setIsEditing(false);
       alert("Profile updated successfully!");
     } catch (err) {
