@@ -29,9 +29,15 @@ const orderItemSchema = new Schema(
 // Orders Schema
 const orderSchema = new Schema(
   {
+    order_number: {
+      type: String,
+      required: true,
+      unique: true,
+      index: true,
+    },
     member: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // buyer/customer
+      ref: "UserModel", // buyer/customer (matches actual model name)
       required: true,
     },
     order_date: {
@@ -46,6 +52,17 @@ const orderSchema = new Schema(
       type: String,
       enum: ["pending", "paid", "shipped", "delivered", "cancelled"],
       default: "pending",
+    },
+    shipping_address: {
+      type: String,
+    },
+    contact_phone: {
+      type: String,
+    },
+    payment_method: {
+      type: String,
+      enum: ["Cash on Delivery", "Card Payment"],
+      default: "Cash on Delivery",
     },
     items: [orderItemSchema], // array of items
   },

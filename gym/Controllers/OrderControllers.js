@@ -92,10 +92,29 @@ const deleteOrder = async (req, res) => {
   }
 };
 
+// Added minimal placeholders and proper exports to fix ReferenceError and undefined handlers
+const payOrder = async (req, res) => {
+  try {
+    return res.status(501).json({ message: "payOrder not implemented" });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+const createCheckoutSession = async (req, res) => {
+  try {
+    return res.status(501).json({ message: "createCheckoutSession not implemented" });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
 module.exports = {
   createOrder,
   getAllOrders,
   getOrderById,
   updateOrderStatus,
   deleteOrder,
+  payOrder,
+  createCheckoutSession,
 };

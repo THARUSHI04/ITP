@@ -48,7 +48,6 @@ import UpdateFinance from "./Components/FinanceManagement/UpdateFinance";
 import UserSubscriptionPlan from "./Components/FinanceManagement/UserSubscriptionPlan";
 import FinanceCheckout from "./Components/FinanceManagement/FinanceCheckout";
 
-
 //Store
 import Store from "./Components/Store/Store";
 import ShowItems from "./Components/Store/ShowItems";
@@ -58,6 +57,8 @@ import Cart from "./Components/Store/Cart";
 //import Cart from "./Components/Store/Cart";
 import AddStoreItem from "./Components/Store/AddStoreItem";
 import UpdateItem from "./Components/Store/UpdateItem";
+import StoreList from "./Components/Store/Store";
+import Checkout from "./Components/Store/Checkout";
 
 function Layout() {
   const location = useLocation();
@@ -82,7 +83,7 @@ function Layout() {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/features" element={<Features />} />
-        <Route path="/store" element={<Store />} />
+        <Route path="/store" element={<ShowItems />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
@@ -130,6 +131,7 @@ function Layout() {
         <Route path="cart" element={<Cart />}/>
         <Route path="/AddStoreItem" element={<AddStoreItem />} />
         <Route path="/store/:id" element={<UpdateItem />} />
+        <Route path="/checkout" element={<Checkout />} />
 
       </Routes>
     </>

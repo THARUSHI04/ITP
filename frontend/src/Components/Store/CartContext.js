@@ -8,13 +8,19 @@ export const CartProvider = ({ children }) => {
 
   // Add item to cart (with quantity support)
   const addToCart = (product) => {
+    if (!product || typeof product.stock !== "number" || product.stock <= 0) {
+      // silently ignore or could surface a toast in UI layer
+      return;
+    }
     setCartItems((prev) => {
       const existing = prev.find((item) => item._id === product._id);
       if (existing) {
+        const nextQuantity = existing.quantity + 1;
+        if (nextQuantity > product.stock) {
+          return prev; // don't exceed stock
+        }
         return prev.map((item) =>
-          item._id === product._id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
+          item._id === product._id ? { ...item, quantity: nextQuantity } : item
         );
       }
       return [...prev, { ...product, quantity: 1 }];

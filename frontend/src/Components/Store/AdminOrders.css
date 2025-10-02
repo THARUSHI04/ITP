@@ -1,0 +1,235 @@
+/* AdminOrders.css */
+.admin-orders {
+    padding: 20px;
+    background: #f9fafb;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .orders-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .orders-header h2 {
+    font-size: 22px;
+    color: #222;
+  }
+  
+  .btn {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  
+  .btn.pdf {
+    background: #2563eb;
+    color: white;
+  }
+  
+  .btn.view {
+    background: #16a34a;
+    color: white;
+  }
+  
+  .btn.update {
+    background: #f59e0b;
+    color: white;
+    margin-left: 8px;
+  }
+  
+  .btn.danger {
+    background: #dc2626;
+    color: white;
+    margin-left: 8px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 25px;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  
+  thead {
+    background: #2563eb;
+  color: #111827; /* dark text for better contrast if background turns light */
+  }
+  
+  thead th {
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 15px;
+  color: #111827; /* ensure headers are black/dark */
+  }
+  
+  tbody td {
+    padding: 12px;
+    border-bottom: 1px solid #e5e7eb;
+  font-size: 14px;
+  color: #111827; /* table body text black */
+  }
+  
+  tbody tr:nth-child(even) {
+  background: #f3f4f6;
+  }
+  
+  tbody tr:hover {
+    background: #eef2ff;
+  }
+  
+  .status-cell {
+    display: flex;
+    align-items: center;
+  }
+  
+  .status-select {
+    padding: 6px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+  
+  .orders-actions button {
+    margin-right: 6px;
+  }
+  
+  /* Details Card */
+  .details-card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+  
+  .details-card h3 {
+    margin-bottom: 15px;
+    font-size: 18px;
+    color: #1f2937;
+  }
+  
+  .details-card p {
+    margin: 5px 0;
+    font-size: 14px;
+  }
+  
+  .details-card ul {
+    margin: 10px 0 15px 15px;
+    font-size: 14px;
+  }
+  
+  .details-card strong {
+    color: #111827;
+  }
+  
+  /* Responsive Table */
+  @media (max-width: 768px) {
+    table, thead, tbody, th, td, tr {
+      display: block;
+    }
+  
+    thead {
+      display: none;
+    }
+  
+    tbody tr {
+      margin-bottom: 12px;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 12px;
+    }
+  
+    tbody td {
+      border: none;
+      padding: 8px 0;
+      display: flex;
+      justify-content: space-between;
+    }
+  
+    tbody td:before {
+      content: attr(data-label);
+      font-weight: 600;
+      margin-right: 10px;
+      color: #374151;
+    }
+  }
+
+/* Modal styles */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  width: 95%;
+  max-width: 720px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.modal-close {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.modal-body {
+  padding: 16px;
+  color: #111827; /* dark readable text */
+}
+
+.modal-update-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin: 10px 0 16px;
+}
+
+.modal h3,
+.modal p,
+.modal li,
+.modal label {
+  color: #111827; /* ensure all text inside modal is black/dark */
+}
+
+.modal .status-select {
+  background: #ffffff;
+  color: #111827;
+  border: 1px solid #cbd5e1;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 12px 16px;
+  background: #f8fafc;
+}
+  
