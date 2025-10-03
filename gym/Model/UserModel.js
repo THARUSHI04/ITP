@@ -11,6 +11,7 @@ const userSchema = new Schema(
     gender: { type: String, required: true, enum: ["Male", "Female", "Other"] },
     role: { type: String, required: true, enum: ["user", "trainer", "gym", "admin"], lowercase: true },
     isApproved: { type: Boolean, default: function () { return this.role !== "gym"; } },
+    isDisabled: { type: Boolean, default: false }, // <-- Added this line
     profileImage: { type: String, default: "/images/profile.png" },
 
     // Gym fields

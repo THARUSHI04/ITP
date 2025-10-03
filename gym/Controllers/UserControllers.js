@@ -1,10 +1,12 @@
+const mongoose = require("mongoose");
 const User = require("../Model/UserModel");
 const fs = require("fs");
 const path = require("path");
 
-// Save profile image and return relative path
+// --- Save profile image and return relative path ---
 const saveProfileImage = (file) => {
   if (!file) return "/images/profile.png";
+
   const uploadDir = path.join(__dirname, "..", "uploads");
   if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
 
@@ -12,7 +14,7 @@ const saveProfileImage = (file) => {
   const filePath = path.join(uploadDir, fileName);
   fs.renameSync(file.path, filePath);
 
-  return `/uploads/${fileName}`; // path stored in DB
+  return `/uploads/${fileName}`;
 };
 
 // --- Check username availability ---
@@ -46,6 +48,7 @@ const addUsers = async (req, res) => {
       joiningDate: req.body.joiningDate ? new Date(req.body.joiningDate) : undefined,
       experience: req.body.experience ? Number(req.body.experience) : undefined,
       membershipFee: req.body.membershipFee ? Number(req.body.membershipFee) : undefined,
+      isDisabled: req.body.isDisabled || false,
     });
 
     const savedUser = await newUser.save();
@@ -66,18 +69,30 @@ const getById = async (req, res) => {
   }
 };
 
-// --- Update user ---
+// --- Update user (Admin + User) ---
 const updateUser = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     if (!user) return res.status(404).json({ message: "User not found" });
 
+    // --- Explicit updates ---
+    if (req.body.role !== undefined) user.role = req.body.role.toLowerCase();
+    if (req.body.isDisabled !== undefined) user.isDisabled = req.body.isDisabled;
+
+    // --- Update other fields ---
     Object.keys(req.body).forEach((key) => {
-      if (key === "dob" || key === "joiningDate") user[key] = req.body[key] ? new Date(req.body[key]) : undefined;
-      else if (key === "experience" || key === "membershipFee") user[key] = req.body[key] ? Number(req.body[key]) : undefined;
-      else user[key] = req.body[key];
+      if (key !== "role" && key !== "isDisabled" && key !== "profileImage") {
+        if (key === "dob" || key === "joiningDate") {
+          user[key] = req.body[key] ? new Date(req.body[key]) : undefined;
+        } else if (key === "experience" || key === "membershipFee") {
+          user[key] = req.body[key] ? Number(req.body[key]) : undefined;
+        } else {
+          user[key] = req.body[key];
+        }
+      }
     });
 
+    // --- Update profile image if provided ---
     if (req.file) user.profileImage = saveProfileImage(req.file);
 
     const savedUser = await user.save();
@@ -98,12 +113,14 @@ const deleteUser = async (req, res) => {
   }
 };
 
-// --- Login ---
+// --- Login user ---
 const loginUser = async (req, res) => {
   try {
     const { userName, password } = req.body;
     const user = await User.findOne({ userName });
     if (!user) return res.status(404).json({ message: "User not found" });
+
+    if (user.isDisabled) return res.status(403).json({ message: "User account is disabled" });
     if (user.password !== password) return res.status(401).json({ message: "Invalid password" });
 
     res.status(200).json({ user });

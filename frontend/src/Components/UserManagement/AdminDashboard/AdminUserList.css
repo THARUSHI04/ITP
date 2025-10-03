@@ -1,0 +1,141 @@
+/* Container */
+.admin-container {
+  padding: 20px;
+  background-color: #f7f7f7;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  color: #000; /* text black */
+}
+
+.admin-title {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* Filters */
+.filters {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.search-input,
+.role-select {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  font-size: 14px;
+}
+
+.search-input:focus,
+.role-select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.pdf-btn {
+  padding: 8px 15px;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.pdf-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Table */
+.table-container {
+  overflow-x: auto;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 700px;
+}
+
+.user-table th,
+.user-table td {
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.user-table th {
+  background-color: #e2e2e2;
+}
+
+.user-table tr:hover {
+  background-color: #f1f1f1;
+  transition: background-color 0.2s;
+}
+
+/* Profile Image */
+.profile-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Role select in table */
+.role-select-table {
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+/* Status */
+.active {
+  color: green;
+  font-weight: bold;
+}
+
+.disabled {
+  color: red;
+  font-weight: bold;
+}
+
+/* Buttons */
+.disable-btn {
+  padding: 5px 10px;
+  background-color: red;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.enable-btn {
+  padding: 5px 10px;
+  background-color: green;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.disable-btn:hover {
+  background-color: darkred;
+}
+
+.enable-btn:hover {
+  background-color: darkgreen;
+}
+
+/* No users */
+.no-users {
+  text-align: center;
+  padding: 15px;
+  color: #555;
+}
