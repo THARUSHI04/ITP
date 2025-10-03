@@ -14,10 +14,7 @@ function UserSubscriptionPlan() {
     const fetchPlans = async () => {
       try {
         const response = await axios.get("http://localhost:5000/finance");
-        const fetchedPlans = Array.isArray(response.data)
-          ? response.data
-          : response.data.data || [];
-        setPlans(fetchedPlans);
+        setPlans(response.data); // ✅ directly set the array from backend
         setLoading(false);
       } catch (err) {
         setError("❌ Failed to load plans");

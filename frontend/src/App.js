@@ -48,6 +48,7 @@ import UpdateFinance from "./Components/FinanceManagement/UpdateFinance";
 import UserSubscriptionPlan from "./Components/FinanceManagement/UserSubscriptionPlan";
 import FinanceCheckout from "./Components/FinanceManagement/FinanceCheckout";
 
+
 //Store
 import Store from "./Components/Store/Store";
 import ShowItems from "./Components/Store/ShowItems";
@@ -118,7 +119,8 @@ function Layout() {
         <Route path="/subscribe" element={<SubscriptionForm />} /> {/* ✅ alternative route */}
         <Route path="/finance/update/:id" element={<UpdateFinance />} />
         <Route path="/subscriptions" element={<UserSubscriptionPlan />} />
-        <Route path="/finance/checkout" element={<FinanceCheckout />} />   
+         <Route path="/checkout" element={<FinanceCheckout />} />
+       
 
 
 

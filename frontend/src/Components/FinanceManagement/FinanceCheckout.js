@@ -20,9 +20,11 @@ const stripePromise = loadStripe(
 function CheckoutForm({ plan }) {
   const stripe = useStripe();
   const elements = useElements();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [paymentId, setPaymentId] = useState(null); // ✅ store payment id for receipt
 
   const handlePayment = async (e) => {
     e.preventDefault();
@@ -30,7 +32,8 @@ function CheckoutForm({ plan }) {
     setError("");
 
     try {
-      const { data } = await axios.post("http://localhost:5000/create-payment-intent", {
+      // ✅ Call backend at /payment/create-payment-intent
+      const { data } = await axios.post("http://localhost:5000/payment/create-payment-intent", {
         amount: plan.price * 100,
       });
 
@@ -47,37 +50,13 @@ function CheckoutForm({ plan }) {
       } else if (result.paymentIntent.status === "succeeded") {
         alert("✅ Payment Successful!");
         setPaymentSuccess(true);
+        setPaymentId(result.paymentIntent.id); // ✅ save paymentIntent id
       }
     } catch (err) {
       console.error("Payment error:", err);
       setError("❌ Failed to process payment.");
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleDownloadReceipt = async () => {
-    try {
-      const params = new URLSearchParams({
-        planName: plan.planName,
-        price: plan.price,
-        durationMonths: plan.durationMonths,
-        email: "customer@example.com",
-      });
-
-      const response = await axios.get(`http://localhost:5000/download-receipt?${params.toString()}`, {
-        responseType: "blob",
-      });
-
-      const blob = new Blob([response.data], { type: "application/pdf" });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "receipt.pdf";
-      a.click();
-      window.URL.revokeObjectURL(url);
-    } catch (err) {
-      console.error("❌ Failed to download receipt:", err);
     }
   };
 
@@ -115,10 +94,25 @@ function CheckoutForm({ plan }) {
         </button>
       </form>
 
-      {paymentSuccess && (
-        <button className="btn download-btn" onClick={handleDownloadReceipt}>
-          Download Receipt
-        </button>
+      {/* ✅ Show receipt + back buttons after success */}
+      {paymentSuccess && paymentId && (
+        <div style={{ marginTop: "20px" }}>
+          <a
+            href={`http://localhost:5000/payment/download-receipt/${paymentId}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+          <button className="btn proceed-btn">Download Receipt</button>
+          </a>
+          
+          <button
+            className="btn back-btn"
+            style={{ marginLeft: "10px" }}
+            onClick={() => navigate("/subscriptions")}
+          >
+            Back to Subscriptions
+          </button>
+        </div>
       )}
     </div>
   );

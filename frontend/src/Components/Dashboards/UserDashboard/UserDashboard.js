@@ -9,6 +9,7 @@ import UserSchedule from "../../ScheduleManagement/UserSchedule/UserSchedule";
 import UserSubscriptionPlan from "../../FinanceManagement/UserSubscriptionPlan";
 import ShowItems from "../../Store/ShowItems";
 
+
 // Dashboard sections
 function Bookings() {
   return (
