@@ -3,7 +3,8 @@ import "./Store.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useReactToPrint } from "react-to-print";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 const URL = "http://localhost:5000/store";
 
@@ -65,13 +66,35 @@ function StoreList() {
   const [stores, setStores] = useState([]);
   const componentRef = useRef();
 
-  // Download PDF
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
-    documentTitle: "Store_Items_Report",
-    onAfterPrint: () => alert("Store Items Report Successfully Downloaded!"),
-    removeAfterPrint: true, // optional: remove temporary styles after print
-  });
+  // Download PDF via jsPDF + autoTable
+  const handleDownloadPdf = () => {
+    try {
+      const doc = new jsPDF();
+      doc.setFontSize(16);
+      doc.text("Store Items Report", 14, 16);
+
+      const body = (stores || []).map((s) => [
+        s._id || "-",
+        s.name || "-",
+        s.brand || "-",
+        s.catogary || s.category || "-",
+        s.price ?? "-",
+        s.stock ?? "-",
+      ]);
+
+      autoTable(doc, {
+        startY: 22,
+        head: [["ID", "Name", "Brand", "Category", "Price", "Stock"]],
+        body,
+        styles: { fontSize: 10 },
+        headStyles: { fillColor: [37, 99, 235] },
+      });
+
+      doc.save("Store_Items_Report.pdf");
+    } catch (e) {
+      alert("Failed to generate PDF");
+    }
+  };
 
   useEffect(() => {
     fetchHandler()
@@ -89,7 +112,7 @@ function StoreList() {
         <div>
           <Link to="/ShowItems" className="nav-link">View Store Items</Link>
           <Link to="/AddStoreItem" className="nav-link">Add New Item</Link>
-          <button className="dwn-btn" onClick={handlePrint}>Download Report</button>
+          <button className="dwn-btn" onClick={handleDownloadPdf}>Download Report</button>
         </div>
       </nav>
 

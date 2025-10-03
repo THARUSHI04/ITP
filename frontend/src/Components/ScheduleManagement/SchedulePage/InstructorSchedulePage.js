@@ -1,7 +1,6 @@
 // src/Components/ScheduleManagement/SchedulePage/InstructorSchedulePage.js
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import "./InstructorSchedulePage.css";
 
 const InstructorSchedulePage = () => {
@@ -11,7 +10,6 @@ const InstructorSchedulePage = () => {
   const [editedSchedule, setEditedSchedule] = useState({ schedule: "", timeSlot: "" });
   const [changeRequests, setChangeRequests] = useState([]); // NEW: State for change requests
 
-  const navigate = useNavigate();
   const URL = "http://localhost:5000/user-schedule-creations";
   const CHANGE_REQUEST_URL = "http://localhost:5000/schedule-change-requests"; // NEW: Endpoint for change requests
 

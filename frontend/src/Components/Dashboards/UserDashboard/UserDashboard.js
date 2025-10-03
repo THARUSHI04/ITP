@@ -7,6 +7,7 @@ import UserProfile from "../../UserManagement/Profiles/UserProfile/UserProfile";
 import ScheduleRequestForm from "../../ScheduleManagement/ScheduleRequest/ScheduleRequestForm";
 import UserSchedule from "../../ScheduleManagement/UserSchedule/UserSchedule";
 import UserSubscriptionPlan from "../../FinanceManagement/UserSubscriptionPlan";
+import ShowItems from "../../Store/ShowItems";
 
 // Dashboard sections
 function Bookings() {
@@ -44,6 +45,8 @@ function UserDashboard() {
         return <Bookings />;
       case "purchases":
         return <MyPurchases />;
+      case "store":
+        return <ShowItems />;
       case "schedules":
         return <UserSchedule userId={userId} />;
       default:
@@ -53,6 +56,7 @@ function UserDashboard() {
 
   return (
     <div className="user-dashboard">
+      
       <aside className="sidebar">
         <ul>
           <li
@@ -85,11 +89,19 @@ function UserDashboard() {
           >
             My Purchases
           </li>
+
+          
           <li
             className={activeTab === "schedules" ? "active" : ""}
             onClick={() => setActiveTab("schedules")}
           >
             Schedule
+          </li>
+          <li
+            className={activeTab === "store" ? "active" : ""}
+            onClick={() => setActiveTab("store")}
+          >
+            Store
           </li>
         </ul>
       </aside>

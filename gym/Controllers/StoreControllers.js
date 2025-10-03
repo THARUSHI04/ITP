@@ -3,22 +3,16 @@ const Store = require("../Model/StoreModel");
 //Data Display
 
 const getAllStore = async (req, res, next) => {
-    let store;
-
-    //get all Store
-    try{
-        const store = await Store.find();
-        res.json(store);
-    }catch(err){
+    try {
+        const stores = await Store.find();
+        if (!stores || stores.length === 0) {
+            return res.status(404).json({ message: "Store not found" });
+        }
+        return res.status(200).json(stores);
+    } catch (err) {
         console.log(err);
+        return res.status(500).json({ message: "Failed to fetch stores" });
     }
-
-    //not found
-    if(!store){
-        return req.status(404).json({message:"Store not found"});
-    }
-    //Display all Store
-    return res.status(200).json({ store });
 };
 
 //Data Insert

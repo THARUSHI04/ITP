@@ -3,7 +3,14 @@ const Store = require("../Model/StoreModel");
 
 // Create a new order
 const createOrder = async (req, res) => {
-  const { member, items } = req.body;
+  const {
+    order_number: clientOrderNumber,
+    member,
+    items,
+    shipping_address,
+    contact_phone,
+    payment_method,
+  } = req.body;
 
   try {
     let totalAmount = 0;
@@ -27,9 +34,13 @@ const createOrder = async (req, res) => {
     );
 
     const order = new Order({
+      order_number: clientOrderNumber || `ORD-${Date.now()}`,
       member,
       items: processedItems,
       total_amount: totalAmount,
+      shipping_address,
+      contact_phone,
+      payment_method,
     });
 
     await order.save();

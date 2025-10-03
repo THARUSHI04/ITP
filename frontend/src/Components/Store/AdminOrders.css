@@ -6,7 +6,7 @@
   }
   
   .orders-header {
-    display: flex;
+    
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
@@ -15,14 +15,40 @@
   .orders-header h2 {
     font-size: 22px;
     color: #222;
+
   }
   
-  .btn {
-    padding: 6px 12px;
+  /* Keep Download PDF aligned neatly on the right */
+  .orders-header .btn.pdf {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px; /* tighter width */
+    font-size: 13px;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: #fff;
+    border: 1px solid #1e40af;
+    box-shadow: 0 2px 6px rgba(29, 78, 216, 0.25);
+    transition: transform 0.1s ease, box-shadow 0.2s ease, background 0.2s ease;
+  }
+
+  .orders-header .btn.pdf:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(29, 78, 216, 0.35);
+  }
+
+  .orders-header .btn.pdf:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(29, 78, 216, 0.25);
+  }
+  
+.btn {
+    padding: 6px 12px; /* reduced size */
     border-radius: 6px;
     border: none;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 14px; /* slightly smaller */
     font-weight: 500;
   }
   
@@ -100,6 +126,19 @@
   
   .orders-actions button {
     margin-right: 6px;
+  }
+  
+  /* Align action buttons in a clean row with consistent gaps */
+  .orders-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .orders-actions .btn {
+    margin-right: 0; /* use gap instead of right margins */
+    padding: 4px 8px; /* smaller action buttons */
+    font-size: 12px;
   }
   
   /* Details Card */

@@ -57,7 +57,6 @@ import Cart from "./Components/Store/Cart";
 //import Cart from "./Components/Store/Cart";
 import AddStoreItem from "./Components/Store/AddStoreItem";
 import UpdateItem from "./Components/Store/UpdateItem";
-import StoreList from "./Components/Store/Store";
 import Checkout from "./Components/Store/Checkout";
 
 function Layout() {
@@ -119,7 +118,7 @@ function Layout() {
         <Route path="/subscribe" element={<SubscriptionForm />} /> {/* ✅ alternative route */}
         <Route path="/finance/update/:id" element={<UpdateFinance />} />
         <Route path="/subscriptions" element={<UserSubscriptionPlan />} />
-        <Route path="/checkout" element={<FinanceCheckout />} />   
+        <Route path="/finance/checkout" element={<FinanceCheckout />} />   
 
 
 

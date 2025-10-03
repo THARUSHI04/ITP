@@ -3,7 +3,8 @@
 // Comments added to explain key logic and UI sections
 import React, { useEffect, useRef, useState } from "react"; // React + hooks
 import axios from "axios"; // HTTP client for API requests
-import { useReactToPrint } from "react-to-print"; // Export to PDF via print
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 import "./AdminOrders.css"; // Styles for table and details
 
 function AdminOrders() {
@@ -14,16 +15,38 @@ function AdminOrders() {
   const [selected, setSelected] = useState(null);
   const [modalMode, setModalMode] = useState(null); // 'view' | 'update' | null
   const [saving, setSaving] = useState(false);
-  const printRef = useRef(); // ref to printable area
+  const printRef = useRef(); // retained, though PDF generation no longer uses printing
   const [editStatuses, setEditStatuses] = useState({}); // Local edits for status per order id
   const [editShipTo, setEditShipTo] = useState({}); // Local edits for shipping address
   const [editPhone, setEditPhone] = useState({}); // Local edits for contact phone
 
-  // Configure print/export handler
-  const handlePrint = useReactToPrint({
-    content: () => printRef.current,
-    documentTitle: "Orders_Report",
-  });
+  // Generate PDF using jsPDF + autoTable
+  const handleDownloadPdf = () => {
+    try {
+      const doc = new jsPDF();
+      doc.setFontSize(16);
+      doc.text("Orders Report", 14, 16);
+
+      const tableBody = (orders || []).map((o) => [
+        o.order_number || "-",
+        o.member?.username || o.member?.userName || o.member?.email || String(o.member || "-"),
+        `LKR ${o.total_amount ?? "-"}`,
+        o.status || "-",
+      ]);
+
+      autoTable(doc, {
+        startY: 22,
+        head: [["Order No", "Customer", "Total", "Status"]],
+        body: tableBody,
+        styles: { fontSize: 10 },
+        headStyles: { fillColor: [37, 99, 235] },
+      });
+
+      doc.save("Orders_Report.pdf");
+    } catch (e) {
+      alert("Failed to generate PDF");
+    }
+  };
 
   // Load all orders for admin view
   const fetchOrders = async () => {
@@ -69,18 +92,7 @@ function AdminOrders() {
     }
   };
 
-  // Persist status change to backend and update local state
-  const handleStatusUpdate = async (orderId, status) => {
-    try {
-      const res = await axios.put(`http://localhost:5000/orders/${orderId}`, { status });
-      setOrders((prev) => prev.map((o) => (o._id === orderId ? res.data : o)));
-      if (selected?._id === orderId) setSelected(res.data);
-      setEditStatuses((prev) => ({ ...prev, [orderId]: res.data.status }));
-    } catch (err) {
-      const msg = err.response?.data?.error || err.response?.data?.message || err.message || "Failed to update status";
-      alert(msg);
-    }
-  };
+  // (Removed unused inline status update handler to resolve linter warning)
 
   const handleSaveUpdateModal = async () => {
     if (!selected) return;
@@ -115,7 +127,7 @@ function AdminOrders() {
     <div className="admin-orders">
       <div className="orders-header">
         <h2>Orders</h2>
-        <button className="btn pdf" onClick={handlePrint}>Download PDF</button>
+        <button className="btn pdf" onClick={handleDownloadPdf}>Download PDF</button>
       </div>
       {loading && <p>Loading...</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}

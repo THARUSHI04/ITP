@@ -12,6 +12,8 @@
     "axios": "^1.12.2",
     "cors": "^2.8.5",
     "express": "^5.1.0",
+    "jspdf": "^3.0.3",
+    "jspdf-autotable": "^5.0.2",
     "mongoose": "^8.18.2",
     "mongoose-sequence": "^6.0.1",
     "multer": "^2.0.2",

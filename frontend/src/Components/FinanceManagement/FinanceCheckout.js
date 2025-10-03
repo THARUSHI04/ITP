@@ -20,7 +20,6 @@ const stripePromise = loadStripe(
 function CheckoutForm({ plan }) {
   const stripe = useStripe();
   const elements = useElements();
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [paymentSuccess, setPaymentSuccess] = useState(false);

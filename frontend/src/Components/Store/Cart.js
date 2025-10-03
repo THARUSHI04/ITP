@@ -2,27 +2,40 @@
 import React from "react";
 import { useCart } from "./CartContext";
 import { Link, useNavigate } from "react-router-dom";
-// Fallback auth from localStorage role if AuthContext is unavailable
 import "./Cart.css";
 
 function Cart() {
   const { cartItems, removeFromCart, updateQuantity } = useCart();
   const navigate = useNavigate();
-  // Derive userId and role from localStorage saved by Login
-  const storedUserId = typeof window !== "undefined" ? localStorage.getItem("userId") : null;
-  const storedRole = typeof window !== "undefined" ? localStorage.getItem("role") : null;
 
-  // Handle checkout
+  // Get saved login details
+  const storedUserId =
+    typeof window !== "undefined" ? localStorage.getItem("userId") : null;
+  const storedRole =
+    typeof window !== "undefined" ? localStorage.getItem("role") : null;
+
+  const hasValidUser =
+    !!storedUserId &&
+    storedUserId !== "null" &&
+    storedUserId !== "undefined" &&
+    String(storedUserId).trim() !== "";
+
+  const normalizedRole = String(storedRole || "").trim().toLowerCase();
+  const canCheckout = hasValidUser && normalizedRole === "user";
+
+  // Checkout handler
   const handleCheckout = () => {
-    if (!storedUserId) {
-      alert("You must log in to proceed with checkout.");
+    if (!hasValidUser) {
+      alert("❌ You must log in to proceed with checkout.");
       navigate("/login");
       return;
     }
-    if (storedRole && storedRole.toLowerCase() !== "user") {
-      alert("Only customer accounts can purchase from the store.");
+    if (normalizedRole !== "user") {
+      alert("❌ Only customer accounts can purchase from the store.");
+      navigate("/login");
       return;
     }
+    // Success case
     navigate("/checkout");
   };
 
@@ -32,7 +45,7 @@ function Cart() {
 
       {cartItems.length === 0 ? (
         <p>
-          No items in cart. <Link to="/showItems">Go shopping</Link>
+          No items in cart. Go shopping from the store page.
         </p>
       ) : (
         <div className="cart-items">
@@ -64,9 +77,19 @@ function Cart() {
           </h3>
 
           {/* Checkout Button */}
-          <button className="checkout-btn" onClick={handleCheckout}>
+          <button
+            className="checkout-btn"
+            onClick={handleCheckout}
+            disabled={!canCheckout}
+            title={!canCheckout ? "Login as customer to proceed" : undefined}
+          >
             Proceed to Checkout
           </button>
+          {!canCheckout && (
+            <p style={{ marginTop: "8px" }}>
+              Please <Link to="/login">log in</Link> with a customer account to continue.
+            </p>
+          )}
         </div>
       )}
     </div>

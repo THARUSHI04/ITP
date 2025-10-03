@@ -31,17 +31,7 @@ function AddStoreItem() {
     e.preventDefault();
     console.log(input);
 
-    const sendRequest = async(input) => {
-        await axios.post("http://localhost:5000/store",{
-            name: String(input.name),
-            brand: String(input.brand),
-            image_URL: String(input.image_URL),
-            catogary: String(input.catogary),
-            price: Number(input.price),
-            stock: Number(input.stock),
-            discription: String(input.discription)
-        }).then(res => res.data);
-    }
+    // removed unused sendRequest helper
     
     try {
         await axios.post(URL, input);

@@ -32,6 +32,10 @@ const orderSchema = new Schema(
     order_number: {
       type: String,
       required: true,
+      // Auto-generate if not provided by client
+      default: function () {
+        return `ORD-${Date.now()}`;
+      },
       unique: true,
       index: true,
     },
