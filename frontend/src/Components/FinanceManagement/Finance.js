@@ -73,31 +73,43 @@ function Finance() {
             className={`plan-card ${plan.highlight ? "highlight" : ""}`}
           >
             <h2>{plan.planName}</h2>
-            <div className="price">${plan.price}</div>
+            <div className="price">
+              {plan.currency || "USD"} {plan.price}
+            </div>
             <p className="per">
               per user / per {plan.durationMonths} month
               {plan.durationMonths > 1 ? "s" : ""}
             </p>
+
             <ul>
+              {/* Description */}
               {plan.description
                 ? plan.description.split("\n").map((item, index) => (
                     <li key={index}>✔ {item}</li>
                   ))
                 : null}
+
+              {/* New Fields */}
+              {plan.features_included?.length > 0 && (
+                <li>Features: {plan.features_included.join(", ")}</li>
+              )}
+              <li>Discount: {plan.discount_percentage || 0}%</li>
+              <li>Final Price: {plan.final_price || plan.price}</li>
+              <li>Access Level: {plan.access_level}</li>
+              <li>Status: {plan.status}</li>
             </ul>
 
             {/* Update and Delete Buttons */}
             <div className="button-group">
               <button
                 className="btn-update"
-                onClick={() => navigate(`/finance/update/${plan._id}`, { state: { plan } })}
+                onClick={() =>
+                  navigate(`/finance/update/${plan._id}`, { state: { plan } })
+                }
               >
                 Update
               </button>
-              <button
-                className="btn-delete"
-                onClick={() => handleDelete(plan._id)}
-              >
+              <button className="btn-delete" onClick={() => handleDelete(plan._id)}>
                 Delete
               </button>
             </div>

@@ -14,6 +14,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 // -----------------------------
 // Create PaymentIntent & Save to MongoDB
 // -----------------------------
+
 router.post("/create-payment-intent", async (req, res) => {
   try {
     const { amount, userName } = req.body; // amount in cents

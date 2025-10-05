@@ -1,95 +1,100 @@
 const Finance = require("../Model/FinanceModel");
 
 // ✅ Get all plans
-const getAllPlans = async (req, res, next) => {
+const getAllPlans = async (req, res) => {
   try {
     const plans = await Finance.find();
-    res.status(200).json(plans); // ✅ return array directly
+    res.status(200).json(plans);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
   }
 };
 
-// ✅ Add a subscription plan
-const addPlan = async (req, res, next) => {
+// ✅ Add plan
+const addPlan = async (req, res) => {
   try {
-    const { planName, price, durationMonths, description } = req.body;
+    const {
+      planName,
+      price,
+      durationMonths,
+      description,
+      currency,
+      discount_percentage,
+      final_price,
+      access_level,
+      features_included,
+      status,
+    } = req.body;
 
     if (!planName || !price || !durationMonths) {
-      return res.status(400).json({ message: "Please provide all required fields" });
+      return res.status(400).json({ message: "Missing required fields" });
     }
 
-    const plan = new Finance({ planName, price, durationMonths, description });
-    await plan.save();
+    const plan = new Finance({
+      planName,
+      price,
+      durationMonths,
+      description,
+      currency,
+      discount_percentage,
+      final_price,
+      access_level,
+      features_included,
+      status,
+    });
 
-    return res.status(201).json({ message: "Plan added successfully", plan });
+    await plan.save();
+    res.status(201).json({ message: "Plan added successfully", plan });
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ message: "Unable to add plan" });
+    res.status(500).json({ message: "Unable to add plan" });
   }
 };
 
 // ✅ Get plan by ID
-const getPlanById = async (req, res, next) => {
-  const id = req.params.id;
-
+const getPlanById = async (req, res) => {
   try {
-    const plan = await Finance.findById(id);
-
-    if (!plan) {
-      return res.status(404).json({ message: "Plan not found" });
-    }
-
-    return res.status(200).json(plan); // ✅ return single object
+    const plan = await Finance.findById(req.params.id);
+    if (!plan) return res.status(404).json({ message: "Plan not found" });
+    res.status(200).json(plan);
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: "Server error" });
   }
 };
 
 // ✅ Update plan
-// ✅ Update plan
-const updatePlan = async (req, res, next) => {
-  const id = req.params.id;
-  const { planName, price, durationMonths, description } = req.body;
-
+const updatePlan = async (req, res) => {
   try {
-    const plan = await Finance.findByIdAndUpdate(
-      id,
-      { planName, price, durationMonths, description },
-      { new: true } // return updated doc
-    );
-
-    if (!plan) {
+    const updated = await Finance.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+    if (!updated)
       return res.status(404).json({ message: "Unable to update plan" });
-    }
-
-    return res.status(200).json({ message: "Plan updated successfully", plan });
+    res.status(200).json({ message: "Plan updated successfully", plan: updated });
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: "Server error" });
   }
 };
-
 
 // ✅ Delete plan
-// FinanceController.js
-const deletePlan = async (req, res, next) => {
-  const id = req.params.id;
+const deletePlan = async (req, res) => {
   try {
-    const plan = await Finance.findByIdAndDelete(id);
+    const plan = await Finance.findByIdAndDelete(req.params.id);
     if (!plan) return res.status(404).json({ message: "Plan not found" });
-    return res.status(200).json({ message: "Plan deleted successfully", plan });
+    res.status(200).json({ message: "Plan deleted successfully", plan });
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: "Server error" });
   }
 };
 
-// ✅ Export functions
-exports.getAllPlans = getAllPlans;
-exports.addPlan = addPlan;
-exports.getPlanById = getPlanById;
-exports.updatePlan = updatePlan;
-exports.deletePlan = deletePlan;
+module.exports = {
+  getAllPlans,
+  addPlan,
+  getPlanById,
+  updatePlan,
+  deletePlan,
+};

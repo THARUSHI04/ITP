@@ -1,0 +1,19 @@
+.payments-table-container {
+  padding: 20px;
+}
+
+.payments-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.payments-table th,
+.payments-table td {
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.payments-table th {
+  background-color: #f4f4f4;
+}
