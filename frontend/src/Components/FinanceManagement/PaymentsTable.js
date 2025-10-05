@@ -1,4 +1,4 @@
-// src/Components/Dashboards/AdminDashboard/PaymentsTable.js
+// src/Components/FinanceManagement/PaymentsTable.js
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./PaymentTable.css";
@@ -11,7 +11,7 @@ function PaymentsTable() {
   useEffect(() => {
     const fetchPayments = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/payments/all");
+        const response = await axios.get("http://localhost:5000/payment/all"); // Make sure route matches your backend
         setPayments(response.data);
       } catch (err) {
         console.error("Error fetching payments:", err);
@@ -53,7 +53,7 @@ function PaymentsTable() {
               <td>{new Date(payment.createdAt).toLocaleString()}</td>
               <td>
                 <a
-                  href={`http://localhost:5000/api/payments/receipt/${payment.stripePaymentId}`}
+                  href={`http://localhost:5000/receipt/${payment.stripePaymentId}`}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
