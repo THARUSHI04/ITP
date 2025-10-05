@@ -1,5 +1,5 @@
 // src/Components/Store/Cart.js
-import React from "react";
+import React, { useEffect } from "react";
 import { useCart } from "./CartContext";
 import { Link, useNavigate } from "react-router-dom";
 import "./Cart.css";
@@ -25,28 +25,36 @@ function Cart() {
 
   // Checkout handler
   const handleCheckout = () => {
-    if (!hasValidUser) {
-      alert("❌ You must log in to proceed with checkout.");
-      navigate("/login");
+    // Block empty carts
+    if (!cartItems || cartItems.length === 0) {
+      alert("Your cart is empty.");
       return;
     }
-    if (normalizedRole !== "user") {
-      alert("❌ Only customer accounts can purchase from the store.");
-      navigate("/login");
+    // Enforce auth + role guard
+    if (!hasValidUser) {
+      alert("❌ You must log in to proceed with checkout.");
+      navigate("/login", { state: { from: "/cart", message: "Login required to checkout" } });
       return;
     }
     // Success case
     navigate("/checkout");
   };
 
+  // Redirect to showItems if cart is empty
+  useEffect(() => {
+    if (cartItems.length === 0) {
+      navigate("/showItems");
+    }
+  }, [cartItems.length, navigate]);
+
   return (
     <div className="cart-page">
       <h2>Your Cart</h2>
 
       {cartItems.length === 0 ? (
-        <p>
-          No items in cart. Go shopping from the store page.
-        </p>
+        <div>
+          <p>Redirecting to store...</p>
+        </div>
       ) : (
         <div className="cart-items">
           {cartItems.map((item) => (
@@ -80,7 +88,6 @@ function Cart() {
           <button
             className="checkout-btn"
             onClick={handleCheckout}
-            disabled={!canCheckout}
             title={!canCheckout ? "Login as customer to proceed" : undefined}
           >
             Proceed to Checkout

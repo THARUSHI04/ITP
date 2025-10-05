@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-// Order Items Schema (similar to Order_Items table)
+//Order Items
 const orderItemSchema = new Schema(
   {
     product: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Store", // Products table -> Store model
+      ref: "Store", 
       required: true,
     },
     quantity: {
@@ -16,23 +16,23 @@ const orderItemSchema = new Schema(
     },
     price: {
       type: Number,
-      required: true, // unit price at the time of order
+      required: true,
     },
     subtotal: {
       type: Number,
-      required: true, // quantity * price
+      required: true, 
     },
   },
-  { _id: false } // no separate id for items
+  { _id: false }
 );
 
-// Orders Schema
+//Orders Schema
 const orderSchema = new Schema(
   {
     order_number: {
       type: String,
       required: true,
-      // Auto-generate if not provided by client
+      //Auto-generate 
       default: function () {
         return `ORD-${Date.now()}`;
       },
@@ -41,7 +41,7 @@ const orderSchema = new Schema(
     },
     member: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "UserModel", // buyer/customer (matches actual model name)
+      ref: "UserModel",
       required: true,
     },
     order_date: {
@@ -65,8 +65,10 @@ const orderSchema = new Schema(
     },
     payment_method: {
       type: String,
-      enum: ["Cash on Delivery", "Card Payment"],
       default: "Cash on Delivery",
+    },
+    bank_slip: {
+      type: String, // file path to uploaded bank slip (if any)
     },
     items: [orderItemSchema], // array of items
   },
