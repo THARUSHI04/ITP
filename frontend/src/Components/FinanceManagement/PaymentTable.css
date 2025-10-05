@@ -1,19 +1,112 @@
+/* Container */
 .payments-table-container {
-  padding: 20px;
+  padding: 30px;
+  background-color: #0d0d0d; /* Dark black background */
+  color: #fff; /* White text */
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Table styling */
 .payments-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
-.payments-table th,
-.payments-table td {
-  border: 1px solid #ccc;
-  padding: 8px 12px;
-  text-align: left;
-}
-
+/* Table headers */
 .payments-table th {
-  background-color: #f4f4f4;
+  background-color: #1c1c1c; /* Slightly lighter black */
+  color: #fff;
+  font-weight: 600;
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 2px solid #ff4c4c; /* Red bottom border */
+}
+
+/* Table cells */
+.payments-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #333;
+}
+
+/* Table rows hover */
+.payments-table tr:hover {
+  background-color: #222; /* Slightly lighter black on hover */
+  transition: background-color 0.3s ease;
+}
+
+/* Alternating rows */
+.payments-table tr:nth-child(even) {
+  background-color: #141414;
+}
+
+/* Status badges */
+.status-paid {
+  color: #0f0;
+  font-weight: bold;
+  background-color: rgba(0, 255, 0, 0.1);
+  padding: 4px 8px;
+  border-radius: 6px;
+  text-align: center;
+  display: inline-block;
+}
+
+.status-pending {
+  color: #ff4c4c;
+  font-weight: bold;
+  background-color: rgba(255, 76, 76, 0.1);
+  padding: 4px 8px;
+  border-radius: 6px;
+  text-align: center;
+  display: inline-block;
+}
+
+/* Responsive Scroll */
+.payments-table-container {
+  overflow-x: auto;
+}
+
+/* Optional: Table caption/title */
+.payments-table caption {
+  caption-side: top;
+  text-align: left;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #ff4c4c; /* Red title */
+}
+
+/* Buttons in table (if any) */
+.table-btn {
+  padding: 6px 12px;
+  margin: 0 2px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.table-btn.update {
+  background-color: #ff4c4c;
+  color: #fff;
+}
+
+.table-btn.update:hover {
+  background-color: #e03b3b;
+}
+
+.table-btn.delete {
+  background-color: #fff;
+  color: #ff4c4c;
+  border: 1px solid #ff4c4c;
+}
+
+.table-btn.delete:hover {
+  background-color: #ff4c4c;
+  color: #fff;
 }

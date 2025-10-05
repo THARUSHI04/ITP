@@ -12,10 +12,10 @@ function PaymentsTable() {
     const fetchPayments = async () => {
       try {
         const response = await axios.get("http://localhost:5000/payment/all"); // Make sure route matches your backend
-        setPayments(response.data);
+        setPayments(Array.isArray(response.data) ? response.data : []);
       } catch (err) {
         console.error("Error fetching payments:", err);
-        setError("Failed to load payments");
+        setError("❌ Failed to load payments");
       } finally {
         setLoading(false);
       }
@@ -43,25 +43,42 @@ function PaymentsTable() {
           </tr>
         </thead>
         <tbody>
-          {payments.map((payment) => (
-            <tr key={payment._id}>
-              <td>{payment.stripePaymentId}</td>
-              <td>{payment.userName || "-"}</td>
-              <td>{(payment.amount / 100).toFixed(2)}</td>
-              <td>{payment.currency.toUpperCase()}</td>
-              <td>{payment.status}</td>
-              <td>{new Date(payment.createdAt).toLocaleString()}</td>
-              <td>
-                <a
-                  href={`http://localhost:5000/receipt/${payment.stripePaymentId}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Download
-                </a>
+          {payments.length === 0 && (
+            <tr>
+              <td colSpan="7" style={{ textAlign: "center" }}>
+                No payments found
               </td>
             </tr>
-          ))}
+          )}
+          {payments.map((payment) => {
+            const formattedDate = payment.createdAt
+              ? new Date(payment.createdAt).toLocaleString()
+              : "-";
+
+            return (
+              <tr key={payment._id}>
+                <td>{payment.stripePaymentId || "-"}</td>
+                <td>{payment.userName || "-"}</td>
+                <td>{payment.amount != null ? (payment.amount / 100).toFixed(2) : "-"}</td>
+                <td>{(payment.currency || "usd").toUpperCase()}</td>
+                <td>{payment.status || "-"}</td>
+                <td>{formattedDate}</td>
+                <td>
+                  {payment.stripePaymentId ? (
+                    <a
+                      href={`http://localhost:5000/receipt/${payment.stripePaymentId}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Download
+                    </a>
+                  ) : (
+                    "-"
+                  )}
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>

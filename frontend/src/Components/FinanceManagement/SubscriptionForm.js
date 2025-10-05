@@ -61,6 +61,36 @@ function SubscriptionForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // ✅ Frontend Validations
+    if (formData.planName.trim().length < 3) {
+      return setMessage("❌ Plan name must be at least 3 characters.");
+    }
+    if (!formData.price || Number(formData.price) < 0) {
+      return setMessage("❌ Price must be a positive number.");
+    }
+    if (!formData.durationMonths || Number(formData.durationMonths) <= 0) {
+      return setMessage("❌ Duration must be greater than 0.");
+    }
+    if (
+      formData.discount_percentage &&
+      (Number(formData.discount_percentage) < 0 ||
+        Number(formData.discount_percentage) > 100)
+    ) {
+      return setMessage("❌ Discount must be between 0 and 100.");
+    }
+    if (formData.final_price < 0) {
+      return setMessage("❌ Final price must be a positive number.");
+    }
+    if (!["active", "inactive"].includes(formData.status.toLowerCase())) {
+      return setMessage("❌ Status must be 'active' or 'inactive'.");
+    }
+    if (
+      formData.features_included &&
+      !Array.isArray(formData.features_included.split(",").map(f => f.trim()))
+    ) {
+      return setMessage("❌ Features must be comma separated values.");
+    }
+
     const payload = {
       ...formData,
       price: Number(formData.price),

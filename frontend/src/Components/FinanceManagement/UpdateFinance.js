@@ -55,6 +55,36 @@ function UpdateFinance() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // ✅ Frontend Validations
+    if (plan.planName.trim().length < 3) {
+      return setMessage("❌ Plan name must be at least 3 characters.");
+    }
+    if (!plan.price || Number(plan.price) <= 0) {
+      return setMessage("❌ Price must be greater than 0.");
+    }
+    if (!plan.durationMonths || Number(plan.durationMonths) <= 0) {
+      return setMessage("❌ Duration must be greater than 0.");
+    }
+    if (
+      plan.discount_percentage &&
+      (Number(plan.discount_percentage) < 0 || Number(plan.discount_percentage) > 100)
+    ) {
+      return setMessage("❌ Discount must be between 0 and 100.");
+    }
+    if (plan.final_price < 0) {
+      return setMessage("❌ Final price must be a positive number.");
+    }
+    if (!["active", "inactive"].includes(plan.status.toLowerCase())) {
+      return setMessage("❌ Status must be 'active' or 'inactive'.");
+    }
+    if (
+      plan.features_included &&
+      !Array.isArray(plan.features_included.split(",").map((f) => f.trim()))
+    ) {
+      return setMessage("❌ Features must be comma-separated values.");
+    }
+
     try {
       const payload = {
         ...plan,
@@ -93,9 +123,30 @@ function UpdateFinance() {
         )}
 
         <form onSubmit={handleSubmit}>
-          <input type="text" name="planName" value={plan.planName} onChange={handleChange} placeholder="Plan Name" required />
-          <input type="number" name="price" value={plan.price} onChange={handleChange} placeholder="Price" required />
-          <input type="number" name="durationMonths" value={plan.durationMonths} onChange={handleChange} placeholder="Duration (months)" required />
+          <input
+            type="text"
+            name="planName"
+            value={plan.planName}
+            onChange={handleChange}
+            placeholder="Plan Name"
+            required
+          />
+          <input
+            type="number"
+            name="price"
+            value={plan.price}
+            onChange={handleChange}
+            placeholder="Price"
+            required
+          />
+          <input
+            type="number"
+            name="durationMonths"
+            value={plan.durationMonths}
+            onChange={handleChange}
+            placeholder="Duration (months)"
+            required
+          />
 
           <select name="currency" value={plan.currency} onChange={handleChange}>
             <option value="USD">USD</option>
@@ -103,8 +154,20 @@ function UpdateFinance() {
             <option value="EUR">EUR</option>
           </select>
 
-          <input type="number" name="discount_percentage" value={plan.discount_percentage} onChange={handleChange} placeholder="Discount (%)" />
-          <input type="number" name="final_price" value={plan.final_price} readOnly placeholder="Final Price" />
+          <input
+            type="number"
+            name="discount_percentage"
+            value={plan.discount_percentage}
+            onChange={handleChange}
+            placeholder="Discount (%)"
+          />
+          <input
+            type="number"
+            name="final_price"
+            value={plan.final_price}
+            readOnly
+            placeholder="Final Price"
+          />
 
           <select name="access_level" value={plan.access_level} onChange={handleChange}>
             <option value="Gym only">Gym only</option>
@@ -112,14 +175,26 @@ function UpdateFinance() {
             <option value="Online Coaching only">Online Coaching only</option>
           </select>
 
-          <input type="text" name="features_included" value={plan.features_included} onChange={handleChange} placeholder="Features (comma-separated)" />
+          <input
+            type="text"
+            name="features_included"
+            value={plan.features_included}
+            onChange={handleChange}
+            placeholder="Features (comma-separated)"
+          />
 
           <select name="status" value={plan.status} onChange={handleChange}>
             <option value="active">Active</option>
             <option value="inactive">Inactive</option>
           </select>
 
-          <textarea name="description" value={plan.description} onChange={handleChange} placeholder="Description" rows="4" />
+          <textarea
+            name="description"
+            value={plan.description}
+            onChange={handleChange}
+            placeholder="Description"
+            rows="4"
+          />
 
           <button type="submit">Update Plan</button>
         </form>
