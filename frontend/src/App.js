@@ -12,7 +12,7 @@ import { CartProvider } from "./Components/Store/CartContext";
 // Components
 import Nav from "./Components/Nav/Nav";
 import Home from "./Components/Home/Home";
-import About from "./Components/Features/Features";
+import About from "./Components/About/About";
 import Features from "./Components/Features/Features";
 import Login from "./Components/Auth/Login";
 import Register from "./Components/Auth/Register";
