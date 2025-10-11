@@ -129,6 +129,25 @@ const loginUser = async (req, res) => {
   }
 };
 
+// --- Change password ---
+const changePassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    if (user.password !== currentPassword) {
+      return res.status(401).json({ message: "Current password is incorrect" });
+    }
+
+    user.password = newPassword;
+    await user.save();
+    res.status(200).json({ message: "Password updated successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to change password", error: err.message });
+  }
+};
+
 module.exports = {
   checkUsername,
   getAllUsers,
@@ -137,4 +156,5 @@ module.exports = {
   updateUser,
   deleteUser,
   loginUser,
+  changePassword,
 };

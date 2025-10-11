@@ -50,7 +50,7 @@ function Features() {
 </div>
           <div className="feature-card">
             <img 
-              src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=400&q=80" 
+              src="https://strong.lk/wp-content/uploads/2023/11/125.webp" 
               alt="Online Store"
             />
             <h3>Online Store</h3>

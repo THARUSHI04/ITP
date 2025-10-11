@@ -197,7 +197,7 @@ export default function Register() {
           <span onClick={() => navigate("/login")} className="link-text">Login here</span>
         </p>
 
-        <p className="copyright-text">© CorePlusPlatform</p>
+        <p className="copyright-text">Copyright © CorePlusPlatform</p>
       </div>
     </div>
   );
