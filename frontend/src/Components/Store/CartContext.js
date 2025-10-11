@@ -6,10 +6,10 @@ const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
 
-  // Add item to cart (with quantity support)
+  //Add item to cart
   const addToCart = (product) => {
     if (!product || typeof product.stock !== "number" || product.stock <= 0) {
-      // silently ignore or could surface a toast in UI layer
+      //silently ignore or could surface a toast in UI layer
       return;
     }
     setCartItems((prev) => {
@@ -17,7 +17,7 @@ export const CartProvider = ({ children }) => {
       if (existing) {
         const nextQuantity = existing.quantity + 1;
         if (nextQuantity > product.stock) {
-          return prev; // don't exceed stock
+          return prev; //don't exceed stock
         }
         return prev.map((item) =>
           item._id === product._id ? { ...item, quantity: nextQuantity } : item
@@ -27,12 +27,12 @@ export const CartProvider = ({ children }) => {
     });
   };
 
-  // Remove item
+  //Remove item
   const removeFromCart = (id) => {
     setCartItems((prev) => prev.filter((item) => item._id !== id));
   };
 
-  // Update quantity manually
+  //Update quantity manually
   const updateQuantity = (id, qty) => {
     setCartItems((prev) =>
       prev.map((item) =>
@@ -41,9 +41,12 @@ export const CartProvider = ({ children }) => {
     );
   };
 
+  //Clear all items
+  const clearCart = () => setCartItems([]);
+
   return (
     <CartContext.Provider
-      value={{ cartItems, addToCart, removeFromCart, updateQuantity }}
+      value={{ cartItems, addToCart, removeFromCart, updateQuantity, clearCart }}
     >
       {children}
     </CartContext.Provider>

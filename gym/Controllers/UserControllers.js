@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const User = require("../Model/UserModel");
 const fs = require("fs");
 const path = require("path");
+const { sendWelcomeEmail } = require("../utils/emailService");
 
 // --- Save profile image and return relative path ---
 const saveProfileImage = (file) => {
@@ -52,6 +53,16 @@ const addUsers = async (req, res) => {
     });
 
     const savedUser = await newUser.save();
+    
+    // Send welcome email for new user registrations
+    try {
+      await sendWelcomeEmail(savedUser.email, savedUser.userName);
+      console.log("Welcome email sent successfully to:", savedUser.email);
+    } catch (emailError) {
+      console.error("Failed to send welcome email:", emailError);
+      // Don't fail the registration if email fails
+    }
+
     res.status(201).json({ user: savedUser });
   } catch (err) {
     res.status(500).json({ message: "Failed to add user", error: err.message });

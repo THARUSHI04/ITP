@@ -74,7 +74,7 @@ function Finance() {
           >
             <h2>{plan.planName}</h2>
             <div className="price">
-              {plan.currency || "USD"} {plan.price}
+              {plan.currency || "USD"} {plan.final_price || plan.price}
             </div>
             <p className="per">
               per user / per {plan.durationMonths} month
@@ -89,7 +89,7 @@ function Finance() {
                   ))
                 : null}
 
-              {/* New Fields */}
+              {/* Features & Other Details */}
               {plan.features_included?.length > 0 && (
                 <li>Features: {plan.features_included.join(", ")}</li>
               )}

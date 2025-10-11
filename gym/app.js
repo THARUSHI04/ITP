@@ -1,25 +1,20 @@
 require('dotenv').config(); // Load environment variables
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);// Load env variables
 
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
-
-
 // Routes
 const UserRoutes = require("./Routes/UserRoutes");
-const FinanceRouter = require("./Routes/FinanceRouter");
-const ScheduleRoute = require("./Routes/ScheduleRoute");
-const PaymentRouter = require("./Routes/PaymentRouter");
-const PaymentReceiptRouter = require("./Routes/PaymentReciptRouter");
-
-
+// Add your other routers if needed
+// const FinanceRouter = require("./Routes/FinanceRouter");
+// const ScheduleRoute = require("./Routes/ScheduleRoute");
 // const UserScheduleCreationRoute = require("./Routes/UserScheduleCreationRoute");
 const storeRouter = require("./Routes/StoreRoutes");
+// Fix: define favouriteRouter with correct path/casing
 const favouriteRouter = require("./Routes/StoreFavourite");
 const OrderRoutes = require("./Routes/OrderRoutes");
-
 
 const app = express();
 
@@ -29,6 +24,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use("/store", storeRouter);
+app.use("/store-favourites", favouriteRouter);
+
+
 
 // Serve uploaded images
 app.use("/uploads", express.static("uploads"));
@@ -44,13 +43,9 @@ app.get("/", (req, res) => {
 // API Routes
 // ==========================
 app.use("/users", UserRoutes);
-app.use("/finance", FinanceRouter);
 app.use("/store", storeRouter);
 app.use("/store-favourites", favouriteRouter);
 app.use("/orders", OrderRoutes);
-app.use("/payment", PaymentRouter);
-app.use("/receipt", PaymentReceiptRouter);
-
 
 // ==========================
 // MongoDB Connection

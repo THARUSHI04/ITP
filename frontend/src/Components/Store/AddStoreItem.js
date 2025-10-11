@@ -18,12 +18,46 @@ function AddStoreItem() {
     discription: "",
   });
 
-  // Handle input change
+  const [errors, setErrors] = useState({});
+
+  //Handle input change
   const handleChange = (e) => {
     setInputs((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
     }));
+
+    
+    if (errors[e.target.name]) {
+      setErrors(prev => ({
+        ...prev,
+        [e.target.name]: ""
+      }));
+    }
+  };
+
+  //Validation
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!input.name.trim()) {
+      newErrors.name = "Name is required";
+    }
+    if (!input.brand.trim()) {
+      newErrors.brand = "Brand is required";
+    }
+    if (!input.catogary.trim()) {
+      newErrors.catogary = "Category is required";
+    }
+    if (!input.price || input.price <= 0) {
+      newErrors.price = "Price must be greater than 0";
+    }
+    if (!input.stock || input.stock < 0) {
+      newErrors.stock = "Stock must be 0 or greater";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   // Handle form submit
@@ -31,12 +65,14 @@ function AddStoreItem() {
     e.preventDefault();
     console.log(input);
 
-    // removed unused sendRequest helper
+    if (!validateForm()) {
+      return;
+    }
     
     try {
         await axios.post(URL, input);
         alert("Item added successfully!");
-        navigate("/store");
+        navigate("/Admin-Dashboard" , {state: {tab:"store"}});
   } catch (err) {
         console.error(err);
         alert("Error adding item");
@@ -56,6 +92,7 @@ function AddStoreItem() {
           onChange={handleChange}
           required
         />
+        {errors.name && <span style={{color: 'red', fontSize: '12px'}}>{errors.name}</span>}
 
         <label>Brand</label>
         <input
@@ -65,6 +102,7 @@ function AddStoreItem() {
           onChange={handleChange}
           required
         />
+        {errors.brand && <span style={{color: 'red', fontSize: '12px'}}>{errors.brand}</span>}
 
         <label>Image URL</label>
         <input
@@ -82,6 +120,7 @@ function AddStoreItem() {
           onChange={handleChange}
           required
         />
+        {errors.catogary && <span style={{color: 'red', fontSize: '12px'}}>{errors.catogary}</span>}
 
         <label>Price</label>
         <input
@@ -91,6 +130,7 @@ function AddStoreItem() {
           onChange={handleChange}
           required
         />
+        {errors.price && <span style={{color: 'red', fontSize: '12px'}}>{errors.price}</span>}
 
         <label>Stock</label>
         <input
@@ -100,6 +140,7 @@ function AddStoreItem() {
           onChange={handleChange}
           required
         />
+        {errors.stock && <span style={{color: 'red', fontSize: '12px'}}>{errors.stock}</span>}
 
         <label>Description</label>
         <textarea

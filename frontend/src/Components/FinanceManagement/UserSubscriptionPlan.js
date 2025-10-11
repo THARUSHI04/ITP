@@ -14,7 +14,7 @@ function UserSubscriptionPlan() {
     const fetchPlans = async () => {
       try {
         const response = await axios.get("http://localhost:5000/finance");
-        setPlans(response.data); // ✅ directly set the array from backend
+        setPlans(response.data); // directly set the array from backend
         setLoading(false);
       } catch (err) {
         setError("❌ Failed to load plans");
@@ -53,7 +53,10 @@ function UserSubscriptionPlan() {
             className={`plan-card ${plan.highlight ? "highlight" : ""}`}
           >
             <h2>{plan.planName}</h2>
-            <div className="price">${plan.price}</div>
+            {/* Display final price instead of original price */}
+            <div className="price">
+              {plan.currency || "USD"} {plan.final_price != null ? plan.final_price.toFixed(2) : "-"}
+            </div>
             <p className="per">
               per user / per {plan.durationMonths} month
               {plan.durationMonths > 1 ? "s" : ""}

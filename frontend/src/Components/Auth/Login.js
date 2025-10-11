@@ -18,9 +18,14 @@ export default function Login() {
       const loggedInUser = res.data.user || res.data;
 
       localStorage.setItem("userId", loggedInUser._id);
+      const role = loggedInUser.role?.toLowerCase();
+      if (role) {
+        localStorage.setItem("role", role);
+      } else {
+        localStorage.removeItem("role");
+      }
       alert("Login successful!");
 
-      const role = loggedInUser.role?.toLowerCase();
       switch (role) {
         case "user":
           navigate("/user-dashboard", { state: { userId: loggedInUser._id } });
