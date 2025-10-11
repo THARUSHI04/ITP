@@ -6,6 +6,17 @@ const paymentSchema = new mongoose.Schema({
   currency: { type: String, default: "usd" },
   status: { type: String, required: true },
   userName: { type: String },
-}, { timestamps: true }); // ✅ adds createdAt & updatedAt
+}, { timestamps: true }); 
 
 module.exports = mongoose.model("Payment", paymentSchema);
+
+
+
+
+
+
+
+
+
+
+
