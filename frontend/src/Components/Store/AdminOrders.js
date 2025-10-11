@@ -48,6 +48,14 @@ function AdminOrders() {
     }
   };
 
+  // Helpers for bank slip rendering
+  const isImageSlip = (path) => /\.(png|jpe?g|webp|gif|bmp|ico)$/i.test(String(path || ""));
+  const getSlipUrl = (path) => {
+    if (!path) return "";
+    const normalized = String(path).replace(/^\/+/, "");
+    return `http://localhost:5000/${normalized}`;
+  };
+
   // Load all orders for admin view
   const fetchOrders = async () => {
     setLoading(true);
@@ -92,7 +100,7 @@ function AdminOrders() {
     }
   };
 
-  // (Removed unused inline status update handler to resolve linter warning)
+  //Removed unused inline status
 
   const handleSaveUpdateModal = async () => {
     if (!selected) return;
@@ -105,7 +113,7 @@ function AdminOrders() {
     try {
       setSaving(true);
       const res = await axios.put(`http://localhost:5000/orders/${orderId}`, payload);
-      // sync lists and local edits
+      //lists and local edits
       setOrders((prev) => prev.map((o) => (o._id === orderId ? res.data : o)));
       setSelected(null);
       setModalMode(null);
@@ -117,12 +125,12 @@ function AdminOrders() {
     }
   };
 
-  // Track status value selected in the dropdown before saving
+  //Track status value
   const handleEditChange = (orderId, value) => {
     setEditStatuses((prev) => ({ ...prev, [orderId]: value }));
   };
 
-  // UI: header, table, and details card
+  //header, table, and details card
   return (
     <div className="admin-orders">
       <div className="orders-header">
@@ -193,6 +201,33 @@ function AdminOrders() {
               <p><strong>Customer:</strong> {selected.member?.username || selected.member?.userName || selected.member?.email || selected.member}</p>
               <p><strong>Date:</strong> {new Date(selected.createdAt || selected.order_date).toLocaleString()}</p>
               <p><strong>Payment:</strong> {selected.payment_method || "-"}</p>
+              {selected.payment_method === 'Bank Deposit' && selected.bank_slip && (
+                <div style={{ marginTop: 8 }}>
+                  <p><strong>Bank Slip:</strong></p>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                    {isImageSlip(selected.bank_slip) ? (
+                      <img
+                        src={getSlipUrl(selected.bank_slip)}
+                        alt="Bank Slip"
+                        style={{ width: 120, height: 120, objectFit: 'cover', borderRadius: 6, border: '1px solid #ddd' }}
+                      />
+                    ) : (
+                      <div style={{ padding: 8, border: '1px dashed #bbb', borderRadius: 6, color: '#555' }}>
+                        File uploaded (not previewable)
+                      </div>
+                    )}
+                    <a
+                      href={getSlipUrl(selected.bank_slip)}
+                      download
+                      target="_blank"
+                      rel="noreferrer"
+                      className="btn"
+                    >
+                      Download
+                    </a>
+                  </div>
+                </div>
+              )}
               <p><strong>Ship to:</strong> {selected.shipping_address || "-"}</p>
               <p><strong>Phone:</strong> {selected.contact_phone || "-"}</p>
 

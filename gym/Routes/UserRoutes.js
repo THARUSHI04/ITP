@@ -28,8 +28,9 @@ router.get("/", UserController.getAllUsers);
 router.get("/:id", UserController.getById);
 router.put("/:id", upload.single("profileImage"), UserController.updateUser);
 router.delete("/:id", UserController.deleteUser);
-
+router.put("/:id/change-password", UserController.changePassword);
 // Login
 router.post("/login", UserController.loginUser);
 
 module.exports = router;
+

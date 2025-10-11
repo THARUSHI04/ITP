@@ -24,6 +24,12 @@ export default function GymProfile() {
   });
   const [previewImage, setPreviewImage] = useState("/images/profile.png");
 
+  const [passwordData, setPasswordData] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
+
   // Fetch user data
   useEffect(() => {
     if (!userId) return navigate("/login");
@@ -69,7 +75,36 @@ export default function GymProfile() {
 
   const handleEditToggle = () => setIsEditing(!isEditing);
 
+  // --- Form Validation ---
+  const validateForm = async () => {
+    if (!formData.userName.trim()) return alert("Gym name is required!");
+    if (!formData.email.trim()) return alert("Email is required!");
+    if (!formData.contactNo.trim()) return alert("Contact number is required!");
+    if (!/^\d{10}$/.test(formData.contactNo)) return alert("Contact number must be exactly 10 digits!");
+    if (!formData.joiningDate) return alert("Joining date is required!");
+    if (!formData.address.trim()) return alert("Address is required!");
+    if (!formData.hours.trim()) return alert("Operating hours are required!");
+    if (!formData.membershipFee || isNaN(formData.membershipFee)) return alert("Membership fee must be a number!");
+
+    // Check username uniqueness
+    try {
+      const checkResponse = await axios.get(
+        `http://localhost:5000/users/check-username/${encodeURIComponent(formData.userName)}`
+      );
+      if (checkResponse.data.exists && formData.userName !== user.userName)
+        return alert("Gym name already exists! Please choose another.");
+    } catch (err) {
+      console.error("Username check error:", err);
+      return alert("Failed to check gym name availability");
+    }
+
+    return true;
+  };
+
   const handleSave = async () => {
+    const valid = await validateForm();
+    if (!valid) return;
+
     try {
       const data = new FormData();
       Object.keys(formData).forEach((key) => {
@@ -110,6 +145,31 @@ export default function GymProfile() {
   const handleLogout = () => {
     localStorage.removeItem("userId");
     navigate("/login");
+  };
+
+  // --- Handle Password Change ---
+  const handlePasswordChange = (e) => {
+    setPasswordData({ ...passwordData, [e.target.name]: e.target.value });
+  };
+
+  const handleUpdatePassword = async () => {
+    if (!passwordData.currentPassword || !passwordData.newPassword || !passwordData.confirmPassword)
+      return alert("All password fields are required.");
+
+    if (passwordData.newPassword !== passwordData.confirmPassword)
+      return alert("New password and confirm password do not match.");
+
+    if (passwordData.newPassword.length < 6)
+      return alert("New password must be at least 6 characters long.");
+
+    try {
+      const res = await axios.put(`http://localhost:5000/users/${userId}/change-password`, passwordData);
+      alert(res.data.message);
+      setPasswordData({ currentPassword: "", newPassword: "", confirmPassword: "" });
+    } catch (err) {
+      console.error("Error updating password:", err);
+      alert(err.response?.data?.message || "Failed to update password.");
+    }
   };
 
   return (
@@ -204,6 +264,39 @@ export default function GymProfile() {
         )}
         <button onClick={handleLogout}>Logout</button>
         <button onClick={handleDelete} className="delete-btn">Delete Account</button>
+      </div>
+
+      {/* --- Change Password Section --- */}
+      <div className="change-password">
+        <h3>Change Password</h3>
+
+        <label>Current Password:</label>
+        <input
+          type="password"
+          name="currentPassword"
+          value={passwordData.currentPassword}
+          onChange={handlePasswordChange}
+        />
+
+        <label>New Password:</label>
+        <input
+          type="password"
+          name="newPassword"
+          value={passwordData.newPassword}
+          onChange={handlePasswordChange}
+        />
+
+        <label>Confirm New Password:</label>
+        <input
+          type="password"
+          name="confirmPassword"
+          value={passwordData.confirmPassword}
+          onChange={handlePasswordChange}
+        />
+
+        <button onClick={handleUpdatePassword} className="save-btn">
+          Update Password
+        </button>
       </div>
     </div>
   );

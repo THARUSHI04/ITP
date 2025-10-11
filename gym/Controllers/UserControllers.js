@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const User = require("../Model/UserModel");
 const fs = require("fs");
 const path = require("path");
+const { sendWelcomeEmail } = require("../utils/emailService");
 
 // --- Save profile image and return relative path ---
 const saveProfileImage = (file) => {
@@ -52,6 +53,16 @@ const addUsers = async (req, res) => {
     });
 
     const savedUser = await newUser.save();
+    
+    // Send welcome email for new user registrations
+    try {
+      await sendWelcomeEmail(savedUser.email, savedUser.userName);
+      console.log("Welcome email sent successfully to:", savedUser.email);
+    } catch (emailError) {
+      console.error("Failed to send welcome email:", emailError);
+      // Don't fail the registration if email fails
+    }
+
     res.status(201).json({ user: savedUser });
   } catch (err) {
     res.status(500).json({ message: "Failed to add user", error: err.message });
@@ -129,6 +140,25 @@ const loginUser = async (req, res) => {
   }
 };
 
+// --- Change password ---
+const changePassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    if (user.password !== currentPassword) {
+      return res.status(401).json({ message: "Current password is incorrect" });
+    }
+
+    user.password = newPassword;
+    await user.save();
+    res.status(200).json({ message: "Password updated successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to change password", error: err.message });
+  }
+};
+
 module.exports = {
   checkUsername,
   getAllUsers,
@@ -137,4 +167,5 @@ module.exports = {
   updateUser,
   deleteUser,
   loginUser,
+  changePassword,
 };

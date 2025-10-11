@@ -6,31 +6,33 @@
   }
   
   .orders-header {
-    
+    display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
   
   .orders-header h2 {
-    font-size: 22px;
+    font-size: 20px;
+    margin: 0;
+    font-weight: 600;
     color: #222;
 
   }
   
   /* Keep Download PDF aligned neatly on the right */
   .orders-header .btn.pdf {
-    margin-left: auto;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 8px; /* tighter width */
-    font-size: 13px;
+    padding: 4px 10px; 
+    font-size: 12px;
+    border-radius: 6px;
     background: linear-gradient(135deg, #2563eb, #1d4ed8);
     color: #fff;
     border: 1px solid #1e40af;
     box-shadow: 0 2px 6px rgba(29, 78, 216, 0.25);
     transition: transform 0.1s ease, box-shadow 0.2s ease, background 0.2s ease;
+    border: none;
+    width: auto;
+    min-width: unset;
   }
 
   .orders-header .btn.pdf:hover {
@@ -44,17 +46,19 @@
   }
   
 .btn {
-    padding: 6px 12px; /* reduced size */
+    padding: 6px 12px; 
     border-radius: 6px;
     border: none;
     cursor: pointer;
-    font-size: 14px; /* slightly smaller */
+    font-size: 14px; 
     font-weight: 500;
   }
   
   .btn.pdf {
     background: #2563eb;
     color: white;
+    padding: 6px 12px;
+
   }
   
   .btn.view {
@@ -69,7 +73,7 @@
   }
   
   .btn.danger {
-    background: #dc2626;
+    background: #300bd3;
     color: white;
     margin-left: 8px;
   }
@@ -86,7 +90,7 @@
   
   thead {
     background: #2563eb;
-  color: #111827; /* dark text for better contrast if background turns light */
+  color: #111827; 
   }
   
   thead th {
@@ -94,14 +98,14 @@
     text-align: left;
     font-weight: 600;
     font-size: 15px;
-  color: #111827; /* ensure headers are black/dark */
+  color: #111827; 
   }
   
   tbody td {
     padding: 12px;
     border-bottom: 1px solid #e5e7eb;
   font-size: 14px;
-  color: #111827; /* table body text black */
+  color: #111827; 
   }
   
   tbody tr:nth-child(even) {
@@ -136,8 +140,8 @@
   }
   
   .orders-actions .btn {
-    margin-right: 0; /* use gap instead of right margins */
-    padding: 4px 8px; /* smaller action buttons */
+    margin-right: 0; 
+    padding: 4px 8px; 
     font-size: 12px;
   }
   
@@ -241,7 +245,7 @@
 
 .modal-body {
   padding: 16px;
-  color: #111827; /* dark readable text */
+  color: #111827; 
 }
 
 .modal-update-row {
@@ -255,7 +259,7 @@
 .modal p,
 .modal li,
 .modal label {
-  color: #111827; /* ensure all text inside modal is black/dark */
+  color: #111827; 
 }
 
 .modal .status-select {

@@ -14,7 +14,7 @@ function ShowItems() {
   const { catname } = useParams(); // Get category from URL
   const { cartItems, addToCart } = useCart();
 
-  // Map navbar URL param to API values. Backend field is `catogary` (typo in schema).
+  //Map navbar URL param to API values.
   const categoryMap = {
     supplements: ["supplements", "supplement", "protein", "whey", "mass gainer"],
     accessories: ["accessories", "lifting accessories", "straps", "belts", "gloves"],
@@ -23,7 +23,7 @@ function ShowItems() {
     offers: ["offers", "offers & deals", "deal", "discount"],
   };
 
-  // Fetch all products from backend API
+  //Fetch all products from backend API
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -36,7 +36,7 @@ function ShowItems() {
     fetchProducts();
   }, []);
 
-  // Filter products by search and category (backend field is `catogary`)
+  //Filter products by search and category
   const filteredProducts = products.filter((p) => {
     const matchSearch = p.name?.toLowerCase().includes(search.toLowerCase());
 
@@ -50,7 +50,7 @@ function ShowItems() {
     return matchSearch && matchCategory;
   });
 
-  // Handle adding favorites (placeholder)
+  //Handle adding favorites (placeholder)
   const handleFavourite = (productId) => {
     console.log(`Added ${productId} to favourites`);
   };
@@ -114,10 +114,16 @@ function ShowItems() {
               <div className="product-actions">
                 <button
                   className="add-cart-btn"
-                  disabled={product.stock <= 0}
-                  onClick={() => addToCart(product)}
+                  /*disabled={product.stock <= 0}*/
+                  onClick={() => {
+                    if(product.stock <= 0) {
+                      alert("Item is out of Stock.");
+                    }else{
+                      addToCart(product)};
+                    }
+                  }  
                 >
-                  Add to Cart
+                  {product.stock <= 0 ? "Out of Stock" : "Add to Cart"}
                 </button>
                 <FaHeart
                   size={22}

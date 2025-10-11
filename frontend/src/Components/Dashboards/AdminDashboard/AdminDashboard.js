@@ -1,15 +1,31 @@
-// src/Components/Dashboards/AdminDashboard/AdminDashboard.js
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
 import "./AdminDashboard.css";
 import AdminProfile from "../../UserManagement/Profiles/AdminProfile/AdminProfile";
 import Finance from "../../FinanceManagement/Finance"; // Show subscription plans
 import SubscriptionForm from "../../FinanceManagement/SubscriptionForm"; // Create subscription
-import AdminUserList from "../../UserManagement/AdminDashboard/AdminUserList"; // Manage Users
+import AdminUserList from "../../UserManagement/AdminDashboard/AdminUserList"; // <-- Import AdminUserList
 import Store from "../../Store/Store";
 import AdminOrders from "../../Store/AdminOrders";
-import PaymentsTable from "../../FinanceManagement/PaymentsTable"; // ✅ Payments table
-
+import { useLocation } from "react-router-dom";
 // Placeholder Components
+// function ManageTrainers() {
+//   return (
+//     <div>
+//       <h2>Manage Trainers</h2>
+//       <p>Manage trainer accounts and profiles.</p>
+//     </div>
+//   );
+// }
+
+// function ManageGyms() {
+//   return (
+//     <div>
+//       <h2>Manage Gyms</h2>
+//       <p>View and manage gym registrations.</p>
+//     </div>
+//   );
+// }
+
 function ManageSubscriptions() {
   return <Finance />; // Show subscription plans
 }
@@ -26,37 +42,53 @@ function ManageBookings() {
     </div>
   );
 }
-
 function ManageStore() {
-  return <Store />;
+  return <Store />
+
 }
 
 function Payments() {
-  return <PaymentsTable />; // ✅ Display payments table here
+  return (
+    <div>
+      <h2>Payments</h2>
+      <p>View payment transactions and earnings.</p>
+    </div>
+  );
 }
 
 // Main Dashboard
 function AdminDashboard() {
+  const location = useLocation();
   const [activeTab, setActiveTab] = useState("profile");
+
+  useEffect(() => {
+    if(location.state?.tab) {
+      setActiveTab(location.state.tab);
+    }
+  },[location.state]);
 
   const renderContent = () => {
     switch (activeTab) {
       case "profile":
         return <AdminProfile />;
       case "users":
-        return <AdminUserList />; // Manage Users
+        return <AdminUserList />; // <-- Use full Manage Users page here
+      // case "trainers":
+      //   return <ManageTrainers />;
+      // case "gyms":
+      //   return <ManageGyms />;
       case "subscriptions":
         return <ManageSubscriptions />;
       case "createsubscriptions":
         return <CreateSubscriptions />;
       case "bookings":
         return <ManageBookings />;
-      case "store":
+         case "store":
         return <ManageStore />;
       case "orders":
         return <AdminOrders />;
       case "payments":
-        return <Payments />; // Payments tab
+        return <Payments />;
       default:
         return <AdminProfile />;
     }
@@ -78,6 +110,18 @@ function AdminDashboard() {
           >
             Manage Users
           </li>
+          {/* <li
+            className={activeTab === "trainers" ? "active" : ""}
+            onClick={() => setActiveTab("trainers")}
+          >
+            Manage Trainers
+          </li> */}
+          {/* <li
+            className={activeTab === "gyms" ? "active" : ""}
+            onClick={() => setActiveTab("gyms")}
+          >
+            Manage Gyms
+          </li> */}
           <li
             className={activeTab === "subscriptions" ? "active" : ""}
             onClick={() => setActiveTab("subscriptions")}
@@ -96,12 +140,16 @@ function AdminDashboard() {
           >
             Manage Bookings
           </li>
+
+
+           {/* ✅ Added Manage Store */}
           <li
             className={activeTab === "store" ? "active" : ""}
             onClick={() => setActiveTab("store")}
           >
             Manage Store
           </li>
+
           <li
             className={activeTab === "orders" ? "active" : ""}
             onClick={() => setActiveTab("orders")}
