@@ -1,3 +1,4 @@
+
 // src/App.js
 
 import React from "react";
@@ -47,6 +48,8 @@ import SubscriptionForm from "./Components/FinanceManagement/SubscriptionForm";
 import UpdateFinance from "./Components/FinanceManagement/UpdateFinance";
 import UserSubscriptionPlan from "./Components/FinanceManagement/UserSubscriptionPlan";
 import FinanceCheckout from "./Components/FinanceManagement/FinanceCheckout";
+import PaymentsTable from "./Components/FinanceManagement/PaymentsTable";
+
 
 //Store
 import Store from "./Components/Store/Store";
@@ -118,7 +121,9 @@ function Layout() {
         <Route path="/subscribe" element={<SubscriptionForm />} /> {/* ✅ alternative route */}
         <Route path="/finance/update/:id" element={<UpdateFinance />} />
         <Route path="/subscriptions" element={<UserSubscriptionPlan />} />
-        <Route path="/finance/checkout" element={<FinanceCheckout />} />   
+         <Route path="/checkout" element={<FinanceCheckout />} />
+         <Route path="/payments" element={<PaymentsTable/>}/>
+       
 
 
 
@@ -127,7 +132,7 @@ function Layout() {
         <Route path="/showItems" element={<ShowItems />} />
         <Route path="/category/:catname" element={<ShowItems />} />
         <Route path="/product/:id" element ={<ProductDetails />} />
-        <Route path="/cart" element={<Cart />}/>
+        <Route path="cart" element={<Cart />}/>
         <Route path="/AddStoreItem" element={<AddStoreItem />} />
         <Route path="/store/:id" element={<UpdateItem />} />
         <Route path="/checkout" element={<Checkout />} />

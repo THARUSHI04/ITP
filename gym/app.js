@@ -8,13 +8,15 @@ const cors = require("cors");
 // Routes
 const UserRoutes = require("./Routes/UserRoutes");
 // Add your other routers if needed
-// const FinanceRouter = require("./Routes/FinanceRouter");
+const FinanceRouter = require("./Routes/FinanceRouter");
 // const ScheduleRoute = require("./Routes/ScheduleRoute");
 // const UserScheduleCreationRoute = require("./Routes/UserScheduleCreationRoute");
 const storeRouter = require("./Routes/StoreRoutes");
 // Fix: define favouriteRouter with correct path/casing
 const favouriteRouter = require("./Routes/StoreFavourite");
 const OrderRoutes = require("./Routes/OrderRoutes");
+const PaymentRouter = require("./Routes/PaymentRouter");
+const PaymentReceiptRouter = require("./Routes/PaymentReciptRouter");
 
 const app = express();
 
@@ -24,8 +26,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use("/store", storeRouter);
-app.use("/store-favourites", favouriteRouter);
+//app.use("/store", storeRouter);
+//app.use("/store-favourites", favouriteRouter);
+app.use("/finance", FinanceRouter);
 
 
 
@@ -46,6 +49,10 @@ app.use("/users", UserRoutes);
 app.use("/store", storeRouter);
 app.use("/store-favourites", favouriteRouter);
 app.use("/orders", OrderRoutes);
+app.use("/finance", FinanceRouter);
+app.use("/payment", PaymentRouter);
+app.use("/receipt", PaymentReceiptRouter);
+
 
 // ==========================
 // MongoDB Connection
