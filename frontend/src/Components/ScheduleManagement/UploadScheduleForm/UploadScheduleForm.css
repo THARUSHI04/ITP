@@ -1,87 +1,144 @@
-/* UploadScheduleForm.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 .upload-form-container {
-  max-width: 600px;
-  margin: 30px auto;
-  padding: 25px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  font-family: Arial, sans-serif;
+  width: 75vw; /* Match fitness-schedule-container */
+  margin: 0; /* No margin to align with container */
+  padding: 30px; /* Consistent padding */
+  border: 2px solid #e50914; /* Red accent border */
+  border-radius: 10px; /* Slightly larger for modern look */
+  background-color: #fff; /* White background */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Softer shadow */
+  font-family: 'Inter', Arial, sans-serif; /* Modern font */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Hover effect */
+}
+
+.upload-form-container:hover {
+  transform: translateY(-4px); /* Subtle lift on hover */
+  box-shadow: 0 6px 16px rgba(229, 9, 20, 0.2); /* Red-tinted shadow */
 }
 
 .upload-form-container h2 {
   text-align: center;
-  color: #333;
-  margin-bottom: 20px;
+  color: #e50914; /* Red accent */
+  margin-bottom: 25px; /* Increased spacing */
+  font-size: 1.8rem; /* Slightly larger */
+  font-weight: 700; /* Bold */
+  text-transform: uppercase; /* Gym-style emphasis */
+}
+
+.upload-schedule-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Consistent spacing */
 }
 
 .upload-schedule-form label {
   display: block;
-  margin: 12px 0 5px;
-  font-weight: bold;
-  color: #555;
+  margin: 10px 0 5px;
+  font-weight: 600; /* Bolder for emphasis */
+  color: #000; /* Black text */
+  font-size: 1.1rem; /* Slightly larger */
 }
 
 .upload-schedule-form input[type="text"],
+.upload-schedule-form select,
 .upload-schedule-form textarea {
   width: 100%;
-  padding: 8px 10px;
-  font-size: 14px;
-  border: 1px solid #ccc;
+  padding: 10px 12px; /* Increased padding */
+  font-size: 1rem; /* Consistent font size */
+  border: 2px solid #000; /* Black border */
   border-radius: 6px;
   box-sizing: border-box;
-  resize: vertical;
+  background-color: #fff; /* White background */
+  color: #000; /* Black text */
+  font-family: 'Inter', Arial, sans-serif;
+  transition: border-color 0.2s ease; /* Smooth border transition */
+}
+
+.upload-schedule-form input[type="text"]:focus,
+.upload-schedule-form select:focus,
+.upload-schedule-form textarea:focus {
+  outline: none;
+  border-color: #e50914; /* Red border on focus */
+}
+
+.upload-schedule-form select {
+  appearance: none; /* Remove default arrow */
+  background: url('data:image/svg+xml;utf8,<svg fill="%23000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 12px center; /* Custom arrow */
+  background-size: 16px; /* Smaller arrow */
+  padding-right: 30px; /* Space for arrow */
 }
 
 .upload-schedule-form textarea {
-  min-height: 80px;
+  min-height: 120px; /* Increased for usability */
+  resize: vertical; /* Vertical resize only */
 }
 
 .form-buttons {
-  margin-top: 20px;
+  margin-top: 25px; /* Increased spacing */
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
+  gap: 12px; /* Slightly larger gap */
 }
 
-/* Submit / Update button */
 .form-buttons button[type="submit"] {
-  background-color: #2196f3; /* same as Upload Schedule button */
-  color: white;
-  border: none;
-  padding: 8px 16px;
+  background-color: #e50914; /* Red accent */
+  color: #fff;
+  border: 1px solid #e50914; /* Border for emphasis */
+  padding: 10px 20px; /* Larger padding */
   border-radius: 6px;
   cursor: pointer;
-  transition: background 0.2s;
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase; /* Gym-style emphasis */
+  transition: all 0.2s ease;
+  font-family: 'Inter', Arial, sans-serif;
 }
 
 .form-buttons button[type="submit"]:hover {
-  background-color: #1976d2;
+  background-color: #b0060f; /* Darker red */
+  border-color: #b0060f;
 }
 
-/* Cancel button */
 .form-buttons button[type="button"] {
-  background-color: #f44336; /* same as Delete button */
-  color: white;
-  border: none;
-  padding: 8px 16px;
+  background-color: #6c757d; /* Neutral gray for cancel */
+  color: #fff;
+  border: 1px solid #6c757d;
+  padding: 10px 20px;
   border-radius: 6px;
   cursor: pointer;
-  transition: background 0.2s;
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+  font-family: 'Inter', Arial, sans-serif;
 }
 
 .form-buttons button[type="button"]:hover {
-  background-color: #d73833;
+  background-color: #5a6268; /* Darker gray */
+  border-color: #5a6268;
 }
 
-/* Responsive adjustments */
-@media (max-width: 640px) {
+@media (max-width: 768px) {
+  .upload-form-container {
+    width: 80vw; /* Maintain container width */
+    padding: 20px; /* Reduced padding for mobile */
+    margin: 0; /* No margin */
+  }
+
+  .upload-schedule-form input[type="text"],
+  .upload-schedule-form select,
+  .upload-schedule-form textarea {
+    font-size: 0.95rem; /* Slightly smaller for mobile */
+  }
+
   .form-buttons {
     flex-direction: column;
+    gap: 10px;
   }
+
   .form-buttons button {
     width: 100%;
+    padding: 8px 16px;
   }
 }

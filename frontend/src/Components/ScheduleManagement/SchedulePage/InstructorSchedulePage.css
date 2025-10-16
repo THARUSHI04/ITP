@@ -1,148 +1,389 @@
 /* src/Components/ScheduleManagement/SchedulePage/InstructorSchedulePage.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@700&family=Source+Code+Pro:wght@400;600&display=swap');
+
+* {
+  box-sizing: border-box;
+}
 
 .instructor-schedule-page {
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 25px;
-  font-family: "Arial", sans-serif;
-  background: #000; /* Black page background */
+  background: linear-gradient(135deg, #1a1a1a, #2c2c2c);
+  color: #ffffff;
   min-height: 100vh;
+  padding: 30px 10px;
+  font-family: 'Inter', Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 0px;
+  width: calc(100vw - 250px);
+  overflow-x: hidden;
 }
 
 .instructor-schedule-page h2 {
   text-align: center;
   margin-bottom: 25px;
-  color: #fff; /* White title */
-  font-size: 2rem;
-  font-weight: bold;
+  color: #e50914;
+  font-size: 2.5rem;
+  font-weight: 700;
+  font-family: 'Roboto', sans-serif;
+  letter-spacing: 0.4px;
   text-transform: uppercase;
+  background: rgba(229, 9, 20, 0.1);
+  padding: 10px 20px;
+  border-radius: 8px;
+  position: relative;
 }
 
-.back-btn {
-  background-color: #e50914;
-  color: #fff;
+.instructor-schedule-page h2::after {
+  content: '';
+  width: 50px;
+  height: 3px;
+  background: #e50914;
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+.search-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 25px;
+  width: calc(100% - 20px);
+}
+
+.search-section label {
+  font-size: 1.2rem;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.search-input-group {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  width: 100%;
+  max-width: 1000px;
+}
+
+.search-input {
+  flex: 1;
+  min-width: 200px;
+  padding: 14px;
+  font-size: 1.1rem;
+  font-family: 'Inter', sans-serif;
+  border: 2px solid #e50914;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #000000;
+}
+
+.search-btn,
+.reset-btn {
+  background: linear-gradient(45deg, #e50914, #ff4d4f);
+  color: #ffffff;
   border: none;
-  padding: 10px 18px;
+  padding: 14px 20px;
+  width: 150px;
   border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
   cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.search-btn:hover,
+.reset-btn:hover {
+  background: linear-gradient(45deg, #b0060f, #e50914);
+  transform: translateY(-2px);
+  box-shadow: 0 3px 12px rgba(229, 9, 20, 0.3);
+}
+
+.search-error {
+  color: #e50914;
+  font-size: 1rem;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.change-requests-section {
+  width: calc(100% - 20px);
   margin-bottom: 25px;
-  font-size: 14px;
-  font-weight: bold;
-  transition: background 0.3s ease, transform 0.2s ease;
 }
 
-.back-btn:hover {
-  background-color: #b0060f;
-  transform: scale(1.05);
-}
-
-label {
-  display: block;
-  margin-bottom: 10px;
-  font-weight: bold;
-  color: #fff; /* White label text */
-}
-
-select {
-  padding: 10px 12px;
-  border-radius: 8px;
-  border: 2px solid #ccc;
-  margin-bottom: 25px;
-  width: 100%;
-  font-size: 15px;
-  outline: none;
-}
-
-.schedule-card,
-.change-request-card {
-  background: #fff; /* White card */
-  color: #000;      /* Black text inside */
-  padding: 20px;
-  border-radius: 12px;
-  border: 1px solid #ddd;
-  margin-top: 20px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-}
-
-.schedule-card h3,
 .change-requests-section h3 {
-  margin-bottom: 15px;
-  color: #000;
-  font-size: 1.4rem;
+  color: #e50914;
+  font-size: 1.8rem;
+  font-weight: 700;
+  font-family: 'Roboto', sans-serif;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.change-requests-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.change-request-card {
+  padding: 25px;
+  border: 2px solid #e50914;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.change-request-card:hover {
+  background: #ffffff;
+  box-shadow: 0 7px 20px rgba(229, 9, 20, 0.15);
+}
+
+.change-request-card p {
+  margin: 10px 0;
+  color: #000000 !important;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  font-weight: 700;
+}
+
+.change-request-card p strong {
+  color: #0052cc;
   font-weight: bold;
-}
-
-.schedule-card textarea,
-.schedule-card input[type="text"] {
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  background: #f9f9f9;
-  color: #000;
-  margin-top: 5px;
-  font-size: 14px;
-  transition: border 0.3s ease;
-}
-
-.schedule-card textarea:focus,
-.schedule-card input[type="text"]:focus {
-  border: 2px solid #e50914; /* red border on focus */
+  font-size: 1.15rem;
 }
 
 .change-request-text {
-  background: #f5f5f5;
-  padding: 10px;
-  border-radius: 8px;
-  color: #000;
+  background: #ffffff;
+  border: 1px solid #e50914;
+  border-radius: 10px;
+  padding: 20px;
   white-space: pre-wrap;
-  font-size: 14px;
-  margin-top: 5px;
+  margin: 15px 0;
+  font-size: 0.95rem;
+  color: #000000 !important;
+  font-weight: 700;
+  line-height: 1.8;
+  font-family: 'Source Code Pro', monospace;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
-.btn-group {
-  margin-top: 20px;
-}
-
-.btn-group button,
 .delete-request-btn {
-  padding: 10px 16px;
-  margin-right: 10px;
+  background: linear-gradient(45deg, #e50914, #ff4d4f);
+  color: #ffffff;
   border: none;
+  padding: 20px 0;
+  width: 300px;
   border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
   cursor: pointer;
-  font-weight: bold;
-  font-size: 14px;
-  transition: background 0.3s ease, transform 0.2s ease;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  text-align: center;
+  white-space: nowrap;
 }
 
-/* Green for Upload/Update */
-.btn-group button:nth-child(1) {
-  background-color: #28a745;
-  color: white;
-}
-
-.btn-group button:nth-child(1):hover {
-  background-color: #218838;
-  transform: scale(1.05);
-}
-
-/* Red for Delete */
-.btn-group button:nth-child(2),
-.delete-request-btn {
-  background-color: #dc3545;
-  color: white;
-}
-
-.btn-group button:nth-child(2):hover,
 .delete-request-btn:hover {
-  background-color: #c82333;
-  transform: scale(1.05);
+  background: linear-gradient(45deg, #b0060f, #e50914);
+  transform: translateY(-2px);
+  box-shadow: 0 3px 12px rgba(229, 9, 20, 0.3);
 }
 
 .no-requests {
   text-align: center;
-  margin-top: 20px;
-  color: #fff;
+  color: #ffffff;
+  font-size: 1.2rem;
   font-style: italic;
+  padding: 20px;
+  background: #e50914;
+  border-radius: 10px;
+  margin: 15px 0;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.no-requests:hover {
+  transform: scale(1.02);
+}
+
+.schedule-details-card {
+  width: calc(100% - 20px);
+  padding: 25px;
+  border: 2px solid #e50914;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  margin-top: 15px;
+}
+
+.schedule-details-card:hover {
+  background: #ffffff;
+  box-shadow: 0 7px 20px rgba(229, 9, 20, 0.15);
+}
+
+.schedule-details-card h3 {
+  color: #e50914;
+  font-size: 1.8rem;
+  font-weight: 700;
+  font-family: 'Roboto', sans-serif;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.schedule-details-card p {
+  margin: 10px 0;
+  color: #000000 !important;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  font-weight: 700;
+}
+
+.schedule-details-card p strong {
+  color: #0052cc;
+  font-weight: bold;
+  font-size: 1.15rem;
+}
+
+.schedule-details-text {
+  background: #ffffff;
+  border: 1px solid #e50914;
+  border-radius: 10px;
+  padding: 20px;
+  white-space: pre-wrap;
+  margin: 15px 0;
+  font-size: 0.95rem;
+  color: #000000 !important;
+  font-weight: 700;
+  line-height: 1.8;
+  font-family: 'Source Code Pro', monospace;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.edit-input,
+.edit-textarea {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e50914;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #000000;
+  margin-top: 5px;
+  font-size: 1rem;
+  font-family: 'Inter', sans-serif;
+}
+
+.edit-textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.btn-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.update-btn {
+  background: linear-gradient(45deg, #28a745, #34c759);
+  color: #ffffff;
+  border: none;
+  padding: 20px 0;
+  width: 300px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.update-btn:hover {
+  background: linear-gradient(45deg, #218838, #2ea44f);
+  transform: translateY(-2px);
+  box-shadow: 0 3px 12px rgba(40, 167, 69, 0.3);
+}
+
+.delete-btn {
+  background: linear-gradient(45deg, #e50914, #ff4d4f);
+  color: #ffffff;
+  border: none;
+  padding: 20px 0;
+  width: 300px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.delete-btn:hover {
+  background: linear-gradient(45deg, #b0060f, #e50914);
+  transform: translateY(-2px);
+  box-shadow: 0 3px 12px rgba(229, 9, 20, 0.3);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .instructor-schedule-page {
+    margin-left: 0;
+    width: 100vw;
+    padding: 20px 10px;
+  }
+
+  .search-section,
+  .change-requests-section,
+  .schedule-details-card {
+    width: calc(100% - 20px);
+    max-width: 100%;
+  }
+
+  .search-input-group {
+    flex-direction: column;
+    gap: 8px;
+    max-width: 100%;
+  }
+
+  .search-input,
+  .search-btn,
+  .reset-btn {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .search-btn,
+  .reset-btn {
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .update-btn,
+  .delete-btn,
+  .delete-request-btn {
+    width: 100%;
+    max-width: 280px;
+  }
 }

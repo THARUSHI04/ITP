@@ -1,27 +1,59 @@
-// Updated UploadScheduleForm.js (ensure userId is set from fetched request.userId; minor fix for instructorId using localStorage as fallback)
 import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import "./UploadScheduleForm.css";
 
 const REQUESTS_URL = "http://localhost:5000/schedules";
 const CREATIONS_URL = "http://localhost:5000/user-schedule-creations";
 
-function UploadScheduleForm({ onUpload }) {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { scheduleId, instructorId: passedInstructorId } = location.state || {};
-
+function UploadScheduleForm({ scheduleId, userId, userName, instructorId, onUpload, onCancel }) {
   const [formData, setFormData] = useState({
     requestId: scheduleId || "",
-    userId: "",
-    userName: "",
+    userId: userId || "",
+    userName: userName || "",
     timeSlot: "",
     schedule: "",
-    instructorId: passedInstructorId || localStorage.getItem("userId") || "",  // UPDATED: use localStorage as fallback for current instructor
+    instructorId: instructorId || localStorage.getItem("userId") || "",
   });
 
   const [loading, setLoading] = useState(false);
+
+  const timeSlots = [
+    "Monday 6-8 AM",
+    "Monday 8-10 AM",
+    "Monday 10 AM-12 PM",
+    "Monday 12-2 PM",
+    "Monday 2-4 PM",
+    "Monday 4-6 PM",
+    "Monday 6-8 PM",
+    "Tuesday 6-8 AM",
+    "Tuesday 8-10 AM",
+    "Tuesday 10 AM-12 PM",
+    "Tuesday 12-2 PM",
+    "Tuesday 2-4 PM",
+    "Tuesday 4-6 PM",
+    "Tuesday 6-8 PM",
+    "Wednesday 6-8 AM",
+    "Wednesday 8-10 AM",
+    "Wednesday 10 AM-12 PM",
+    "Wednesday 12-2 PM",
+    "Wednesday 2-4 PM",
+    "Wednesday 4-6 PM",
+    "Wednesday 6-8 PM",
+    "Thursday 6-8 AM",
+    "Thursday 8-10 AM",
+    "Thursday 10 AM-12 PM",
+    "Thursday 12-2 PM",
+    "Thursday 2-4 PM",
+    "Thursday 4-6 PM",
+    "Thursday 6-8 PM",
+    "Friday 6-8 AM",
+    "Friday 8-10 AM",
+    "Friday 10 AM-12 PM",
+    "Friday 12-2 PM",
+    "Friday 2-4 PM",
+    "Friday 4-6 PM",
+    "Friday 6-8 PM",
+  ];
 
   useEffect(() => {
     const fetchRequest = async () => {
@@ -29,14 +61,14 @@ function UploadScheduleForm({ onUpload }) {
       try {
         setLoading(true);
         const res = await axios.get(`${REQUESTS_URL}/${scheduleId}`);
-        const request = res.data.schedule;  // Backend returns { schedule }
+        const request = res.data.schedule;
         if (request) {
           setFormData((prev) => ({
             ...prev,
             requestId: request._id,
-            userId: request.userId,  // UPDATED: correctly set from fetched schedule.userId (now available)
+            userId: request.userId,
             userName: request.userName,
-            instructorId: passedInstructorId || localStorage.getItem("userId") || prev.instructorId,  // Ensure instructorId
+            instructorId: instructorId || localStorage.getItem("userId") || prev.instructorId,
           }));
         }
       } catch (err) {
@@ -47,7 +79,7 @@ function UploadScheduleForm({ onUpload }) {
     };
 
     fetchRequest();
-  }, [scheduleId, passedInstructorId]);
+  }, [scheduleId, instructorId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -58,12 +90,8 @@ function UploadScheduleForm({ onUpload }) {
     e.preventDefault();
     try {
       const res = await axios.post(CREATIONS_URL, formData);
-
-      // ✅ immediately insert into list in FitnessSchedule
       if (onUpload) onUpload(res.data.creation);
-
       alert("Schedule uploaded successfully!");
-      navigate("/FitnessSchedule");
     } catch (err) {
       console.error("Failed to upload schedule:", err);
       alert("Failed to upload schedule.");
@@ -75,16 +103,19 @@ function UploadScheduleForm({ onUpload }) {
   return (
     <div className="upload-form-container">
       <h2>Upload Schedule for {formData.userName}</h2>
-      <form onSubmit={handleSubmit} className="upload-schedule-form">
+      <div className="upload-schedule-form">
         <label>Time Slot</label>
-        <input
-          type="text"
+        <select
           name="timeSlot"
           value={formData.timeSlot}
           onChange={handleChange}
-          placeholder="e.g. Monday 9-11 AM"
           required
-        />
+        >
+          <option value="" disabled>Select a time slot</option>
+          {timeSlots.map((slot) => (
+            <option key={slot} value={slot}>{slot}</option>
+          ))}
+        </select>
 
         <label>Schedule Details</label>
         <textarea
@@ -96,17 +127,16 @@ function UploadScheduleForm({ onUpload }) {
         />
 
         <div className="form-buttons">
-          <button type="submit">Upload</button>
-          <button type="button" onClick={() => navigate("/FitnessSchedule")}>
-            Cancel
-          </button>
+          <button type="submit" onClick={handleSubmit}>Upload</button>
+          <button type="button" onClick={onCancel}>Cancel</button>
         </div>
-      </form>
+      </div>
     </div>
   );
 }
 
 export default UploadScheduleForm;
+
 
 
 

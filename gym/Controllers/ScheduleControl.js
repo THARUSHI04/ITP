@@ -1,6 +1,7 @@
 // Updated ScheduleControl.js (add userId handling in addScheduleRequest and updateSchdule; no changes to other functions)
 const Schedule = require("../Model/ScheduleModel");
 
+
 ////////////////////////////////////////////////////////////////////////////
 // GET all schedules (unchanged)
 const getAllSchedule = async (req, res, next) => {

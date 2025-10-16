@@ -1,162 +1,248 @@
 /* src/Components/ScheduleManagement/UserSchedule/UserSchedule.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@700&family=Source+Code+Pro:wght@400;600&display=swap');
+
+* {
+  box-sizing: border-box; /* Ensure padding and borders are included in width */
+}
+
 .schedule-page {
-  background-color: #000; /* Black background, matches .finance-container */
-  color: #fff; /* White text for contrast */
-  min-height: 100vh; /* Full page height, matches .finance-container */
-  padding: 40px 20px; /* Matches .finance-container padding */
-  font-family: Arial, sans-serif; /* Matches .finance-container */
+  background: linear-gradient(135deg, #1a1a1a, #2c2c2c);
+  color: #ffffff;
+  min-height: 100vh;
+  /* padding: 40px; */
+  font-family: 'Inter', Arial, sans-serif; /* Primary font: Inter */
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
 .schedule-container {
-  max-width: 700px; /* Slightly wider for full-page feel */
-  width: 100%; /* Responsive width */
-  margin: 20px auto; /* Reduced margin for header/footer space */
-  padding: 30px; /* Slightly more padding than .plan-card */
-  background: #fff; /* White background for contrast */
-  color: #000; /* Black text for readability */
-  border-radius: 15px; /* Matches .plan-card */
-  box-shadow: 0 5px 15px rgba(255, 0, 0, 0.2); /* Red-tinted shadow like .plan-card */
-  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Matches .plan-card */
+  width: min(1000px, calc(100% - 30px)); /* Fit within viewport */
+  min-width: 280px; /* Adjusted for smaller screens */
+  margin: 20px auto;
+  padding: 30px;
+  background: #ffffff;
+  color: #1a1a1a;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .schedule-container:hover {
-  transform: translateY(-8px); /* Matches .plan-card hover */
-  box-shadow: 0 8px 20px rgba(255, 0, 0, 0.5); /* Matches .plan-card hover */
+  transform: translateY(-8px);
+  box-shadow: 0 12px 35px rgba(229, 9, 20, 0.2);
 }
 
 .schedule-container h2 {
   text-align: center;
-  margin-bottom: 30px; /* Slightly less than .title for hierarchy */
-  color: #e50914; /* Red, matches .title */
-  font-size: 2.2rem; /* Slightly smaller than .title for balance */
-  font-weight: bold; /* Matches .title */
-  letter-spacing: 1px; /* Added for gym-style emphasis */
-  text-transform: uppercase; /* Bold gym aesthetic */
+  margin-bottom: 30px;
+  color: #e50914;
+  font-size: 2.5rem;
+  font-weight: 700;
+  font-family: 'Roboto', sans-serif; /* Header font: Roboto */
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  position: relative;
+  background: rgba(229, 9, 20, 0.1);
+  padding: 10px 20px;
+  border-radius: 8px;
+}
+
+.schedule-container h2::after {
+  content: '';
+  width: 50px;
+  height: 3px;
+  background: #e50914;
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 2px;
 }
 
 .schedule-card {
-  padding: 25px; /* Matches .plan-card padding */
-  border: 3px solid #e50914; /* Red border, matches .plan-card.highlight */
-  border-radius: 15px; /* Matches .plan-card */
-  background: #f5f5f5; /* Light gray for softer contrast */
-  color: #000; /* Black text, matches .plan-card */
-  box-shadow: 0 4px 12px rgba(255, 0, 0, 0.15); /* Slightly softer shadow */
-  margin-bottom: 20px; /* Space for buttons */
+  padding: 25px;
+  border: 2px solid #e50914;
+  border-radius: 12px;
+  background: #fafafa;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+.schedule-card:hover {
+  background: #ffffff;
+  box-shadow: 0 7px 20px rgba(229, 9, 20, 0.15);
 }
 
 .schedule-card p {
-  margin: 12px 0; /* Slightly more than .plan-card li for spacing */
-  color: #000; /* Black text, matches .plan-card */
-  font-size: 1.1rem; /* Slightly larger for readability */
-  line-height: 1.6; /* Improved readability */
+  margin: 12px 0;
+  color: #000000 !important;
+  font-size: 1.1rem;
+  line-height: 1.7;
 }
 
 .schedule-card p strong {
-  color: #e50914; /* Red, matches .price and .btn */
-  font-weight: bold; /* Matches .price */
-  font-size: 1.15rem; /* Slightly larger for emphasis */
+  color: #0052cc !important; /* Blue for labels */
+  font-weight: bold;
+  font-size: 1.15rem;
 }
 
 .schedule-text {
-  background: #fff; /* White for clean contrast */
-  border: 2px solid #000; /* Black border for sharp gym look */
-  border-radius: 10px; /* Slightly smaller than .plan-card */
-  padding: 20px; /* Slightly more than .plan-card li */
-  white-space: pre-wrap; /* Preserve schedule formatting */
-  margin: 20px 0; /* Matches .plan-card ul */
-  font-size: 1rem; /* Matches .plan-card li */
-  color: #000; /* Black text, matches .plan-card */
-  line-height: 1.7; /* Enhanced readability */
-  max-height: 350px; /* Slightly taller for more content */
-  overflow-y: auto; /* Scroll for long schedules */
-  font-family: 'Courier New', monospace; /* Monospace for schedule clarity */
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 20px;
+  white-space: pre-wrap;
+  margin: 20px 0;
+  font-size: 0.95rem;
+  color: #000000 !important;
+  font-weight: bold;
+  line-height: 1.8;
+  font-family: 'Source Code Pro', monospace;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
 .no-schedule {
   text-align: center;
-  color: #fff; /* White text for contrast */
-  font-size: 1.2rem; /* Slightly larger than .plan-card li */
-  font-style: italic; /* Kept for empty state */
-  padding: 25px; /* Matches .plan-card padding */
-  background: #e50914; /* Red, matches .btn and .title */
-  border-radius: 10px; /* Matches .schedule-text */
-  margin: 20px 0; /* Matches .plan-card ul */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Black shadow for depth */
+  color: #ffffff;
+  font-size: 1.2rem;
+  font-style: italic;
+  padding: 25px;
+  background: #e50914;
+  border-radius: 10px;
+  margin: 20px 0;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.no-schedule:hover {
+  transform: scale(1.02);
 }
 
 .loading-text {
   text-align: center;
-  color: #e50914; /* Red, matches .title and .btn */
-  font-size: 1.3rem; /* Slightly larger for visibility */
-  font-weight: bold; /* Matches .title */
-  padding: 25px; /* Matches .plan-card padding */
-  background: #fff; /* White background for contrast */
-  border-radius: 10px; /* Matches .schedule-text */
-  box-shadow: 0 4px 12px rgba(255, 0, 0, 0.2); /* Red-tinted shadow */
-  animation: pulse 1.5s infinite ease-in-out; /* Matches .finance-container style */
+  color: #e50914;
+  font-size: 1.3rem;
+  font-weight: 600;
+  padding: 25px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(229, 9, 20, 0.15);
+  animation: pulse 1.5s infinite ease-in-out;
 }
 
 .button-group {
   display: flex;
-  justify-content: center;
-  gap: 15px; /* Space between buttons */
-  margin-top: 20px; /* Space above buttons */
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-top: 20px;
+  width: 100%; /* Ensure buttons stay within container */
 }
 
 .back-btn,
-.change-request-btn {
-  background: #e50914; /* Red, matches .btn */
-  color: #fff; /* White text, matches .btn */
+.change-request-btn,
+.download-btn {
+  background: linear-gradient(45deg, #e50914, #ff4d4f);
+  color: #ffffff;
   border: none;
-  padding: 10px 18px; /* Matches .btn */
-  border-radius: 8px; /* Matches .btn */
-  font-size: 1rem; /* Matches .btn */
+  padding: 20px 0;
+  width: 300px; /* Reduced from 400px to prevent overflow */
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
   cursor: pointer;
-  transition: background 0.3s ease; /* Matches .btn */
-  text-transform: uppercase; /* Gym-style emphasis */
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  text-align: center;
+  white-space: nowrap;
 }
 
 .back-btn:hover,
-.change-request-btn:hover {
-  background: #b0060f; /* Matches .btn:hover */
+.change-request-btn:hover,
+.download-btn:hover {
+  background: linear-gradient(45deg, #b0060f, #e50914);
+  transform: translateY(-2px);
+  box-shadow: 0 3px 12px rgba(229, 9, 20, 0.3);
 }
 
 .schedule-header {
-  width: 100%;
-  max-width: 1200px; /* Matches .plans max-width */
+  width: min(1000px, calc(100% - 30px));
   text-align: center;
   margin-bottom: 20px;
 }
 
 .schedule-header h1 {
-  color: #e50914; /* Red, matches .title */
-  font-size: 3rem; /* Larger for full-page prominence */
-  font-weight: bold;
-  text-transform: uppercase; /* Gym aesthetic */
+  color: #e50914;
+  font-size: 3rem;
+  font-weight: 700;
+  font-family: 'Roboto', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  position: relative;
+}
+
+.schedule-header h1::after {
+  content: '';
+  width: 70px;
+  height: 4px;
+  background: #e50914;
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 2px;
 }
 
 .schedule-footer {
-  width: 100%;
-  max-width: 1200px; /* Matches .plans */
+  width: min(1000px, calc(100% - 30px));
   text-align: center;
   margin-top: 30px;
   padding: 20px 0;
-  color: #fff; /* White text */
-  font-size: 0.9rem;
-  border-top: 1px solid #e50914; /* Red border for style */
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 400;
+  font-family: 'Inter', sans-serif;
+  border-top: 1px solid rgba(229, 9, 20, 0.5);
+  opacity: 0.8;
 }
 
 @keyframes pulse {
-  0% {
-    opacity: 1;
+  0% { opacity: 1; }
+  50% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+  .schedule-page {
+    margin-left: 0;
+    width: 100vw;
+    padding: 30px 10px;
   }
-  50% {
-    opacity: 0.5;
+
+  .schedule-container {
+    width: calc(100% - 20px);
+    max-width: 100%;
+    min-width: 280px;
   }
-  100% {
-    opacity: 1;
+
+  .schedule-header,
+  .schedule-footer {
+    width: calc(100% - 20px);
+    max-width: 100%;
+  }
+
+  .back-btn,
+  .change-request-btn,
+  .download-btn {
+    width: 100%; /* Full width on mobile */
+    max-width: 280px; /* Cap width to prevent overflow */
+    font-size: 0.95rem;
   }
 }
