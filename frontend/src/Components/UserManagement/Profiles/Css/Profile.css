@@ -90,6 +90,8 @@
   border-radius: 12px;
   font-weight: 600;
   cursor: pointer;
+  background-color: #6c63ff; /* make all buttons same color */
+  color: #fff;
   transition: all 0.3s ease;
 }
 
@@ -98,20 +100,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.profile-actions .save-btn {
-  background-color: #6c63ff;
-  color: #fff;
-}
-
-.profile-actions .delete-btn {
-  background-color: #ff4d4f;
-  color: #fff;
-}
-
-.profile-actions button:not(.save-btn):not(.delete-btn) {
-  background-color: #e0e0e0;
-  color: #333;
-}
+/* Remove previous specific delete button styles */
 
 /* ===================== */
 /* Change Password Section */

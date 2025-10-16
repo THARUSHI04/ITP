@@ -21,13 +21,13 @@ export default function AdminProfile() {
   });
   const [previewImage, setPreviewImage] = useState("/images/profile.png");
 
-  // --- Change Password State ---
   const [passwordData, setPasswordData] = useState({
     currentPassword: "",
     newPassword: "",
-    confirmPassword: "",
+    reEnterPassword: "",
   });
 
+  // --- Fetch user data ---
   useEffect(() => {
     if (!userId) return navigate("/login");
 
@@ -35,6 +35,7 @@ export default function AdminProfile() {
       try {
         const res = await axios.get(`http://localhost:5000/users/${userId}`);
         const u = res.data.user;
+
         setUser(u);
         setFormData({
           userName: u.userName || "",
@@ -44,7 +45,7 @@ export default function AdminProfile() {
           gender: u.gender || "",
           joiningDate: u.joiningDate ? u.joiningDate.split("T")[0] : "",
           notes: u.notes || "",
-          profileImage: u.profileImage || "",
+          profileImage: "",
         });
         setPreviewImage(u.profileImage ? `http://localhost:5000${u.profileImage}` : "/images/profile.png");
       } catch (err) {
@@ -68,13 +69,12 @@ export default function AdminProfile() {
 
   const handleEditToggle = () => setIsEditing(!isEditing);
 
-  // --- Validation Function ---
+  // --- Form Validation ---
   const validateForm = async () => {
     if (!formData.userName.trim()) return alert("Username is required!");
     if (!formData.email.trim()) return alert("Email is required!");
     if (!formData.contactNo.trim()) return alert("Contact number is required!");
-    if (!/^\d{10}$/.test(formData.contactNo))
-      return alert("Contact number must be exactly 10 digits!");
+    if (!/^\d{10}$/.test(formData.contactNo)) return alert("Contact number must be exactly 10 digits!");
     if (!formData.dob) return alert("Date of Birth is required!");
     if (!formData.gender) return alert("Gender is required!");
     if (!formData.joiningDate) return alert("Joining date is required!");
@@ -142,26 +142,30 @@ export default function AdminProfile() {
     navigate("/login");
   };
 
-  // --- Handle Change Password ---
+  // --- Handle Password Change ---
   const handlePasswordChange = (e) => {
     setPasswordData({ ...passwordData, [e.target.name]: e.target.value });
   };
 
   const handleUpdatePassword = async () => {
-    if (!passwordData.currentPassword || !passwordData.newPassword || !passwordData.confirmPassword) {
+    const { currentPassword, newPassword, reEnterPassword } = passwordData;
+
+    if (!currentPassword || !newPassword || !reEnterPassword)
       return alert("All password fields are required.");
-    }
-    if (passwordData.newPassword !== passwordData.confirmPassword) {
-      return alert("New password and confirm password do not match.");
-    }
-    if (passwordData.newPassword.length < 6) {
+
+    if (newPassword !== reEnterPassword)
+      return alert("New password and re-enter password do not match.");
+
+    if (newPassword.length < 6)
       return alert("New password must be at least 6 characters long.");
-    }
 
     try {
-      const res = await axios.put(`http://localhost:5000/users/${userId}/change-password`, passwordData);
+      const res = await axios.put(
+        `http://localhost:5000/users/${userId}/change-password`,
+        { currentPassword, newPassword, reEnterPassword }
+      );
       alert(res.data.message);
-      setPasswordData({ currentPassword: "", newPassword: "", confirmPassword: "" });
+      setPasswordData({ currentPassword: "", newPassword: "", reEnterPassword: "" });
     } catch (err) {
       console.error("Error updating password:", err);
       alert(err.response?.data?.message || "Failed to update password.");
@@ -178,59 +182,32 @@ export default function AdminProfile() {
           {isEditing && <input type="file" onChange={handleImageChange} />}
         </div>
 
-        <label>Username:</label>
-        {isEditing ? (
-          <input type="text" name="userName" value={formData.userName} onChange={handleChange} />
-        ) : (
-          <span>{user.userName}</span>
-        )}
-
-        <label>Email:</label>
-        {isEditing ? (
-          <input type="email" name="email" value={formData.email} onChange={handleChange} />
-        ) : (
-          <span>{user.email}</span>
-        )}
-
-        <label>Contact No:</label>
-        {isEditing ? (
-          <input type="text" name="contactNo" value={formData.contactNo} onChange={handleChange} />
-        ) : (
-          <span>{user.contactNo || "-"}</span>
-        )}
-
-        <label>Date of Birth:</label>
-        {isEditing ? (
-          <input type="date" name="dob" value={formData.dob} onChange={handleChange} />
-        ) : (
-          <span>{user.dob ? user.dob.split("T")[0] : "-"}</span>
-        )}
-
-        <label>Gender:</label>
-        {isEditing ? (
-          <select name="gender" value={formData.gender} onChange={handleChange}>
-            <option value="">Select</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
-          </select>
-        ) : (
-          <span>{user.gender || "-"}</span>
-        )}
-
-        <label>Date of Joining:</label>
-        {isEditing ? (
-          <input type="date" name="joiningDate" value={formData.joiningDate} onChange={handleChange} />
-        ) : (
-          <span>{user.joiningDate ? user.joiningDate.split("T")[0] : "-"}</span>
-        )}
-
-        <label>Notes / Remarks:</label>
-        {isEditing ? (
-          <textarea name="notes" value={formData.notes} onChange={handleChange}></textarea>
-        ) : (
-          <span>{user.notes || "-"}</span>
-        )}
+        {["userName", "email", "contactNo", "dob", "gender", "joiningDate", "notes"].map((field) => (
+          <div key={field}>
+            <label>{field === "userName" ? "Username" : field.charAt(0).toUpperCase() + field.slice(1)}:</label>
+            {isEditing ? (
+              field === "notes" ? (
+                <textarea name={field} value={formData[field]} onChange={handleChange}></textarea>
+              ) : field === "gender" ? (
+                <select name="gender" value={formData.gender} onChange={handleChange}>
+                  <option value="">Select</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              ) : (
+                <input
+                  type={field === "dob" || field === "joiningDate" ? "date" : "text"}
+                  name={field}
+                  value={formData[field]}
+                  onChange={handleChange}
+                />
+              )
+            ) : (
+              <span>{user[field] || "-"}</span>
+            )}
+          </div>
+        ))}
 
         <label>Role:</label>
         <span>{user.role}</span>
@@ -266,17 +243,15 @@ export default function AdminProfile() {
           onChange={handlePasswordChange}
         />
 
-        <label>Confirm New Password:</label>
+        <label>Re-enter New Password:</label>
         <input
           type="password"
-          name="confirmPassword"
-          value={passwordData.confirmPassword}
+          name="reEnterPassword"
+          value={passwordData.reEnterPassword}
           onChange={handlePasswordChange}
         />
 
-        <button onClick={handleUpdatePassword} className="save-btn">
-          Update Password
-        </button>
+        <button onClick={handleUpdatePassword} className="save-btn">Update Password</button>
       </div>
     </div>
   );

@@ -15,7 +15,7 @@ export default function UserProfile() {
     contactNo: "",
     dob: "",
     gender: "",
-    profileImage: "",
+    profileImage: null,
   });
   const [previewImage, setPreviewImage] = useState("/images/profile.png");
 
@@ -23,7 +23,7 @@ export default function UserProfile() {
   const [passwordData, setPasswordData] = useState({
     currentPassword: "",
     newPassword: "",
-    confirmPassword: "",
+    reEnterPassword: "",
   });
 
   useEffect(() => {
@@ -40,7 +40,7 @@ export default function UserProfile() {
           contactNo: u.contactNo || "",
           dob: u.dob ? u.dob.split("T")[0] : "",
           gender: u.gender || "",
-          profileImage: u.profileImage || "",
+          profileImage: null,
         });
         setPreviewImage(u.profileImage ? `http://localhost:5000${u.profileImage}` : "/images/profile.png");
       } catch (err) {
@@ -69,8 +69,7 @@ export default function UserProfile() {
     if (!formData.userName.trim()) return alert("Username is required!");
     if (!formData.email.trim()) return alert("Email is required!");
     if (!formData.contactNo.trim()) return alert("Contact number is required!");
-    if (!/^\d{10}$/.test(formData.contactNo))
-      return alert("Contact number must be exactly 10 digits!");
+    if (!/^\d{10}$/.test(formData.contactNo)) return alert("Contact number must be exactly 10 digits!");
     if (!formData.dob) return alert("Date of Birth is required!");
     if (!formData.gender) return alert("Gender is required!");
 
@@ -79,8 +78,9 @@ export default function UserProfile() {
       const checkResponse = await axios.get(
         `http://localhost:5000/users/check-username/${encodeURIComponent(formData.userName)}`
       );
-      if (checkResponse.data.exists && formData.userName !== user.userName)
+      if (checkResponse.data.exists && formData.userName !== user.userName) {
         return alert("Username already exists! Please choose another.");
+      }
     } catch (err) {
       console.error("Username check error:", err);
       return alert("Failed to check username availability");
@@ -141,20 +141,26 @@ export default function UserProfile() {
   };
 
   const handleUpdatePassword = async () => {
-    if (!passwordData.currentPassword || !passwordData.newPassword || !passwordData.confirmPassword) {
+    const { currentPassword, newPassword, reEnterPassword } = passwordData;
+
+    if (!currentPassword || !newPassword || !reEnterPassword) {
       return alert("All password fields are required.");
     }
-    if (passwordData.newPassword !== passwordData.confirmPassword) {
+    if (newPassword !== reEnterPassword) {
       return alert("New password and confirm password do not match.");
     }
-    if (passwordData.newPassword.length < 6) {
+    if (newPassword.length < 6) {
       return alert("New password must be at least 6 characters long.");
     }
 
     try {
-      const res = await axios.put(`http://localhost:5000/users/${userId}/change-password`, passwordData);
+      const res = await axios.put(`http://localhost:5000/users/${userId}/change-password`, {
+        currentPassword,
+        newPassword,
+        reEnterPassword,
+      });
       alert(res.data.message);
-      setPasswordData({ currentPassword: "", newPassword: "", confirmPassword: "" });
+      setPasswordData({ currentPassword: "", newPassword: "", reEnterPassword: "" });
     } catch (err) {
       console.error("Error updating password:", err);
       alert(err.response?.data?.message || "Failed to update password.");
@@ -247,14 +253,12 @@ export default function UserProfile() {
         <label>Confirm New Password:</label>
         <input
           type="password"
-          name="confirmPassword"
-          value={passwordData.confirmPassword}
+          name="reEnterPassword"
+          value={passwordData.reEnterPassword}
           onChange={handlePasswordChange}
         />
 
-        <button onClick={handleUpdatePassword} className="save-btn">
-          Update Password
-        </button>
+        <button onClick={handleUpdatePassword} className="save-btn">Update Password</button>
       </div>
     </div>
   );

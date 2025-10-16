@@ -15,17 +15,15 @@ export default function InstructorProfile() {
     contactNo: "",
     dob: "",
     gender: "",
-    profileImage: "",
   });
-  const [previewImage, setPreviewImage] = useState("/images/profile.png");
 
+  // --- Password Change State ---
   const [passwordData, setPasswordData] = useState({
     currentPassword: "",
     newPassword: "",
-    confirmPassword: "",
+    reEnterPassword: "",
   });
 
-  // Fetch user data
   useEffect(() => {
     if (!userId) return navigate("/login");
 
@@ -33,7 +31,6 @@ export default function InstructorProfile() {
       try {
         const res = await axios.get(`http://localhost:5000/users/${userId}`);
         const u = res.data.user;
-
         setUser(u);
         setFormData({
           userName: u.userName || "",
@@ -41,9 +38,7 @@ export default function InstructorProfile() {
           contactNo: u.contactNo || "",
           dob: u.dob ? u.dob.split("T")[0] : "",
           gender: u.gender || "",
-          profileImage: u.profileImage || "",
         });
-        setPreviewImage(u.profileImage ? `http://localhost:5000${u.profileImage}` : "/images/profile.png");
       } catch (err) {
         console.error("Error fetching user:", err);
         alert("Failed to load profile.");
@@ -53,35 +48,27 @@ export default function InstructorProfile() {
     fetchUser();
   }, [userId, navigate]);
 
-  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setFormData({ ...formData, profileImage: file });
-      setPreviewImage(URL.createObjectURL(file));
-    }
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleEditToggle = () => setIsEditing(!isEditing);
 
-  // --- Form Validation ---
   const validateForm = async () => {
     if (!formData.userName.trim()) return alert("Username is required!");
     if (!formData.email.trim()) return alert("Email is required!");
     if (!formData.contactNo.trim()) return alert("Contact number is required!");
-    if (!/^\d{10}$/.test(formData.contactNo))
-      return alert("Contact number must be exactly 10 digits!");
+    if (!/^\d{10}$/.test(formData.contactNo)) return alert("Contact number must be exactly 10 digits!");
     if (!formData.dob) return alert("Date of Birth is required!");
     if (!formData.gender) return alert("Gender is required!");
 
-    // Check username uniqueness
     try {
       const checkResponse = await axios.get(
         `http://localhost:5000/users/check-username/${encodeURIComponent(formData.userName)}`
       );
-      if (checkResponse.data.exists && formData.userName !== user.userName)
+      if (checkResponse.data.exists && formData.userName !== user.userName) {
         return alert("Username already exists! Please choose another.");
+      }
     } catch (err) {
       console.error("Username check error:", err);
       return alert("Failed to check username availability");
@@ -95,27 +82,19 @@ export default function InstructorProfile() {
     if (!valid) return;
 
     try {
-      const data = new FormData();
-      Object.keys(formData).forEach((key) => {
-        if (key === "profileImage" && formData[key] instanceof File) {
-          data.append("profileImage", formData[key]);
-        } else {
-          data.append(key, formData[key]);
-        }
-      });
-
-      const res = await axios.put(`http://localhost:5000/users/${userId}`, data, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-
+      const res = await axios.put(`http://localhost:5000/users/${userId}`, formData);
       setUser(res.data.user);
-      setPreviewImage(res.data.user.profileImage ? `http://localhost:5000${res.data.user.profileImage}` : "/images/profile.png");
       setIsEditing(false);
       alert("Profile updated successfully!");
     } catch (err) {
       console.error("Error updating profile:", err);
       alert("Failed to update profile.");
     }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("userId");
+    navigate("/login");
   };
 
   const handleDelete = async () => {
@@ -131,30 +110,34 @@ export default function InstructorProfile() {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("userId");
-    navigate("/login");
-  };
-
   // --- Handle Password Change ---
   const handlePasswordChange = (e) => {
-    setPasswordData({ ...passwordData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setPasswordData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleUpdatePassword = async () => {
-    if (!passwordData.currentPassword || !passwordData.newPassword || !passwordData.confirmPassword)
+    const { currentPassword, newPassword, reEnterPassword } = passwordData;
+
+    if (!currentPassword || !newPassword || !reEnterPassword) {
       return alert("All password fields are required.");
+    }
 
-    if (passwordData.newPassword !== passwordData.confirmPassword)
-      return alert("New password and confirm password do not match.");
+    if (newPassword !== reEnterPassword) {
+      return alert("New password and re-enter password do not match.");
+    }
 
-    if (passwordData.newPassword.length < 6)
+    if (newPassword.length < 6) {
       return alert("New password must be at least 6 characters long.");
+    }
 
     try {
-      const res = await axios.put(`http://localhost:5000/users/${userId}/change-password`, passwordData);
+      const res = await axios.put(
+        `http://localhost:5000/users/${userId}/change-password`,
+        { currentPassword, newPassword, reEnterPassword }
+      );
       alert(res.data.message);
-      setPasswordData({ currentPassword: "", newPassword: "", confirmPassword: "" });
+      setPasswordData({ currentPassword: "", newPassword: "", reEnterPassword: "" });
     } catch (err) {
       console.error("Error updating password:", err);
       alert(err.response?.data?.message || "Failed to update password.");
@@ -166,11 +149,6 @@ export default function InstructorProfile() {
       <h2>Instructor Profile</h2>
 
       <div className="profile-info">
-        <div className="profile-image">
-          <img src={previewImage} alt="Profile" />
-          {isEditing && <input type="file" onChange={handleImageChange} />}
-        </div>
-
         <label>User Name:</label>
         {isEditing ? (
           <input type="text" name="userName" value={formData.userName} onChange={handleChange} />
@@ -245,17 +223,15 @@ export default function InstructorProfile() {
           onChange={handlePasswordChange}
         />
 
-        <label>Confirm New Password:</label>
+        <label>Re-enter New Password:</label>
         <input
           type="password"
-          name="confirmPassword"
-          value={passwordData.confirmPassword}
+          name="reEnterPassword"
+          value={passwordData.reEnterPassword}
           onChange={handlePasswordChange}
         />
 
-        <button onClick={handleUpdatePassword} className="save-btn">
-          Update Password
-        </button>
+        <button onClick={handleUpdatePassword} className="save-btn">Update Password</button>
       </div>
     </div>
   );

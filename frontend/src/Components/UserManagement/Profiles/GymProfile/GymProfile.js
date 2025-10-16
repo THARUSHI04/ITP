@@ -27,7 +27,7 @@ export default function GymProfile() {
   const [passwordData, setPasswordData] = useState({
     currentPassword: "",
     newPassword: "",
-    confirmPassword: "",
+    reEnterPassword: "",
   });
 
   // Fetch user data
@@ -51,7 +51,7 @@ export default function GymProfile() {
           membershipFee: u.membershipFee || "",
           facilities: u.facilities || "",
           description: u.description || "",
-          profileImage: u.profileImage || "",
+          profileImage: "",
         });
         setPreviewImage(u.profileImage ? `http://localhost:5000${u.profileImage}` : "/images/profile.png");
       } catch (err) {
@@ -153,19 +153,24 @@ export default function GymProfile() {
   };
 
   const handleUpdatePassword = async () => {
-    if (!passwordData.currentPassword || !passwordData.newPassword || !passwordData.confirmPassword)
+    const { currentPassword, newPassword, reEnterPassword } = passwordData;
+
+    if (!currentPassword || !newPassword || !reEnterPassword)
       return alert("All password fields are required.");
 
-    if (passwordData.newPassword !== passwordData.confirmPassword)
-      return alert("New password and confirm password do not match.");
+    if (newPassword !== reEnterPassword)
+      return alert("New password and re-enter password do not match.");
 
-    if (passwordData.newPassword.length < 6)
+    if (newPassword.length < 6)
       return alert("New password must be at least 6 characters long.");
 
     try {
-      const res = await axios.put(`http://localhost:5000/users/${userId}/change-password`, passwordData);
+      const res = await axios.put(
+        `http://localhost:5000/users/${userId}/change-password`,
+        { currentPassword, newPassword, reEnterPassword }
+      );
       alert(res.data.message);
-      setPasswordData({ currentPassword: "", newPassword: "", confirmPassword: "" });
+      setPasswordData({ currentPassword: "", newPassword: "", reEnterPassword: "" });
     } catch (err) {
       console.error("Error updating password:", err);
       alert(err.response?.data?.message || "Failed to update password.");
@@ -182,75 +187,25 @@ export default function GymProfile() {
           {isEditing && <input type="file" onChange={handleImageChange} />}
         </div>
 
-        <label>Gym Name:</label>
-        {isEditing ? (
-          <input type="text" name="userName" value={formData.userName} onChange={handleChange} />
-        ) : (
-          <span>{user.userName}</span>
-        )}
-
-        <label>Email:</label>
-        {isEditing ? (
-          <input type="email" name="email" value={formData.email} onChange={handleChange} />
-        ) : (
-          <span>{user.email}</span>
-        )}
-
-        <label>Contact No:</label>
-        {isEditing ? (
-          <input type="text" name="contactNo" value={formData.contactNo} onChange={handleChange} />
-        ) : (
-          <span>{user.contactNo || "-"}</span>
-        )}
-
-        <label>Date of Joining:</label>
-        {isEditing ? (
-          <input type="date" name="joiningDate" value={formData.joiningDate} onChange={handleChange} />
-        ) : (
-          <span>{user.joiningDate ? user.joiningDate.split("T")[0] : "-"}</span>
-        )}
-
-        <label>Notes / Remarks:</label>
-        {isEditing ? (
-          <textarea name="notes" value={formData.notes} onChange={handleChange}></textarea>
-        ) : (
-          <span>{user.notes || "-"}</span>
-        )}
-
-        <label>Address:</label>
-        {isEditing ? (
-          <input type="text" name="address" value={formData.address} onChange={handleChange} />
-        ) : (
-          <span>{user.address || "-"}</span>
-        )}
-
-        <label>Operating Hours:</label>
-        {isEditing ? (
-          <input type="text" name="hours" value={formData.hours} onChange={handleChange} />
-        ) : (
-          <span>{user.hours || "-"}</span>
-        )}
-
-        <label>Membership Fee (LKR):</label>
-        {isEditing ? (
-          <input type="number" name="membershipFee" value={formData.membershipFee} onChange={handleChange} />
-        ) : (
-          <span>{user.membershipFee || "-"}</span>
-        )}
-
-        <label>Facilities:</label>
-        {isEditing ? (
-          <input type="text" name="facilities" value={formData.facilities} onChange={handleChange} />
-        ) : (
-          <span>{user.facilities || "-"}</span>
-        )}
-
-        <label>About the Gym:</label>
-        {isEditing ? (
-          <textarea name="description" value={formData.description} onChange={handleChange}></textarea>
-        ) : (
-          <span>{user.description || "-"}</span>
-        )}
+        {["userName", "email", "contactNo", "joiningDate", "notes", "address", "hours", "membershipFee", "facilities", "description"].map((field) => (
+          <div key={field}>
+            <label>{field === "userName" ? "Gym Name" : field.charAt(0).toUpperCase() + field.slice(1)}:</label>
+            {isEditing ? (
+              field === "notes" || field === "description" ? (
+                <textarea name={field} value={formData[field]} onChange={handleChange}></textarea>
+              ) : (
+                <input
+                  type={field === "joiningDate" ? "date" : field === "membershipFee" ? "number" : "text"}
+                  name={field}
+                  value={formData[field]}
+                  onChange={handleChange}
+                />
+              )
+            ) : (
+              <span>{user[field] || "-"}</span>
+            )}
+          </div>
+        ))}
 
         <label>Role:</label>
         <span>{user.role}</span>
@@ -286,17 +241,15 @@ export default function GymProfile() {
           onChange={handlePasswordChange}
         />
 
-        <label>Confirm New Password:</label>
+        <label>Re-enter New Password:</label>
         <input
           type="password"
-          name="confirmPassword"
-          value={passwordData.confirmPassword}
+          name="reEnterPassword"
+          value={passwordData.reEnterPassword}
           onChange={handlePasswordChange}
         />
 
-        <button onClick={handleUpdatePassword} className="save-btn">
-          Update Password
-        </button>
+        <button onClick={handleUpdatePassword} className="save-btn">Update Password</button>
       </div>
     </div>
   );

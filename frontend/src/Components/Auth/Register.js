@@ -10,6 +10,7 @@ export default function Register() {
     userName: "",
     email: "",
     password: "",
+    reEnterPassword: "", // Re-enter password field
     contactNo: "",
     dob: "",
     gender: "Male",
@@ -27,78 +28,71 @@ export default function Register() {
     notes: "",
   });
 
-  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // Validate form before submission
   const validateForm = async () => {
-    // Common validations
-    if (!formData.userName.trim()) return alert("Username is required!");
-    if (!formData.email.trim()) return alert("Email is required!");
-    if (!formData.password.trim()) return alert("Password is required!");
-    if (!formData.contactNo.trim()) return alert("Contact number is required!");
-    if (!/^\d{10}$/.test(formData.contactNo))
-      return alert("Contact number must be exactly 10 digits!");
-    if (formData.role !== "gym" && !formData.dob) return alert("Date of Birth is required!");
+    const { userName, email, password, reEnterPassword, contactNo, role, dob, hours, membershipFee, address, expertise, experience, joiningDate } = formData;
 
-    // Check username uniqueness
+    if (!userName.trim()) return alert("Username is required!");
+    if (!email.trim()) return alert("Email is required!");
+    if (!password.trim()) return alert("Password is required!");
+    if (!reEnterPassword.trim()) return alert("Please re-enter your password!");
+    if (password !== reEnterPassword) return alert("Passwords do not match!");
+    if (!contactNo.trim()) return alert("Contact number is required!");
+    if (!/^\d{10}$/.test(contactNo)) return alert("Contact number must be exactly 10 digits!");
+    if (role !== "gym" && !dob) return alert("Date of Birth is required!");
+
+    // Check username availability
     try {
-      const checkResponse = await axios.get(
-        `http://localhost:5000/users/check-username/${encodeURIComponent(formData.userName)}`
-      );
-      if (checkResponse.data.exists)
-        return alert("Username already exists! Please choose another.");
+      const check = await axios.get(`http://localhost:5000/users/check-username/${encodeURIComponent(userName)}`);
+      if (check.data.exists) return alert("Username already exists!");
     } catch (err) {
-      console.error("Username check error:", err);
+      console.error(err);
       return alert("Failed to check username availability");
     }
 
     // Role-specific validations
-    if (formData.role === "gym") {
-      if (!formData.address.trim()) return alert("Gym address is required!");
-      if (!formData.hours || Number(formData.hours) <= 0)
-        return alert("Opening hours must be a positive number!");
-      if (!formData.membershipFee || Number(formData.membershipFee) <= 0)
-        return alert("Membership fee must be a positive number!");
+    if (role === "gym") {
+      if (!address.trim()) return alert("Gym address is required!");
+      if (!hours || Number(hours) <= 0) return alert("Opening hours must be positive!");
+      if (!membershipFee || Number(membershipFee) <= 0) return alert("Membership fee must be positive!");
     }
 
-    if (formData.role === "trainer") {
-      if (!formData.expertise.trim()) return alert("Trainer expertise is required!");
-      if (formData.experience === "" || Number(formData.experience) < 0)
-        return alert("Experience must be 0 or positive!");
-      formData.sessionType = "Online"; // enforce online sessions
+    if (role === "trainer") {
+      if (!expertise.trim()) return alert("Trainer expertise is required!");
+      if (experience === "" || Number(experience) < 0) return alert("Experience must be 0 or positive!");
+      formData.sessionType = "Online";
     }
 
-    if (formData.role === "admin") {
-      if (!formData.joiningDate) return alert("Joining date is required!");
+    if (role === "admin") {
+      if (!joiningDate) return alert("Joining date is required!");
       const today = new Date().toISOString().split("T")[0];
-      if (formData.joiningDate > today)
-        return alert("Joining date cannot be in the future!");
+      if (joiningDate > today) return alert("Joining date cannot be in the future!");
     }
 
     return true;
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     const valid = await validateForm();
     if (!valid) return;
 
     try {
+      // --- Send form data as JSON --- backend handles password hashing
       await axios.post("http://localhost:5000/users", formData);
+
       alert("User registered successfully!");
       navigate("/login");
     } catch (err) {
-      console.error("Register error:", err);
+      console.error(err);
       alert(err.response?.data?.message || "Registration failed");
     }
   };
 
-  // Render form (UI untouched)
   return (
     <div className="register-page">
       <div className="register-card">
@@ -106,86 +100,78 @@ export default function Register() {
           <img src="/favicon.ico" alt="Logo" /> Create Account
         </h2>
         <form className="register-form" onSubmit={handleSubmit}>
-          {/* Common Fields */}
-          <label htmlFor="userName">Username <span className="required">*</span></label>
-          <input type="text" id="userName" name="userName" placeholder="Enter your username" value={formData.userName} onChange={handleChange} />
+          <label>Username *</label>
+          <input type="text" name="userName" value={formData.userName} onChange={handleChange} />
 
-          <label htmlFor="email">Email <span className="required">*</span></label>
-          <input type="email" id="email" name="email" placeholder="Enter your email" value={formData.email} onChange={handleChange} />
+          <label>Email *</label>
+          <input type="email" name="email" value={formData.email} onChange={handleChange} />
 
-          <label htmlFor="password">Password <span className="required">*</span></label>
-          <input type="password" id="password" name="password" placeholder="Enter your password" value={formData.password} onChange={handleChange} />
+          <label>Password *</label>
+          <input type="password" name="password" value={formData.password} onChange={handleChange} />
 
-          <label htmlFor="contactNo">Contact Number <span className="required">*</span></label>
-          <input type="text" id="contactNo" name="contactNo" placeholder="Enter 10-digit contact number" value={formData.contactNo} onChange={handleChange} />
+          <label>Re-enter Password *</label>
+          <input type="password" name="reEnterPassword" value={formData.reEnterPassword} onChange={handleChange} />
+
+          <label>Contact Number *</label>
+          <input type="text" name="contactNo" value={formData.contactNo} onChange={handleChange} />
 
           {formData.role !== "gym" && (
             <>
-              <label htmlFor="dob">Date of Birth <span className="required">*</span></label>
-              <input type="date" id="dob" name="dob" value={formData.dob} onChange={handleChange} />
+              <label>Date of Birth *</label>
+              <input type="date" name="dob" value={formData.dob} onChange={handleChange} />
             </>
           )}
 
-          <label htmlFor="gender">Gender <span className="required">*</span></label>
-          <select id="gender" name="gender" value={formData.gender} onChange={handleChange}>
+          <label>Gender *</label>
+          <select name="gender" value={formData.gender} onChange={handleChange}>
             <option>Male</option>
             <option>Female</option>
             <option>Other</option>
           </select>
 
-          <label htmlFor="role">Role <span className="required">*</span></label>
-          <select id="role" name="role" value={formData.role} onChange={handleChange}>
+          <label>Role *</label>
+          <select name="role" value={formData.role} onChange={handleChange}>
             <option value="user">User</option>
             <option value="trainer">Trainer</option>
             <option value="gym">Gym</option>
             <option value="admin">Admin</option>
           </select>
 
-          {/* Gym Fields */}
+          {/* Role-specific fields */}
           {formData.role === "gym" && (
             <>
-              <label htmlFor="address">Gym Address <span className="required">*</span></label>
-              <input type="text" id="address" name="address" placeholder="Gym Address" value={formData.address} onChange={handleChange} />
-
-              <label htmlFor="hours">Opening Hours <span className="required">*</span></label>
-              <input type="number" id="hours" name="hours" placeholder="Opening Hours" value={formData.hours} onChange={handleChange} />
-
-              <label htmlFor="membershipFee">Membership Fee <span className="required">*</span></label>
-              <input type="number" id="membershipFee" name="membershipFee" placeholder="Membership Fee" value={formData.membershipFee} onChange={handleChange} />
-
-              <label htmlFor="facilities">Facilities</label>
-              <input type="text" id="facilities" name="facilities" placeholder="Facilities" value={formData.facilities} onChange={handleChange} />
-
-              <label htmlFor="description">Gym Description</label>
-              <textarea id="description" name="description" placeholder="Describe your gym" value={formData.description} onChange={handleChange}></textarea>
+              <label>Gym Address *</label>
+              <input type="text" name="address" value={formData.address} onChange={handleChange} />
+              <label>Opening Hours *</label>
+              <input type="number" name="hours" value={formData.hours} onChange={handleChange} />
+              <label>Membership Fee *</label>
+              <input type="number" name="membershipFee" value={formData.membershipFee} onChange={handleChange} />
+              <label>Facilities</label>
+              <input type="text" name="facilities" value={formData.facilities} onChange={handleChange} />
+              <label>Gym Description</label>
+              <textarea name="description" value={formData.description} onChange={handleChange}></textarea>
             </>
           )}
 
-          {/* Trainer Fields */}
           {formData.role === "trainer" && (
             <>
-              <label htmlFor="expertise">Expertise <span className="required">*</span></label>
-              <input type="text" id="expertise" name="expertise" placeholder="Trainer Expertise" value={formData.expertise} onChange={handleChange} />
-
-              <label htmlFor="experience">Experience (Years)</label>
-              <input type="number" id="experience" name="experience" placeholder="Experience in years" value={formData.experience} onChange={handleChange} />
-
-              <label htmlFor="biography">Biography</label>
-              <textarea id="biography" name="biography" placeholder="Write a short biography" value={formData.biography} onChange={handleChange}></textarea>
-
-              <label htmlFor="sessionType">Session Type</label>
+              <label>Expertise *</label>
+              <input type="text" name="expertise" value={formData.expertise} onChange={handleChange} />
+              <label>Experience</label>
+              <input type="number" name="experience" value={formData.experience} onChange={handleChange} />
+              <label>Biography</label>
+              <textarea name="biography" value={formData.biography} onChange={handleChange}></textarea>
+              <label>Session Type</label>
               <input type="text" value="Online" readOnly />
             </>
           )}
 
-          {/* Admin Fields */}
           {formData.role === "admin" && (
             <>
-              <label htmlFor="joiningDate">Joining Date <span className="required">*</span></label>
-              <input type="date" id="joiningDate" name="joiningDate" value={formData.joiningDate} onChange={handleChange} />
-
-              <label htmlFor="notes">Notes</label>
-              <textarea id="notes" name="notes" placeholder="Admin notes" value={formData.notes} onChange={handleChange}></textarea>
+              <label>Joining Date *</label>
+              <input type="date" name="joiningDate" value={formData.joiningDate} onChange={handleChange} />
+              <label>Notes</label>
+              <textarea name="notes" value={formData.notes} onChange={handleChange}></textarea>
             </>
           )}
 
@@ -193,11 +179,8 @@ export default function Register() {
         </form>
 
         <p className="login-link">
-          Already have an account?{" "}
-          <span onClick={() => navigate("/login")} className="link-text">Login here</span>
+          Already have an account? <span onClick={() => navigate("/login")} className="link-text">Login here</span>
         </p>
-
-        <p className="copyright-text">Copyright © CorePlusPlatform</p>
       </div>
     </div>
   );
