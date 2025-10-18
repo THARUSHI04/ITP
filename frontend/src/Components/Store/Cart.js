@@ -8,7 +8,27 @@ function Cart() {
   const { cartItems, removeFromCart, updateQuantity } = useCart();
   const navigate = useNavigate();
 
-  // Get saved login details
+  /* 🔐 Auto-logout on app restart/refresh */
+  useEffect(() => {
+    const isAppStart = sessionStorage.getItem("appStarted");
+
+    if (!isAppStart) {
+      console.log("🔄 Fresh app start detected - clearing previous session");
+
+      // Clear all authentication data
+      localStorage.removeItem("userId");
+      localStorage.removeItem("role");
+      localStorage.removeItem("token");
+      localStorage.removeItem("userName");
+
+      // Mark app as started
+      sessionStorage.setItem("appStarted", "true");
+
+      console.log("✅ Previous session cleared");
+    }
+  }, []);
+
+  // ✅ Get saved login details
   const storedUserId =
     typeof window !== "undefined" ? localStorage.getItem("userId") : null;
   const storedRole =
@@ -23,24 +43,32 @@ function Cart() {
   const normalizedRole = String(storedRole || "").trim().toLowerCase();
   const canCheckout = hasValidUser && normalizedRole === "user";
 
-  // Checkout handler
+  // ✅ Checkout handler
   const handleCheckout = () => {
-    // Block empty carts
     if (!cartItems || cartItems.length === 0) {
       alert("Your cart is empty.");
       return;
     }
-    // Enforce auth + role guard
+
     if (!hasValidUser) {
       alert("❌ You must log in to proceed with checkout.");
-      navigate("/login", { state: { from: "/cart", message: "Login required to checkout" } });
+      navigate("/login", {
+        state: { from: "/cart", message: "Login required to checkout" },
+      });
       return;
     }
-    // Success case
+
+    if (normalizedRole !== "user") {
+      alert(
+        "❌ Only registered customers can proceed to checkout. Admin and other accounts cannot place orders."
+      );
+      return;
+    }
+
     navigate("/store-checkout");
   };
 
-  // Redirect to showItems if cart is empty
+  // ✅ Redirect if cart is empty
   useEffect(() => {
     if (cartItems.length === 0) {
       navigate("/showItems");
@@ -84,7 +112,7 @@ function Cart() {
             )}
           </h3>
 
-          {/* Checkout Button */}
+          {/* ✅ Checkout Button */}
           <button
             className="checkout-btn"
             onClick={handleCheckout}
@@ -92,9 +120,11 @@ function Cart() {
           >
             Proceed to Checkout
           </button>
+
           {!canCheckout && (
             <p style={{ marginTop: "8px" }}>
-              Please <Link to="/login">log in</Link> with a customer account to continue.
+              Please <Link to="/login">log in</Link> with a customer account to
+              continue.
             </p>
           )}
         </div>

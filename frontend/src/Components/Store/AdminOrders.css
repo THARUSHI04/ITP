@@ -1,4 +1,3 @@
-/* AdminOrders.css */
 .admin-orders {
     padding: 20px;
     background: #f9fafb;
@@ -132,7 +131,7 @@
     margin-right: 6px;
   }
   
-  /* Align action buttons in a clean row with consistent gaps */
+ 
   .orders-actions {
     display: flex;
     align-items: center;
@@ -145,7 +144,7 @@
     font-size: 12px;
   }
   
-  /* Details Card */
+
   .details-card {
     background: white;
     padding: 20px;
@@ -173,7 +172,7 @@
     color: #111827;
   }
   
-  /* Responsive Table */
+
   @media (max-width: 768px) {
     table, thead, tbody, th, td, tr {
       display: block;
@@ -206,7 +205,6 @@
     }
   }
 
-/* Modal styles */
 .modal-overlay {
   position: fixed;
   inset: 0;

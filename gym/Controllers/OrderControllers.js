@@ -184,6 +184,23 @@ const getAllOrders = async (req, res) => {
   }
 };
 
+//Get orders by user ID
+const getUserOrders = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    if (!isValidObjectId(userId)) {
+      return res.status(400).json({ message: "Invalid user id" });
+    }
+    const orders = await Order.find({ member: userId })
+      .populate("member", "userName email")
+      .populate("items.product", "name price image")
+      .sort({ createdAt: -1 }); // Most recent first
+    res.status(200).json(orders);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 //Get order by ID
 const getOrderById = async (req, res) => {
   try {
@@ -382,6 +399,7 @@ const updatePaymentStatus = async (req, res) => {
 module.exports = {
   createOrder,
   getAllOrders,
+  getUserOrders,
   getOrderById,
   updateOrderStatus,
   deleteOrder,

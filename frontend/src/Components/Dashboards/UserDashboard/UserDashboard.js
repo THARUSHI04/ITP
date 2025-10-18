@@ -8,7 +8,7 @@ import ScheduleRequestForm from "../../ScheduleManagement/ScheduleRequest/Schedu
 import UserSchedule from "../../ScheduleManagement/UserSchedule/UserSchedule";
 import UserSubscriptionPlan from "../../FinanceManagement/UserSubscriptionPlan";
 import ShowItems from "../../Store/ShowItems";
-
+import UserPurchases from "../../Store/UserPurchases";
 
 // Dashboard sections
 function Bookings() {
@@ -16,15 +16,6 @@ function Bookings() {
     <div>
       <h2>Bookings</h2>
       <p>Check your booked sessions.</p>
-    </div>
-  );
-}
-
-function MyPurchases() {
-  return (
-    <div>
-      <h2>My Purchases</h2>
-      <p>Track your purchased products.</p>
     </div>
   );
 }
@@ -45,7 +36,7 @@ function UserDashboard() {
       case "bookings":
         return <Bookings />;
       case "purchases":
-        return <MyPurchases />;
+        return <UserPurchases />;
       case "store":
         return <ShowItems />;
       case "schedules":

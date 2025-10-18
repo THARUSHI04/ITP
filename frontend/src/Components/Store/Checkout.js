@@ -143,25 +143,25 @@ function Checkout() {
             await axios.post(`http://localhost:5000/orders/${orderId}/pay`);
             alert(`Order confirmed! Your Order ID: ${orderNumber}`);
             clearCart();
-            navigate("/showItems");
+            navigate("/user-dashboard");
             return;
           } catch (e) {
             console.error("Pay step failed; proceeding with placed status", e);
             alert(`Order placed! Your Order ID: ${orderNumber}`);
             clearCart();
-            navigate("/showItems");
+            navigate("/user-dashboard");
             return;
           }
         } else {
           alert(`Order placed (Bank Deposit). Your Order ID: ${orderNumber}. Awaiting admin approval.`);
           clearCart();
-          navigate("/showItems");
+          navigate("/user-dashboard");
           return;
         }
       }
       alert(`Order placed successfully! Your Order ID: ${orderNumber}`);
       clearCart();
-      navigate("/showItems");
+      navigate("/user-dashboard");
     } catch (err) {
       console.error("Order failed", err);
       const data = err?.response?.data || {};

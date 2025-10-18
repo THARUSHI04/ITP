@@ -4,6 +4,7 @@ const path = require("path");
 const {
   createOrder,
   getAllOrders,
+  getUserOrders,
   getOrderById,
   updateOrderStatus,
   deleteOrder,
@@ -24,6 +25,7 @@ const upload = multer({ storage });
 
 router.post("/", upload.single("bank_slip"), createOrder);          // Create order with optional bank slip
 router.get("/", getAllOrders);          // Get all orders
+router.get("/user/:userId", getUserOrders); // Get orders by user ID
 router.get("/:id", getOrderById);       // Get order by ID
 router.put("/:id", updateOrderStatus);  // Update order status
 router.delete("/:id", deleteOrder);     // Delete order
