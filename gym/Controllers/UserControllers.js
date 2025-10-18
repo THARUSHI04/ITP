@@ -54,13 +54,13 @@ const addUsers = async (req, res) => {
 
     const savedUser = await newUser.save();
 
-    // Send welcome email (non-blocking)
-    try {
-      await sendWelcomeEmail(savedUser.email, savedUser.userName);
-      console.log("Welcome email sent to:", savedUser.email);
-    } catch (emailError) {
-      console.error("Failed to send welcome email:", emailError);
-    }
+    // // Send welcome email (non-blocking)
+    // try {
+    //   await sendWelcomeEmail(savedUser.email, savedUser.userName);
+    //   console.log("Welcome email sent to:", savedUser.email);
+    // } catch (emailError) {
+    //   console.error("Failed to send welcome email:", emailError);
+    // }
 
     res.status(201).json({ user: savedUser });
   } catch (err) {
