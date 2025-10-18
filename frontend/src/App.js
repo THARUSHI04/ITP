@@ -38,7 +38,7 @@ import ScheduleRequestForm from "./Components/ScheduleManagement/ScheduleRequest
 import InstructorSchedulePage from "./Components/ScheduleManagement/SchedulePage/InstructorSchedulePage";
 import UserSchedule from "./Components/ScheduleManagement/UserSchedule/UserSchedule";
 import ScheduleChangeRequestForm from "./Components/ScheduleManagement/ScheduleRequest/ScheduleChangeRequestForm";
-
+import BMI from "./Components/BMI/BMI";
 
 
 // Finance
@@ -109,7 +109,7 @@ function Layout() {
         <Route path="/instructor-schedules" element={<InstructorSchedulePage />} />
         <Route path="/user-schedules" element={<UserSchedule />} />
         <Route path="/schedule-change-request" element={<ScheduleChangeRequestForm />} />
-        
+        <Route path="/bmi" element={<BMI />} />
 
         
 
