@@ -255,6 +255,22 @@
   color: red;
 }
 
+/* Active favorite (clicked) - Red color */
+.fav-icon.fav-active {
+  color: red;
+}
+
+/* Disabled favorite (in-stock items) */
+.fav-icon.fav-disabled {
+  color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.fav-icon.fav-disabled:hover {
+  color: #ccc;
+}
+
 /* No Products */
 .no-products {
   grid-column: 1 / -1;

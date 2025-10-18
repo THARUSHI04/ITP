@@ -70,6 +70,22 @@ const orderSchema = new Schema(
     bank_slip: {
       type: String, // file path to uploaded bank slip (if any)
     },
+    card_details: {
+      card_last4: {
+        type: String, // last 4 digits of card
+      },
+      card_brand: {
+        type: String, // e.g., "visa", "mastercard"
+      },
+      payment_intent_id: {
+        type: String, // Stripe payment intent ID
+      },
+    },
+    payment_status: {
+      type: String,
+      enum: ["pending", "success", "failed"],
+      default: "pending",
+    },
     items: [orderItemSchema], // array of items
   },
   { timestamps: true }

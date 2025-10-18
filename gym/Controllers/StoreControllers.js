@@ -1,6 +1,6 @@
 const Store = require("../Model/StoreModel");
 
-// lightweight validators (image_URL and payment-related fields intentionally excluded)
+//validations
 function isNonEmptyString(value) {
 	return typeof value === "string" && value.trim().length > 0;
 }
@@ -13,7 +13,7 @@ function isNonNegativeInteger(value) {
 	return Number.isInteger(n) && n >= 0;
 }
 
-// List all store items
+//List all store items
 const getAllStore = async (req, res, next) => {
 	try {
 		const stores = await Store.find();
@@ -24,11 +24,11 @@ const getAllStore = async (req, res, next) => {
 	}
 };
 
-// Create store item
+//Create store item
 const addStore = async(req, res, next) => {
 	const { name, brand, image_URL, catogary, price, stock, discription } = req.body || {};
 
-	// basic payload validation (exclude image_URL)
+	//validations
 	const errors = [];
 	if (!isNonEmptyString(name)) errors.push("name is required");
 	if (!isNonEmptyString(brand)) errors.push("brand is required");
@@ -58,7 +58,7 @@ const addStore = async(req, res, next) => {
 	}
 };
 
-// Get store item by id
+//Get store item by id
 const getById = async (req,res,next) => {
 	const id = req.params.id;
 
@@ -74,12 +74,12 @@ const getById = async (req,res,next) => {
 	}
 };
 
-// Update store item
+//Update store item
 const updateStore = async(req, res, next) => {
 	const id = req.params.id;
 	const update = req.body || {};
 
-	// validate only provided fields (exclude image_URL)
+	//validations
 	const errors = [];
 	if (update.name !== undefined && !isNonEmptyString(update.name)) errors.push("name must be a non-empty string");
 	if (update.brand !== undefined && !isNonEmptyString(update.brand)) errors.push("brand must be a non-empty string");
@@ -107,7 +107,7 @@ const updateStore = async(req, res, next) => {
 	}
 };
 
-// Delete store item
+//Delete store item
 const deleteStore = async(req, res, next ) => {
 	const id = req.params.id;
 

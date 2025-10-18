@@ -41,8 +41,10 @@ function StoreItem({ store }) {
       <p><b>Price:</b> {price}</p>
       <p><b>Stock:</b> {stock}</p>
       <p><b>Description:</b> {discription}</p>
-      <Link to={`/store/${_id}`}><button className="update-btn">Update</button></Link>
-      <button className="delete-btn" onClick={deleteHandler}>Delete</button>
+      <div className="button-group">
+        <Link to={`/store/${_id}`}><button className="update-btn">Update</button></Link>
+        <button className="delete-btn" onClick={deleteHandler}>Delete</button>
+      </div>
     </div>
   );
 }

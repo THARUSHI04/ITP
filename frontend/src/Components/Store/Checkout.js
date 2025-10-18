@@ -20,7 +20,7 @@ function Checkout() {
       alert("❌ You must log in to access checkout.");
       navigate("/login");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasValidUser]);
   const [form, setForm] = useState({
     address: "",
@@ -33,7 +33,7 @@ function Checkout() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "phone") {
-      // Allow only digits, max 14
+      //Allow only digits, max 14
       const digits = (value || "").replace(/\D/g, "").slice(0, 14);
       setForm({ ...form, phone: digits });
       if (digits.length === 0) {
@@ -79,7 +79,7 @@ function Checkout() {
       return;
     }
 
-    // Frontend validations aligned with backend
+    //Frontend validations aligned with backend
     const valid = validateForm();
     if (!valid) return;
 
@@ -121,17 +121,21 @@ function Checkout() {
       }
       const orderId = createRes?.data?._id || createRes?.data?.order?._id || createRes?.data?.id;
       if (orderId) {
-        //If card payment selected, try Stripe; otherwise if bank deposit, leave as pending
+        //If card payment selected, redirect to card checkout page
         if (form.paymentMethod === "Card Payment") {
-          try {
-            const sess = await axios.post(`http://localhost:5000/orders/${orderId}/checkout-session`);
-            if (sess.data?.url) {
-              window.location.href = sess.data.url;
-              return;
+          const totalAmount = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+          navigate("/store-card-checkout", {
+            state: {
+              orderData: {
+                orderId: orderId,
+                orderNumber: orderNumber,
+                address: form.address,
+                phone: form.phone,
+                totalAmount: totalAmount,
+              }
             }
-          } catch (e) {
-            // ignore and fallthrough to pay
-          }
+          });
+          return;
         }
         if (form.paymentMethod !== "Bank Deposit") {
           //Confirm order (mark paid), reduce stock, and email customer

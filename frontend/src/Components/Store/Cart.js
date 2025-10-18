@@ -37,7 +37,7 @@ function Cart() {
       return;
     }
     // Success case
-    navigate("/checkout");
+    navigate("/store-checkout");
   };
 
   // Redirect to showItems if cart is empty

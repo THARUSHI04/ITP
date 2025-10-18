@@ -146,6 +146,25 @@ const createOrder = async (req, res) => {
     });
 
     await order.save();
+
+    // Populate order details for email
+    const populatedOrder = await Order.findById(order._id)
+      .populate("member", "userName email")
+      .populate("items.product", "name price");
+
+    // Send order confirmation email
+    try {
+      await sendOrderConfirmationEmail(
+        populatedOrder.member.email,
+        populatedOrder.member.userName,
+        populatedOrder
+      );
+      console.log("Order confirmation email sent successfully to:", populatedOrder.member.email);
+    } catch (emailError) {
+      console.error("Failed to send order confirmation email:", emailError);
+      // Don't fail the order creation if email fails
+    }
+
     res.status(201).json(order);
   } catch (err) {
     console.error(err);
@@ -288,7 +307,9 @@ const approveBankDeposit = async (req, res) => {
     if (!isValidObjectId(id)) {
       return res.status(400).json({ message: "Invalid order id" });
     }
-    const order = await Order.findById(id);
+    const order = await Order.findById(id)
+      .populate("member", "userName email")
+      .populate("items.product", "name price");
     if (!order) return res.status(404).json({ message: "Order not found" });
 
     if (order.payment_method !== "Bank Deposit") {
@@ -300,7 +321,59 @@ const approveBankDeposit = async (req, res) => {
 
     order.status = "paid";
     await order.save();
+
+    // Send confirmation email after approval
+    try {
+      await sendOrderConfirmationEmail(
+        order.member.email,
+        order.member.userName,
+        order
+      );
+      console.log("Order confirmation email sent after bank deposit approval to:", order.member.email);
+    } catch (emailError) {
+      console.error("Failed to send confirmation email after approval:", emailError);
+      // Don't fail the approval if email fails
+    }
+
     return res.status(200).json({ message: "Bank deposit approved", order });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+// Update payment status and card details for card payments
+const updatePaymentStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { payment_status, card_details } = req.body;
+
+    if (!isValidObjectId(id)) {
+      return res.status(400).json({ message: "Invalid order id" });
+    }
+
+    const order = await Order.findById(id);
+    if (!order) return res.status(404).json({ message: "Order not found" });
+
+    // Update payment status
+    if (payment_status) {
+      const validStatuses = ["pending", "success", "failed"];
+      if (!validStatuses.includes(payment_status)) {
+        return res.status(400).json({ message: "Invalid payment status" });
+      }
+      order.payment_status = payment_status;
+    }
+
+    // Update card details if provided
+    if (card_details) {
+      order.card_details = {
+        card_last4: card_details.card_last4,
+        card_brand: card_details.card_brand,
+        payment_intent_id: card_details.payment_intent_id,
+      };
+    }
+
+    await order.save();
+    return res.status(200).json({ message: "Payment status updated", order });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
@@ -315,4 +388,5 @@ module.exports = {
   payOrder,
   createCheckoutSession,
   approveBankDeposit,
+  updatePaymentStatus,
 };

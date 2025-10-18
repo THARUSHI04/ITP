@@ -97,6 +97,8 @@
   font-size: 1.5rem;
   margin-bottom: 12px;
   color: #111;
+  align-items: center;
+  text-align: center;
 }
 
 .mission-card p {

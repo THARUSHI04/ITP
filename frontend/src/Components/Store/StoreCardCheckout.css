@@ -1,0 +1,165 @@
+.checkout-container {
+  background-color: #000; 
+  color: #fff; 
+  min-height: 100vh;
+  padding: 40px 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+.checkout-title {
+  color: #e50914; 
+  font-size: 2rem;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+
+.order-summary {
+  background-color: #111;
+  border-radius: 10px;
+  padding: 20px;
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(229, 9, 20, 0.2);
+}
+
+.order-summary h3 {
+  color: #e50914;
+  margin-bottom: 15px;
+  font-size: 1.3rem;
+  text-align: center;
+}
+
+.order-summary p {
+  margin: 8px 0;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+
+.checkout-price {
+  font-size: 1.3rem;
+  margin: 15px 0 5px 0;
+  color: #e50914;
+}
+
+
+.payment-form {
+  background-color: #111; 
+  border-radius: 10px;
+  padding: 25px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 12px rgba(229, 9, 20, 0.4);
+  margin-top: 20px;
+}
+
+
+.payment-form label {
+  display: block;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  color: #e0e0e0;
+  font-weight: 500;
+}
+
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.card-details-row {
+  display: flex;
+  gap: 15px;
+  width: 100%;
+}
+
+.form-group-half {
+  flex: 1;
+  margin-bottom: 20px;
+}
+
+
+.card-element {
+  background: #1a1a1a;
+  padding: 16px 18px;
+  border-radius: 8px;
+  border: 2px solid #444;
+  color: #fff;
+  font-size: 1.05rem;
+  width: 100%;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  margin-bottom: 15px;
+  min-height: 45px;
+}
+
+.card-element.StripeElement--focus {
+  border-color: #e50914;
+  box-shadow: 0 0 8px rgba(229, 9, 20, 0.5);
+  background: #222;
+}
+
+.card-element.StripeElement--invalid {
+  border-color: #ff4d4f;
+}
+
+.btn {
+  background-color: #e50914;
+  color: #fff;
+  border: none;
+  padding: 12px 25px;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 6px;
+  margin-top: 10px;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.btn:hover {
+  background-color: #b20710;
+}
+
+.btn:disabled {
+  background-color: #666;
+  cursor: not-allowed;
+}
+
+
+.back-btn {
+  background-color: #444;
+}
+
+.back-btn:hover {
+  background-color: #666;
+}
+
+
+.checkout-error {
+  color: #ff4d4f;
+  font-size: 0.9rem;
+  margin-top: -10px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+
+.success-message {
+  background-color: #00b894;
+  color: #fff;
+  padding: 15px;
+  border-radius: 6px;
+  margin-top: 20px;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.success-message p {
+  margin: 0;
+}

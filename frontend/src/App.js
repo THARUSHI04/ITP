@@ -12,7 +12,7 @@ import { CartProvider } from "./Components/Store/CartContext";
 // Components
 import Nav from "./Components/Nav/Nav";
 import Home from "./Components/Home/Home";
-import About from "./Components/Features/Features";
+import About from "./Components/About/About";
 import Features from "./Components/Features/Features";
 import Login from "./Components/Auth/Login";
 import Register from "./Components/Auth/Register";
@@ -59,6 +59,7 @@ import Cart from "./Components/Store/Cart";
 import AddStoreItem from "./Components/Store/AddStoreItem";
 import UpdateItem from "./Components/Store/UpdateItem";
 import Checkout from "./Components/Store/Checkout";
+import StoreCardCheckout from "./Components/Store/StoreCardCheckout";
 
 function Layout() {
   const location = useLocation();
@@ -129,10 +130,11 @@ function Layout() {
         <Route path="/showItems" element={<ShowItems />} />
         <Route path="/category/:catname" element={<ShowItems />} />
         <Route path="/product/:id" element ={<ProductDetails />} />
-        <Route path="cart" element={<Cart />}/>
+        <Route path="/cart" element={<Cart />}/>
         <Route path="/AddStoreItem" element={<AddStoreItem />} />
         <Route path="/store/:id" element={<UpdateItem />} />
-        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/store-checkout" element={<Checkout />} />
+        <Route path="/store-card-checkout" element={<StoreCardCheckout />} />
 
       </Routes>
     </>

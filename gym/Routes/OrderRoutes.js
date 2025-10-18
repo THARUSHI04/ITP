@@ -10,6 +10,7 @@ const {
   payOrder,
   createCheckoutSession,
   approveBankDeposit,
+  updatePaymentStatus,
 } = require("../Controllers/OrderControllers");
 
 const router = express.Router();
@@ -29,5 +30,6 @@ router.delete("/:id", deleteOrder);     // Delete order
 router.post("/:id/pay", payOrder);      // Mark paid, decrement stock, send email
 router.post("/:id/checkout-session", createCheckoutSession); // Stripe session
 router.post("/:id/approve-deposit", approveBankDeposit); // Admin approves bank deposit
+router.put("/:id/payment-status", updatePaymentStatus); // Update payment status and card details
 
 module.exports = router;

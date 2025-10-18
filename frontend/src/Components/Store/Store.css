@@ -51,9 +51,27 @@
 }
 
 /* Buttons */
+/* Container for action buttons */
+.store-item .button-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.store-item .button-group button {
+  flex: 2; /* Equal width for both buttons */
+  padding: 10px 15px;
+  font-weight: 600;
+}
+
 .store-item button {
+  display: inline-block;
+  width: auto;
+  min-width: 90px;
+  margin: 6px 4px;
   margin-right: 8px;
-  padding: 8px 14px;
+  padding: 6px 12px;
   border: none;
   border-radius: 6px;
   cursor: pointer;

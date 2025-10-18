@@ -125,9 +125,32 @@ function AdminOrders() {
     }
   };
 
-  //Track status value
-  const handleEditChange = (orderId, value) => {
+  //Track status value and save immediately
+  const handleEditChange = async (orderId, value) => {
     setEditStatuses((prev) => ({ ...prev, [orderId]: value }));
+    
+    // Save the status change immediately
+    try {
+      const order = orders.find(o => o._id === orderId);
+      if (!order) return;
+      
+      const payload = {
+        status: value,
+        shipping_address: order.shipping_address,
+        contact_phone: order.contact_phone,
+      };
+      
+      const res = await axios.put(`http://localhost:5000/orders/${orderId}`, payload);
+      setOrders((prev) => prev.map((o) => (o._id === orderId ? res.data : o)));
+    } catch (err) {
+      const msg = err.response?.data?.error || err.response?.data?.message || err.message || "Failed to update status";
+      alert(msg);
+      // Revert the status on error
+      const order = orders.find(o => o._id === orderId);
+      if (order) {
+        setEditStatuses((prev) => ({ ...prev, [orderId]: order.status }));
+      }
+    }
   };
 
   //header, table, and details card
@@ -200,7 +223,25 @@ function AdminOrders() {
             <div className="modal-body">
               <p><strong>Customer:</strong> {selected.member?.username || selected.member?.userName || selected.member?.email || selected.member}</p>
               <p><strong>Date:</strong> {new Date(selected.createdAt || selected.order_date).toLocaleString()}</p>
-              <p><strong>Payment:</strong> {selected.payment_method || "-"}</p>
+              <p><strong>Payment Method:</strong> {selected.payment_method || "-"}</p>
+              
+              {selected.payment_method === 'Card Payment' && selected.card_details && (
+                <div style={{ marginTop: 8, padding: 10, backgroundColor: '#f5f5f5', borderRadius: 6 }}>
+                  <p><strong>Card Details:</strong></p>
+                  <p style={{ marginLeft: 15 }}>
+                    <strong>Card Number:</strong> **** **** **** {selected.card_details.card_last4 || "N/A"}
+                  </p>
+                  <p style={{ marginLeft: 15 }}>
+                    <strong>Card Brand:</strong> {selected.card_details.card_brand?.toUpperCase() || "N/A"}
+                  </p>
+                  {selected.card_details.payment_intent_id && (
+                    <p style={{ marginLeft: 15, fontSize: '0.85rem', color: '#666' }}>
+                      <strong>Payment ID:</strong> {selected.card_details.payment_intent_id}
+                    </p>
+                  )}
+                </div>
+              )}
+              
               {selected.payment_method === 'Bank Deposit' && selected.bank_slip && (
                 <div style={{ marginTop: 8 }}>
                   <p><strong>Bank Slip:</strong></p>

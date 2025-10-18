@@ -11,6 +11,7 @@ const URL = "http://localhost:5000/store";
 function ShowItems() {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
+  const [favorites, setFavorites] = useState([]); // Track favorite items
   const { catname } = useParams(); // Get category from URL
   const { cartItems, addToCart } = useCart();
 
@@ -50,9 +51,20 @@ function ShowItems() {
     return matchSearch && matchCategory;
   });
 
-  //Handle adding favorites (placeholder)
-  const handleFavourite = (productId) => {
-    console.log(`Added ${productId} to favourites`);
+  //Handle adding favorites (only for out-of-stock items)
+  const handleFavourite = (productId, stock) => {
+    if (stock > 0) {
+      // In-stock items cannot be added to favorites
+      return;
+    }
+    
+    if (favorites.includes(productId)) {
+      // Remove from favorites
+      setFavorites(favorites.filter(id => id !== productId));
+    } else {
+      // Add to favorites
+      setFavorites([...favorites, productId]);
+    }
   };
 
   return (
@@ -127,9 +139,19 @@ function ShowItems() {
                 </button>
                 <FaHeart
                   size={22}
-                  className="fav-icon"
-                  title="Add to Favourites"
-                  onClick={() => handleFavourite(product._id)}
+                  className={`fav-icon ${
+                    product.stock > 0 ? "fav-disabled" : ""
+                  } ${
+                    favorites.includes(product._id) ? "fav-active" : ""
+                  }`}
+                  title={
+                    product.stock > 0
+                      ? "Only out-of-stock items can be added to favorites"
+                      : favorites.includes(product._id)
+                      ? "Remove from Favourites"
+                      : "Add to Favourites"
+                  }
+                  onClick={() => handleFavourite(product._id, product.stock)}
                 />
               </div>
             </div>
