@@ -1,8 +1,7 @@
-// src/Components/ScheduleManagement/ScheduleChangeRequest/ScheduleChangeRequestForm.js
-import React, { useState, useEffect } from "react"; // NEW: Added useEffect
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./ScheduleChangeRequestForm.css";
+import "./ScheduleChangeRequestForm.css"; // Adjust path if CSS is in a different directory
 
 function ScheduleChangeRequestForm() {
   const navigate = useNavigate();
@@ -12,24 +11,28 @@ function ScheduleChangeRequestForm() {
   const [formData, setFormData] = useState({
     scheduleId: scheduleId || "",
     userId: userId || localStorage.getItem("userId") || "",
-    userName: "", // NEW: Added userName
+    userName: "",
     changeDetails: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // NEW: Fetch userName based on userId
   useEffect(() => {
-    if (!formData.userId) return;
+    if (!formData.userId) {
+      alert("User ID is missing. Please log in.");
+      navigate("/login");
+      return;
+    }
 
     const fetchUserName = async () => {
       try {
         const res = await axios.get(`http://localhost:5000/users/${formData.userId}`);
         setFormData((prev) => ({ ...prev, userName: res.data.user.userName }));
       } catch (err) {
-        console.error("Failed to fetch user name:", err);
+        console.error("Failed to fetch user name:", err.response?.data || err.message);
       }
     };
     fetchUserName();
-  }, [formData.userId]);
+  }, [formData.userId, navigate, scheduleId, userId]); // Added scheduleId, userId
 
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -37,40 +40,50 @@ function ScheduleChangeRequestForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!formData.userId || !formData.scheduleId) {
+      alert("Missing user ID or schedule ID. Redirecting to dashboard.");
+      navigate("/user-dashboard");
+      return;
+    }
+    setIsSubmitting(true);
     try {
       await axios.post("http://localhost:5000/schedule-change-requests", formData);
       alert("Change request submitted successfully!");
-      navigate("/instructor-dashboard/requests"); // UPDATED: Navigate to instructor's Schedule Requests tab
+      navigate("/user-dashboard");
     } catch (err) {
-      console.error("Failed to submit change request:", err);
-      alert("Failed to submit change request. Please try again.");
+      console.error("Submission error:", {
+        message: err.message,
+        response: err.response?.data,
+        status: err.response?.status,
+      });
+      alert(err.response?.data?.message || "Failed to submit change request. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
     <div className="change-request-page">
-      <header className="change-request-header">
-        <h1>Request Schedule Change</h1>
-      </header>
       <div className="change-request-container">
-        <h2>Submit Change Request</h2>
+        <h1>Request Schedule Changes Here</h1>
         <form onSubmit={handleSubmit} className="change-request-form">
-          <label>Change Details</label>
           <textarea
             name="changeDetails"
             value={formData.changeDetails}
             onChange={handleChange}
             placeholder="Describe the changes you want to make to your schedule..."
             required
+            disabled={isSubmitting}
           />
           <div className="form-buttons">
-            <button type="submit" className="submit-btn">
-              Submit Request
+            <button type="submit" className="submit-btn" disabled={isSubmitting}>
+              {isSubmitting ? "Submitting..." : "Submit Request"}
             </button>
             <button
               type="button"
               className="cancel-btn"
-              onClick={() => navigate("/dashboard")}
+              onClick={() => navigate("/user-dashboard")}
+              disabled={isSubmitting}
             >
               Cancel
             </button>

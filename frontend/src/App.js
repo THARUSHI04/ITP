@@ -73,6 +73,7 @@ function Layout() {
     "/instructor-dashboard",
     "/gym-dashboard",
     "/admin-dashboard",
+    "/schedule-change-request",
   ];
   const hideNav = hideNavRoutes.includes(location.pathname);
 
