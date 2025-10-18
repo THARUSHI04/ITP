@@ -47,6 +47,7 @@ import SubscriptionForm from "./Components/FinanceManagement/SubscriptionForm";
 import UpdateFinance from "./Components/FinanceManagement/UpdateFinance";
 import UserSubscriptionPlan from "./Components/FinanceManagement/UserSubscriptionPlan";
 import FinanceCheckout from "./Components/FinanceManagement/FinanceCheckout";
+import PaymentsTable from "./Components/FinanceManagement/PaymentsTable";
 
 
 //Store
@@ -121,6 +122,8 @@ function Layout() {
         <Route path="/finance/update/:id" element={<UpdateFinance />} />
         <Route path="/subscriptions" element={<UserSubscriptionPlan />} />
          <Route path="/checkout" element={<FinanceCheckout />} />
+         <Route path="/payments" element={<PaymentsTable />} />
+
        
 
 

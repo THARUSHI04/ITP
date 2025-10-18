@@ -6,6 +6,7 @@ import SubscriptionForm from "../../FinanceManagement/SubscriptionForm"; // Crea
 import AdminUserList from "../../UserManagement/AdminDashboard/AdminUserList"; // <-- Import AdminUserList
 import Store from "../../Store/Store";
 import AdminOrders from "../../Store/AdminOrders";
+import PaymentsTable from "../../FinanceManagement/PaymentsTable"; 
 import { useLocation } from "react-router-dom";
 // Placeholder Components
 // function ManageTrainers() {
@@ -88,7 +89,7 @@ function AdminDashboard() {
       case "orders":
         return <AdminOrders />;
       case "payments":
-        return <Payments />;
+        return <PaymentsTable  />;
       default:
         return <AdminProfile />;
     }
