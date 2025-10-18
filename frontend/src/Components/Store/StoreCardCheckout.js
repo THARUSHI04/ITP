@@ -13,7 +13,7 @@ import {
 import { useCart } from "./CartContext";
 import "./StoreCardCheckout.css";
 
-//Stripe publishable key
+// Stripe publishable key
 const stripePromise = loadStripe(
   "pk_test_51SCm7DP0LlFDCJL92awL2KsWX0NYccyviVuj8QjoFzQXJ8B79yAdlXHtlSTwzxhVC5kbJy5srnESSdyY92PHTBBv00uWXrO8kS"
 );
@@ -33,14 +33,19 @@ function CardCheckoutForm({ orderData }) {
     setError("");
 
     try {
-      //Create payment intent
-      const { data } = await axios.post("http://localhost:5000/create-payment-intent", {
-        amount: orderData.totalAmount * 100, // Convert to cents
-      });
+      // Create payment intent for store
+      const { data } = await axios.post(
+        "http://localhost:5000/store-payment/create-payment-intent",
+        {
+          amount: orderData.totalAmount * 100,
+          userName: orderData.userName,
+          orderId: orderData.orderId,
+        }
+      );
 
       const clientSecret = data.clientSecret;
 
-      //Confirm card payment
+      // Confirm card payment
       const result = await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
           card: elements.getElement(CardNumberElement),
@@ -49,32 +54,28 @@ function CardCheckoutForm({ orderData }) {
 
       if (result.error) {
         setError(result.error.message);
-        //Update order with failed payment status
-        await axios.put(`http://localhost:5000/orders/${orderData.orderId}/payment-status`, {
-          payment_status: "failed",
-        });
+        await axios.put(
+          `http://localhost:5000/orders/${orderData.orderId}/payment-status`,
+          { payment_status: "failed" }
+        );
       } else if (result.paymentIntent.status === "succeeded") {
-        //Get card details
-        const paymentMethod = await stripe.retrievePaymentMethod(result.paymentIntent.payment_method);
-        
-        //Update order with successful payment and card details
-        await axios.put(`http://localhost:5000/orders/${orderData.orderId}/payment-status`, {
-          payment_status: "success",
-          card_details: {
-            card_last4: paymentMethod.card.last4,
-            card_brand: paymentMethod.card.brand,
+        // Send paymentIntent id to backend
+        await axios.put(
+          `http://localhost:5000/orders/${orderData.orderId}/payment-status`,
+          {
+            payment_status: "success",
             payment_intent_id: result.paymentIntent.id,
-          },
-        });
+          }
+        );
 
-        //Mark order as paid
-        await axios.post(`http://localhost:5000/orders/${orderData.orderId}/pay`);
+        await axios.post(
+          `http://localhost:5000/orders/${orderData.orderId}/pay`
+        );
 
         alert("✅ Payment Successful! Your order has been placed.");
         setPaymentSuccess(true);
         clearCart();
-        
-        //Redirect to store after 2 seconds
+
         setTimeout(() => {
           navigate("/showItems");
         }, 2000);
@@ -94,9 +95,7 @@ function CardCheckoutForm({ orderData }) {
         fontSize: "16px",
         fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif',
         fontSmoothing: "antialiased",
-        "::placeholder": { 
-          color: "#999999" 
-        },
+        "::placeholder": { color: "#999999" },
         iconColor: "#e50914",
       },
       invalid: {
@@ -115,19 +114,28 @@ function CardCheckoutForm({ orderData }) {
       <form className="payment-form" onSubmit={handlePayment}>
         <div className="form-group">
           <label>Card Number</label>
-          <CardNumberElement options={stripeElementOptions} className="card-element" />
+          <CardNumberElement
+            options={stripeElementOptions}
+            className="card-element"
+          />
         </div>
-        
+
         <div className="form-group">
           <label>Expiry Date</label>
-          <CardExpiryElement options={stripeElementOptions} className="card-element" />
+          <CardExpiryElement
+            options={stripeElementOptions}
+            className="card-element"
+          />
         </div>
-        
+
         <div className="form-group">
           <label>CVC</label>
-          <CardCvcElement options={stripeElementOptions} className="card-element" />
+          <CardCvcElement
+            options={stripeElementOptions}
+            className="card-element"
+          />
         </div>
-        
+
         {error && <p className="checkout-error">{error}</p>}
         <button className="btn proceed-btn" type="submit" disabled={!stripe || loading}>
           {loading ? "Processing..." : `Pay LKR ${orderData.totalAmount}`}

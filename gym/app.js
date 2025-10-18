@@ -16,6 +16,7 @@ const favouriteRouter = require("./Routes/StoreFavourite");
 const OrderRoutes = require("./Routes/OrderRoutes");
 const PaymentRouter = require("./Routes/PaymentRouter");
 const PaymentReceiptRouter = require("./Routes/PaymentReciptRouter");
+const StorePaymentRouter = require("./Routes/StorePaymentRouter"); // Store payments
 
 const app = express();
 
@@ -49,6 +50,7 @@ app.use("/store-favourites", favouriteRouter);
 app.use("/orders", OrderRoutes);
 app.use("/payment", PaymentRouter);
 app.use("/receipt", PaymentReceiptRouter);
+app.use("/store-payment", StorePaymentRouter); // Store payments + receipts
 
 // ==========================
 // MongoDB Connection
