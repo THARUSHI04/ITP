@@ -136,9 +136,9 @@ function CheckoutForm({ plan }) {
           <button
             className="btn back-btn"
             style={{ marginLeft: "10px" }}
-            onClick={() => navigate("/subscriptions")}
+            onClick={() => navigate("/user-dashboard")}
           >
-            Back to Subscriptions
+            Back
           </button>
         </div>
       )}
