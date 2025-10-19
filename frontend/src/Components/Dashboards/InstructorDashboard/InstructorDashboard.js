@@ -17,14 +17,14 @@ function BookedClients() {
   );
 }
 
-function Earnings() {
-  return (
-    <div>
-      <h2>Earnings</h2>
-      <p>Track your income from training sessions.</p>
-    </div>
-  );
-}
+// function Earnings() {
+//   return (
+//     <div>
+//       <h2>Earnings</h2>
+//       <p>Track your income from training sessions.</p>
+//     </div>
+//   );
+// }
 
 // Main Dashboard
 function InstructorDashboard() {
@@ -36,12 +36,12 @@ function InstructorDashboard() {
         return <InstructorProfile />;
       case "classes":
         return <InstructorSchedulePage />;
-      case "schedule":
-        return <FitnessSchedule />;
+      // case "schedule":
+      //   return <FitnessSchedule />;
       case "clients":
         return <BookedClients />;
-      case "earnings":
-        return <Earnings />;
+      // case "earnings":
+      //   return <Earnings />;
       case "requests":
         return <FitnessSchedule />;
       default:
@@ -64,15 +64,15 @@ function InstructorDashboard() {
             className={activeTab === "classes" ? "active" : ""}
             onClick={() => setActiveTab("classes")}
           >
-            My Classes
+            Change Request
           </li>
 
-          <li
+          {/* <li
             className={activeTab === "schedule" ? "active" : ""}
             onClick={() => setActiveTab("schedule")}
           >
             Schedule
-          </li>
+          </li> */}
 
           <li
             className={activeTab === "clients" ? "active" : ""}
@@ -81,12 +81,12 @@ function InstructorDashboard() {
             Booked Clients
           </li>
 
-          <li
+          {/* <li
             className={activeTab === "earnings" ? "active" : ""}
             onClick={() => setActiveTab("earnings")}
           >
             Earnings
-          </li>
+          </li> */}
 
           <li
             className={activeTab === "requests" ? "active" : ""}

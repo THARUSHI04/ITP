@@ -77,7 +77,7 @@ function CardCheckoutForm({ orderData }) {
         clearCart();
 
         setTimeout(() => {
-          navigate("/showItems");
+          navigate("/user-dashboard");
         }, 2000);
       }
     } catch (err) {
