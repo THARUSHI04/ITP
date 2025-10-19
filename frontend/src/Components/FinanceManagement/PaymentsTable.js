@@ -7,22 +7,59 @@ function PaymentsTable() {
   const [payments, setPayments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [downloadingId, setDownloadingId] = useState(null); // Track which receipt is downloading
 
+  // Function to fetch payments
+  const fetchPayments = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/payment/all");
+      console.log("Payments fetched:", response.data); // Debug log
+      setPayments(Array.isArray(response.data) ? response.data : []);
+    } catch (err) {
+      console.error("Error fetching payments:", err);
+      setError("❌ Failed to load payments");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch payments on mount & set auto-refresh
   useEffect(() => {
-    const fetchPayments = async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/payment/all"); // Make sure route matches your backend
-        setPayments(Array.isArray(response.data) ? response.data : []);
-      } catch (err) {
-        console.error("Error fetching payments:", err);
-        setError("❌ Failed to load payments");
-      } finally {
-        setLoading(false);
-      }
-    };
+    fetchPayments(); // initial fetch
 
-    fetchPayments();
+    const interval = setInterval(() => {
+      fetchPayments(); // auto-refresh every 10 seconds
+    }, 10000);
+
+    return () => clearInterval(interval); // cleanup on unmount
   }, []);
+
+  // Download receipt function
+  const downloadReceipt = async (stripePaymentId) => {
+    try {
+      setDownloadingId(stripePaymentId);
+
+      const res = await axios.get(
+        `http://localhost:5000/receipt/download-receipt/${stripePaymentId}`,
+        { responseType: "blob" }
+      );
+
+      const blob = new Blob([res.data], { type: "application/pdf" });
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `receipt_${stripePaymentId}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (err) {
+      console.error("Download failed", err);
+      alert("Download failed");
+    } finally {
+      setDownloadingId(null);
+    }
+  };
 
   if (loading) return <p>Loading payments...</p>;
   if (error) return <p>{error}</p>;
@@ -30,6 +67,17 @@ function PaymentsTable() {
   return (
     <div className="payments-table-container">
       <h2>All Payments</h2>
+
+      {/* Refresh Button */}
+      <div style={{ textAlign: "right", marginBottom: "10px" }}>
+        <button
+          onClick={fetchPayments}
+          style={{ padding: "6px 12px", borderRadius: "6px", backgroundColor: "#1a73e8", color: "#fff", border: "none", cursor: "pointer" }}
+        >
+          Refresh
+        </button>
+      </div>
+
       <table className="payments-table">
         <thead>
           <tr>
@@ -65,13 +113,12 @@ function PaymentsTable() {
                 <td>{formattedDate}</td>
                 <td>
                   {payment.stripePaymentId ? (
-                    <a
-                      href={`http://localhost:5000/receipt/${payment.stripePaymentId}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <button
+                      onClick={() => downloadReceipt(payment.stripePaymentId)}
+                      disabled={downloadingId === payment.stripePaymentId}
                     >
-                      Download
-                    </a>
+                      {downloadingId === payment.stripePaymentId ? "Downloading..." : "Download"}
+                    </button>
                   ) : (
                     "-"
                   )}

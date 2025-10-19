@@ -8,7 +8,6 @@ const path = require("path");
 
 // ✅ Correct Payment model path (make sure folder name is 'Model' not 'Models')
 const Payment = require("../Model/Payment");
-
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 // -----------------------------
